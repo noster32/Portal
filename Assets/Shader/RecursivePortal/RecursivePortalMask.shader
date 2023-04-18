@@ -4,16 +4,19 @@ Shader "Custom/RecursivePortalMask"
     {
         _MainTex("Main Texture", 2D) = "white" {}
     }
-        SubShader
+    SubShader
     {
-        Tags { "RenderType" = "Opaque" }
+        Tags 
+        {
+            "RenderType" = "Opaque" 
+        }
 
         Pass
         {
             Stencil
             {
-            Ref 1
-            Pass replace
+                Ref 1
+                Pass replace
             }
 
             CGPROGRAM

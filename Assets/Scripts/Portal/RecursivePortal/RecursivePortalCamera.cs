@@ -54,15 +54,16 @@ public class RecursivePortalCamera : CComponent
             relativeRot = Quaternion.Euler(0.0f, 180.0f, 0.0f) * relativeRot;
             cameraTransform.rotation = outTransform.rotation * relativeRot;
 
-            Plane p = new Plane(-outTransform.forward, outTransform.position);
-            Vector4 clipPlane = new Vector4(p.normal.x, p.normal.y, p.normal.z, p.distance);
-            Vector4 clipPlaneCameraSpace = Matrix4x4.Transpose(Matrix4x4.Inverse(portalCamera.worldToCameraMatrix)) * clipPlane;
-
-            var newMatrix = mainCamera.CalculateObliqueMatrix(clipPlaneCameraSpace);
-            portalCamera.projectionMatrix = newMatrix;
-
-            portalCamera.Render();
         }
+
+        Plane p = new Plane(-outTransform.forward, outTransform.position);
+        Vector4 clipPlane = new Vector4(p.normal.x, p.normal.y, p.normal.z, p.distance);
+        Vector4 clipPlaneCameraSpace = Matrix4x4.Transpose(Matrix4x4.Inverse(portalCamera.worldToCameraMatrix)) * clipPlane;
+
+        var newMatrix = mainCamera.CalculateObliqueMatrix(clipPlaneCameraSpace);
+        portalCamera.projectionMatrix = newMatrix;
+
+        portalCamera.Render();
     }
 
     private void OnPreRender()
@@ -75,7 +76,7 @@ public class RecursivePortalCamera : CComponent
         if (portals[0].IsRendererVisible())
         {
             portalCamera.targetTexture = tempTexture1;
-            for(int i = iterations -1; i >= 0; --i)
+            for(int i = iterations - 1; i >= 0; --i)
             {
                 RenderCamera(portals[0], portals[1], i);
             }

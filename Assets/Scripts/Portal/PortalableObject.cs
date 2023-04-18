@@ -4,6 +4,11 @@ using System.Runtime.CompilerServices;
 using Unity.VisualScripting;
 using UnityEngine;
 
+[RequireComponent(typeof(MeshFilter))]
+[RequireComponent(typeof(MeshRenderer))]
+[RequireComponent(typeof(Rigidbody))]
+[RequireComponent(typeof(Collider))]
+
 public class PortalableObject : CComponent
 {
     private Portal inPortal;
@@ -29,6 +34,7 @@ public class PortalableObject : CComponent
 
         meshFilter.mesh = GetComponent<MeshFilter>().mesh;
         meshRenderer.materials = GetComponent<MeshRenderer>().materials;
+        cloneObject.transform.localScale = transform.localScale;
 
         rigidbody = GetComponent<Rigidbody>();
         collider = GetComponent<Collider>();
@@ -42,7 +48,6 @@ public class PortalableObject : CComponent
         {
             return;
         }
-
         if(cloneObject.activeSelf && inPortal.IsPlaced() && outPortal.IsPlaced())
         {
             var inTransform = inPortal.transform;
@@ -78,6 +83,10 @@ public class PortalableObject : CComponent
         Vector3 relativeVel = inTransform.InverseTransformDirection(rigidbody.velocity);
         relativeVel = halfTurn * relativeVel;
         rigidbody.velocity = outTransform.TransformDirection(relativeVel);
+
+        var tmp = inPortal;
+        inPortal = outPortal;
+        outPortal = tmp;
     }
 
     public void SetisInPortal(Portal inPortal, Portal outPortal, Collider wallCollision)

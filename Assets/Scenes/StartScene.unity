@@ -136,15 +136,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: bb53b5672493b72419214c714e5e1c86, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.100902006
+      value: 0.03217563
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: bb53b5672493b72419214c714e5e1c86, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.100902006
+      value: 0.03217563
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: bb53b5672493b72419214c714e5e1c86, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.100902006
+      value: 0.03217563
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: bb53b5672493b72419214c714e5e1c86, type: 3}
       propertyPath: m_LocalPosition.x
@@ -152,7 +152,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: bb53b5672493b72419214c714e5e1c86, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 3.49
+      value: 3.4899
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: bb53b5672493b72419214c714e5e1c86, type: 3}
       propertyPath: m_LocalPosition.z
@@ -262,7 +262,7 @@ GameObject:
   - component: {fileID: 306970069}
   - component: {fileID: 306970071}
   - component: {fileID: 306970070}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: PortalCamera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -345,15 +345,16 @@ GameObject:
   m_Component:
   - component: {fileID: 321128532}
   - component: {fileID: 321128538}
+  - component: {fileID: 321128537}
+  - component: {fileID: 321128542}
+  - component: {fileID: 321128541}
+  - component: {fileID: 321128543}
   - component: {fileID: 321128540}
   - component: {fileID: 321128539}
-  - component: {fileID: 321128537}
-  - component: {fileID: 321128536}
   - component: {fileID: 321128535}
   - component: {fileID: 321128534}
   - component: {fileID: 321128533}
-  - component: {fileID: 321128541}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Main Camera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -424,26 +425,6 @@ MonoBehaviour:
   m_oTransform: {fileID: 0}
   m_oRigidBody: {fileID: 0}
   m_oRigidBody2D: {fileID: 0}
---- !u!114 &321128536
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 321128531}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 795949a138e8314419b7a486adf46372, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_oTransform: {fileID: 0}
-  m_oRigidBody: {fileID: 0}
-  m_oRigidBody2D: {fileID: 0}
-  portals:
-  - {fileID: 2028420396}
-  - {fileID: 958148941}
-  portalCamera: {fileID: 306970071}
-  portalMaterial: {fileID: 2100000, guid: 8cd7fed08fb065e40a04ce4b8649d84b, type: 2}
 --- !u!81 &321128537
 AudioListener:
   m_ObjectHideFlags: 0
@@ -523,7 +504,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 0}
+  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -559,8 +540,40 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 112
   m_CollisionDetection: 0
+--- !u!114 &321128542
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 321128531}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f5eaa64256dfc241bf38e8e9d055b54, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_oTransform: {fileID: 0}
+  m_oRigidBody: {fileID: 0}
+  m_oRigidBody2D: {fileID: 0}
+  portals:
+  - {fileID: 2028420396}
+  - {fileID: 958148941}
+  portalCamera: {fileID: 306970071}
+--- !u!135 &321128543
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 321128531}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &464594341
 GameObject:
   m_ObjectHideFlags: 0
@@ -572,7 +585,6 @@ GameObject:
   - component: {fileID: 464594345}
   - component: {fileID: 464594344}
   - component: {fileID: 464594342}
-  - component: {fileID: 464594343}
   m_Layer: 6
   m_Name: Outline
   m_TagString: Untagged
@@ -622,19 +634,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &464594343
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 464594341}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!33 &464594344
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -1116,7 +1115,7 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 958148939}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
@@ -1185,7 +1184,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1107620499}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: TempPlayerCamera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2102,7 +2101,7 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2028420395}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
@@ -2185,7 +2184,6 @@ GameObject:
   - component: {fileID: 2067992263}
   - component: {fileID: 2067992266}
   - component: {fileID: 2067992265}
-  - component: {fileID: 2067992264}
   m_Layer: 6
   m_Name: Outline
   m_TagString: Untagged
@@ -2208,19 +2206,6 @@ Transform:
   m_Father: {fileID: 958148940}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &2067992264
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2067992262}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!23 &2067992265
 MeshRenderer:
   m_ObjectHideFlags: 0

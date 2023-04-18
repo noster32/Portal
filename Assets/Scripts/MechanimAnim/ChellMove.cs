@@ -58,7 +58,6 @@ public class ChellMove : CComponent
 
         mouseMove += new Vector3(-Input.GetAxisRaw("Mouse Y") * mouseSensitivity, 0, 0);
 
-
         if(mouseMove.x < -5)
         {
             mouseMove.x = -5;
