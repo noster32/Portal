@@ -96,10 +96,6 @@ public class ChellMove : CComponent
             characterRotation.x = characterRotation.z = 0;
             
             chellAnimator.SetFloat("aLookRotation", characterRotation.eulerAngles.y);
-            
-            //chellModel.rotation = Quaternion.Slerp(chellModel.rotation, characterRotation, 10.0f * Time.deltaTime);
-
-            
         }
 
         move = transform.TransformDirection(direction);
@@ -108,5 +104,11 @@ public class ChellMove : CComponent
         chellAnimator.SetFloat("aSpeed", speed);
 
         move.y = tempMoveY;
+    }
+
+    public void ResetTargetRotation()
+    {
+        qCharacterRotation = Quaternion.LookRotation(transform.forward, Vector3.up);
+        oTransform.rotation = Quaternion.Slerp(oTransform.rotation, qCharacterRotation, 10.0f * Time.deltaTime);
     }
 }

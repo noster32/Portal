@@ -31,6 +31,7 @@ public class PortalableObject : CComponent
         cloneObject.SetActive(false);
         var meshFilter = cloneObject.AddComponent<MeshFilter>();
         var meshRenderer = cloneObject.AddComponent<MeshRenderer>();
+        //var meshFilterChild = cloneObject.AddComponent
 
         meshFilter.mesh = GetComponent<MeshFilter>().mesh;
         meshRenderer.materials = GetComponent<MeshRenderer>().materials;

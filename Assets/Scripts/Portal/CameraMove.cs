@@ -1,17 +1,28 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody))]
 public class CameraMove : CComponent
 {
-    private const float moveSpeed = 7.5f;
-    private const float cameraSpeed = 3.0f;
+    #region public
 
-    private Vector3 moveVector = Vector3.zero;
-    private float moveY = 0.0f;
+    public float runSpeed = 0.0f;
+    public float mouseSensitivity = 2.0f;
 
-    public Quaternion TargetRotation { private set; get; }
+    #endregion
+
+    Transform playerTransform;
+    Transform chellModel;
+    Transform portalGunModel;
+    Transform cameraTransform;
+    Animator chellAnimator;
+
+    Vector3 move;
+    Vector3 mouseMove;
+    Vector3 characterRotation;
+    public Quaternion qCharacterRotation { private set; get; }
+
 
     private new Rigidbody rigidbody;
 
@@ -19,46 +30,75 @@ public class CameraMove : CComponent
     {
         base.Awake();
 
+        playerTransform = transform.transform;
+
+        chellModel = transform.GetChild(0);
+        chellAnimator = chellModel.GetComponent<Animator>();
+
+        cameraTransform = Camera.main.transform;
+        portalGunModel = cameraTransform.GetChild(0);
+
         rigidbody = GetComponent<Rigidbody>();
         Cursor.lockState = CursorLockMode.Locked;
-
-        TargetRotation = transform.rotation;
     }
 
     public override void Update()
     {
         base.Update();
 
-        var rotation = new Vector2(-Input.GetAxis("Mouse Y"), Input.GetAxis("Mouse X"));
-        var targetEuler = TargetRotation.eulerAngles + (Vector3)rotation * cameraSpeed;
-        if (targetEuler.x > 180.0f)
-        {
-            targetEuler.x -= 360.0f;
-        }
-        targetEuler.x = Mathf.Clamp(targetEuler.x, -75.0f, 75.0f);
-        TargetRotation = Quaternion.Euler(targetEuler);
+        characterRotation += new Vector3(0, Input.GetAxisRaw("Mouse X") * mouseSensitivity, 0);
+        qCharacterRotation = Quaternion.Euler(characterRotation);
+        playerTransform.rotation = Quaternion.Slerp(playerTransform.rotation, qCharacterRotation, 10.0f * Time.deltaTime);
 
-        transform.rotation = Quaternion.Slerp(transform.rotation, TargetRotation,
-            Time.deltaTime * 15.0f);
+        Quaternion characterRot = Quaternion.LookRotation(move);
 
-        float x = Input.GetAxis("Horizontal");
-        float z = Input.GetAxis("Vertical");
-        moveVector = new Vector3(x, 0.0f, z) * moveSpeed;
+        characterRot.x = characterRot.z = 0;
 
-        moveY = Input.GetAxis("Elevation");
+        chellAnimator.SetFloat("aLookRotation", characterRot.eulerAngles.y);
+
+        //move = transform.TransformDirection(moveVector);
+
+        float speed = move.sqrMagnitude;
+        chellAnimator.SetFloat("aSpeed", speed);
     }
 
     public override void FixedUpdate()
     {
         base.FixedUpdate();
 
-        Vector3 newVelocity = transform.TransformDirection(moveVector);
-        newVelocity.y += moveY * moveSpeed;
-        rigidbody.velocity = newVelocity;
+        PlayerMovement();
+    }
+
+    public override void LateUpdate()
+    {
+        base.LateUpdate();
+
+        mouseMove += new Vector3(-Input.GetAxisRaw("Mouse Y") * mouseSensitivity, 0, 0);
+
+        if (mouseMove.x < -5)
+        {
+            mouseMove.x = -5;
+        }
+        else if (50 < mouseMove.x)
+        {
+            mouseMove.x = 50;
+        }
+
+        cameraTransform.localEulerAngles = mouseMove;
+    }
+
+    private void PlayerMovement()
+    {
+        float mHorizontal = Input.GetAxis("Horizontal");
+        float mVertical = Input.GetAxis("Vertical");
+
+        Vector3 movement = new Vector3(mHorizontal, 0f, mVertical);
+        Vector3 moveVector = transform.TransformDirection(movement) * runSpeed;
+        rigidbody.velocity = moveVector;
     }
 
     public void ResetTargetRotation()
     {
-        TargetRotation = Quaternion.LookRotation(transform.forward, Vector3.up);
+        qCharacterRotation = Quaternion.LookRotation(transform.forward, Vector3.up);
     }
 }

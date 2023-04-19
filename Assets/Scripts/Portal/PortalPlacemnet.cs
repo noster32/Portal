@@ -71,7 +71,7 @@ public class PortalPlacemnet : CComponent
                 return;
             }
 
-            var cameraRotation = cameraMove.TargetRotation;
+            var cameraRotation = cameraMove.qCharacterRotation;
 
             var portalRight = cameraRotation * Vector3.right;
 
