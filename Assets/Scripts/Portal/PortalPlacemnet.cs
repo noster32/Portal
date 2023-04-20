@@ -17,11 +17,14 @@ public class PortalPlacemnet : CComponent
 
     private CameraMove cameraMove;
 
+    private Transform mainCamera;
+
     public override void Awake()
     {
         base.Awake();
 
         cameraMove = GetComponent<CameraMove>();
+        mainCamera = transform.GetChild(1);
     }
 
     public override void Update()
@@ -30,11 +33,11 @@ public class PortalPlacemnet : CComponent
 
         if (Input.GetButtonDown("Fire1"))
         {
-            FirePortal(0, transform.position, transform.forward, 250.0f);
+            FirePortal(0, mainCamera.transform.position, mainCamera.transform.forward, 250.0f);
         }
         else if(Input.GetButtonDown("Fire2"))
         {
-            FirePortal(1, transform.position, transform.forward, 250.0f);
+            FirePortal(1, mainCamera.transform.position, mainCamera.transform.forward, 250.0f);
         }
     }
 

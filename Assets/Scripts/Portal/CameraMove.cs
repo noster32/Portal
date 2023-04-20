@@ -8,13 +8,13 @@ public class CameraMove : CComponent
     #region public
 
     public float runSpeed = 0.0f;
+    public float jumpForce = 5.0f;
     public float mouseSensitivity = 2.0f;
 
     #endregion
 
     Transform playerTransform;
     Transform chellModel;
-    Transform portalGunModel;
     Transform cameraTransform;
     Animator chellAnimator;
 
@@ -36,7 +36,6 @@ public class CameraMove : CComponent
         chellAnimator = chellModel.GetComponent<Animator>();
 
         cameraTransform = Camera.main.transform;
-        portalGunModel = cameraTransform.GetChild(0);
 
         rigidbody = GetComponent<Rigidbody>();
         Cursor.lockState = CursorLockMode.Locked;
@@ -50,16 +49,13 @@ public class CameraMove : CComponent
         qCharacterRotation = Quaternion.Euler(characterRotation);
         playerTransform.rotation = Quaternion.Slerp(playerTransform.rotation, qCharacterRotation, 10.0f * Time.deltaTime);
 
-        Quaternion characterRot = Quaternion.LookRotation(move);
+        Quaternion characterRot = Quaternion.LookRotation(qCharacterRotation.eulerAngles);
 
         characterRot.x = characterRot.z = 0;
 
         chellAnimator.SetFloat("aLookRotation", characterRot.eulerAngles.y);
 
-        //move = transform.TransformDirection(moveVector);
-
-        float speed = move.sqrMagnitude;
-        chellAnimator.SetFloat("aSpeed", speed);
+  
     }
 
     public override void FixedUpdate()
@@ -74,7 +70,7 @@ public class CameraMove : CComponent
         base.LateUpdate();
 
         mouseMove += new Vector3(-Input.GetAxisRaw("Mouse Y") * mouseSensitivity, 0, 0);
-
+        
         if (mouseMove.x < -5)
         {
             mouseMove.x = -5;
@@ -83,7 +79,7 @@ public class CameraMove : CComponent
         {
             mouseMove.x = 50;
         }
-
+        
         cameraTransform.localEulerAngles = mouseMove;
     }
 
@@ -91,14 +87,31 @@ public class CameraMove : CComponent
     {
         float mHorizontal = Input.GetAxis("Horizontal");
         float mVertical = Input.GetAxis("Vertical");
+        
 
         Vector3 movement = new Vector3(mHorizontal, 0f, mVertical);
         Vector3 moveVector = transform.TransformDirection(movement) * runSpeed;
-        rigidbody.velocity = moveVector;
+        rigidbody.velocity = new Vector3(moveVector.x, rigidbody.velocity.y, moveVector.z);
+
+        float speed = moveVector.sqrMagnitude;
+        chellAnimator.SetFloat("aSpeed", speed);
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            if(GroundCheck())
+            {
+                rigidbody.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+            }
+        }
     }
 
     public void ResetTargetRotation()
     {
         qCharacterRotation = Quaternion.LookRotation(transform.forward, Vector3.up);
+    }
+
+    bool GroundCheck()
+    {
+        return Physics.Raycast(playerTransform.position, Vector3.down, 0.5f);
     }
 }
