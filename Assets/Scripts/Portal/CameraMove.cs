@@ -10,6 +10,7 @@ public class CameraMove : CComponent
     public float runSpeed = 0.0f;
     public float jumpForce = 5.0f;
     public float mouseSensitivity = 2.0f;
+    public Vector3 playerMoveVector;
 
     #endregion
 
@@ -18,7 +19,6 @@ public class CameraMove : CComponent
     Transform cameraTransform;
     Animator chellAnimator;
 
-    Vector3 move;
     Vector3 mouseMove;
     Vector3 characterRotation;
     public Quaternion qCharacterRotation { private set; get; }
@@ -90,10 +90,10 @@ public class CameraMove : CComponent
         
 
         Vector3 movement = new Vector3(mHorizontal, 0f, mVertical);
-        Vector3 moveVector = transform.TransformDirection(movement) * runSpeed;
-        rigidbody.velocity = new Vector3(moveVector.x, rigidbody.velocity.y, moveVector.z);
+        playerMoveVector = transform.TransformDirection(movement) * runSpeed;
+        rigidbody.velocity = new Vector3(playerMoveVector.x, rigidbody.velocity.y, playerMoveVector.z);
 
-        float speed = moveVector.sqrMagnitude;
+        float speed = playerMoveVector.sqrMagnitude;
         chellAnimator.SetFloat("aSpeed", speed);
 
         if (Input.GetKeyDown(KeyCode.Space))
