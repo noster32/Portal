@@ -44,16 +44,20 @@ public class CameraMove : CComponent
     public override void Update()
     {
         base.Update();
-
         characterRotation += new Vector3(0, Input.GetAxisRaw("Mouse X") * mouseSensitivity, 0);
         qCharacterRotation = Quaternion.Euler(characterRotation);
         playerTransform.rotation = Quaternion.Slerp(playerTransform.rotation, qCharacterRotation, 10.0f * Time.deltaTime);
 
-        Quaternion characterRot = Quaternion.LookRotation(qCharacterRotation.eulerAngles);
+        if(qCharacterRotation.eulerAngles != Vector3.zero)
+        {
 
-        characterRot.x = characterRot.z = 0;
+            Quaternion characterRot = Quaternion.LookRotation(qCharacterRotation.eulerAngles);
 
-        chellAnimator.SetFloat("aLookRotation", characterRot.eulerAngles.y);
+            characterRot.x = characterRot.z = 0;
+
+            chellAnimator.SetFloat("aLookRotation", characterRot.eulerAngles.y);
+        }
+
 
   
     }

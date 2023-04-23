@@ -1,17 +1,9 @@
 fileFormatVersion: 2
-guid: bb53b5672493b72419214c714e5e1c86
+guid: fbc915ec21b8acf4f8374d9e485bf460
 ModelImporter:
   serializedVersion: 21202
-  internalIDToNameTable:
-  - first:
-      74: -7845108563133495118
-    second: metal_box.qc_skeleton|idle
-  externalObjects:
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: metal_box
-    second: {fileID: 2100000, guid: a97f20bf15495ba46a3b2459cfd87da4, type: 2}
+  internalIDToNameTable: []
+  externalObjects: {}
   materials:
     materialImportMode: 2
     materialName: 0

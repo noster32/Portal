@@ -6,8 +6,6 @@ public class CPortalGunAnim : CComponent
 {
     Animation PortalGun;
 
-    public AnimationClip Shot;
-
     public override void Start()
     {
         base.Start();
