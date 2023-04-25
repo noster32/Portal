@@ -18,7 +18,6 @@ public static partial class Function
     }
 
 
-
     //게임 오브젝트 중에 무엇이 올지 알수가 없다
     public static T CreateGameObject<T>(string a_oName, GameObject a_oParent, bool a_bIsStayWorldState = false) where T : Component
     {
