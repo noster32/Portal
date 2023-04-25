@@ -5,6 +5,10 @@ using UnityEngine;
 
 public class CBallLauncher : CComponent
 {
+    #region public
+    public bool ballConnect;
+    #endregion
+
     [SerializeField] private GameObject BallObj;
 
     Animation aLauncher;
@@ -16,6 +20,8 @@ public class CBallLauncher : CComponent
     public override void Awake()
     {
         base.Awake();
+        ballConnect = false;
+
         aLauncher = GetComponent<Animation>();
 
         launcherOpenEvent = new AnimationEvent();
@@ -34,13 +40,17 @@ public class CBallLauncher : CComponent
     {
         base.Update();
 
-        GameObject obj = GameObject.Find("Ball(Clone)");
-
-        if (obj == null)
+        if (!ballConnect)
         {
-            launcherCollider.enabled = false;
-            aLauncher.Play("open");
+            GameObject obj = GameObject.Find("Ball(Clone)");
+
+            if (obj == null)
+            {
+                launcherCollider.enabled = false;
+                aLauncher.Play("open");
+            }
         }
+
     }
 
     void BallLaunch()

@@ -104,7 +104,8 @@ public class CameraMove : CComponent
         {
             if(GroundCheck())
             {
-                rigidbody.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+                rigidbody.velocity = new Vector3(rigidbody.velocity.x, 0f, rigidbody.velocity.z);
+                rigidbody.AddForce(Vector3.up * jumpForce, ForceMode.VelocityChange);
             }
         }
     }

@@ -7,6 +7,9 @@ using UnityEngine.UIElements;
 
 public class CCubeButton : CComponent
 {
+    [SerializeField] private GameObject target;
+
+
     private Transform buttonTop;
 
 
@@ -15,20 +18,25 @@ public class CCubeButton : CComponent
         base.Awake();
 
         buttonTop = transform.GetChild(0);
+        target.GetComponent<GameObject>();
     }
 
 
     private void OnTriggerEnter(Collider other)
     {
         string objectTag = other.gameObject.tag;
+        string targetTag = target.gameObject.tag;
         Vector3 movePosition = buttonTop.localPosition - Vector3.down * -0.8f;
         if (objectTag == "Cube")
         {
             StartCoroutine(moveButton(buttonTop.localPosition, movePosition, 0.3f));
-            
+            if(targetTag == "Door")
+            {
+                target.GetComponent<CDoor1>().interaction = true;
+            }
         }
 
-        //Bool true 
+       
     }
 
     private void OnTriggerStay(Collider other)
@@ -39,11 +47,15 @@ public class CCubeButton : CComponent
     private void OnTriggerExit(Collider other)
     {
         string objectTag = other.gameObject.tag;
+        string targetTag = target.gameObject.tag;
         Vector3 movePosition = buttonTop.localPosition - Vector3.down * 0.8f;
         if (objectTag == "Cube")
         {
             StartCoroutine(moveButton(buttonTop.localPosition, movePosition, 0.3f));
-
+            if (targetTag == "Door")
+            {
+                target.GetComponent<CDoor1>().interaction = false;
+            }
         }
 
         //Bool false

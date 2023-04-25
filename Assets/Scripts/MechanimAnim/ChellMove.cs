@@ -47,10 +47,10 @@ public class ChellMove : CComponent
 
         chellController.Move(move * Time.deltaTime);
 
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            chellAnimator.SetTrigger("aJump");
-        }
+        //if (Input.GetKeyDown(KeyCode.Space))
+        //{
+        //    chellAnimator.SetTrigger("aJump");
+        //}
     }
     public override void LateUpdate()
     {
