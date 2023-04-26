@@ -9,7 +9,6 @@ public class CSceneManager : CComponent
 
     //시작할 떄 균일한 시작 값을 기준으로 실행학 위해서
     public float m_fPlaneDistance = KDefine.DEFAULT_PLANE_DISTANCE;
-    //?
     #endregion
 
     public static Camera UICamera
@@ -62,7 +61,7 @@ public class CSceneManager : CComponent
         QualitySettings.vSyncCount = 0;
         //모니터에 맞추겠다
         Application.targetFrameRate = 60;
-
+        
         //true로 바꾸면 풀스크린
         Screen.SetResolution(KDefine.SCREEN_WIDTH, KDefine.SCREEN_HEIGHT, false);
     }
