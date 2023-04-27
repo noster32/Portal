@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class CSoundManager : CComponent
 {
+
     public override void Start()
     {
         base.Start();
@@ -13,5 +14,6 @@ public class CSoundManager : CComponent
     public override void Update()
     {
         base.Update();
+
     }
 }

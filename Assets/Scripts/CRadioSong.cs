@@ -19,29 +19,34 @@ public class CRadioSong : CComponent
     public override void Start()
     {
         audioSource = GetComponent<AudioSource>();
-        audioSource.volume = maxvolume;
-        audioSource.clip = audioClip;
-        audioSource.loop = true;
-        audioSource.minDistance = minDistance;
-        audioSource.maxDistance = maxDistance;
+        CSoundLoader.Instance.LoadSound(audioSource, audioClip, maxvolume, true, minDistance, maxDistance);
+        
+        //audioSource.volume = maxvolume;
+        //audioSource.clip = audioClip;
+        //audioSource.loop = true;
+        //audioSource.minDistance = minDistance;
+        //audioSource.maxDistance = maxDistance;
+        
     }
 
 
     public override void Update()
     {
-        if (!audioSource.isPlaying)
-        {
-            audioSource.Play();
-        }
+        CSoundLoader.Instance.PlaySound3D(audioSource, transform.position, targetObj.position, volumeMultipiler);
 
-        if (targetObj != null && audioSource.isPlaying)
-        {
-            float distance = Vector3.Distance(targetObj.position, transform.position);
 
-            float volume = Mathf.Clamp01((maxDistance - distance) / (maxDistance - minDistance)) * volumeMultipiler;
-
-            audioSource.volume = volume;
-        }
-   
+        //if (!audioSource.isPlaying)
+        //{
+        //    audioSource.Play();
+        //}
+        //
+        //if (targetObj != null && audioSource.isPlaying)
+        //{
+        //    float distance = Vector3.Distance(targetObj.position, transform.position);
+        //
+        //    float volume = Mathf.Clamp01((maxDistance - distance) / (maxDistance - minDistance)) * volumeMultipiler;
+        //
+        //    audioSource.volume = volume;
+        //}
     }
 }

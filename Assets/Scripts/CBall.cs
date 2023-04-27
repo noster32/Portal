@@ -5,21 +5,19 @@ using UnityEngine;
 public class CBall : CComponent
 {
     new Rigidbody rigidbody;
+    float speed = 10f;
 
     public override void Awake()
     {
         base.Awake();
 
-        //rigidbody = GetComponent<Rigidbody>();
+        rigidbody = GetComponent<Rigidbody>();
+        rigidbody.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
     }
-    public override void Update()
+    public override void FixedUpdate()
     {
-        base.Update();
-    }
+        base.FixedUpdate();
 
-    private void OnCollisionEnter(Collision collision)
-    {
-        Debug.Log("aaa");
-        //rigidbody.velocity = -rigidbody.velocity;
+        rigidbody.velocity = transform.forward * speed;
     }
 }

@@ -5,15 +5,15 @@ using UnityEngine;
 
 public class CBallCatcher : CComponent
 {
+    #region public
     public GameObject connectLauncher;
-
-    Animation animation;
+    #endregion
+    private new Animation animation;
 
     public override void Awake()
     {
         base.Awake();
 
-        connectLauncher = GetComponent<CBallLauncher>().gameObject;
         animation = GetComponent<Animation>();
     }
 

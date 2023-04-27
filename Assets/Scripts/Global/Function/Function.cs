@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 //! 전역 함수
@@ -36,11 +37,11 @@ public static partial class Function
 
     public static T AddComponent<T>(GameObject a_oGameObject) where T : Component
     {
-        var oComponent = a_oGameObject.GetComponent<T>();
+        var oComponent = a_oGameObject.AddComponent<T>();
 
         if (oComponent != null)
         {
-            oComponent = a_oGameObject.AddComponent<T>();
+            oComponent = a_oGameObject.GetComponent<T>();
         }
 
         return oComponent;

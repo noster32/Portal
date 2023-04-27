@@ -23,7 +23,7 @@ public class CPortalGunAnim : CComponent
 
     private void PortalGunShoot()
     {
-        if(Input.GetKeyDown(KeyCode.Mouse0))
+        if(Input.GetKeyDown(KeyCode.Mouse0) || Input.GetKeyDown(KeyCode.Mouse1))
         {
             PortalGun.Play("v_portalgun.qc_skeleton|fire1");
         }
