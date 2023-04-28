@@ -8,6 +8,7 @@ public class CPlayerCamera : CComponent
 
     public float sensitivity;
     public Transform orientation;
+    public Quaternion characterRot;
 
     #endregion
 
@@ -31,7 +32,12 @@ public class CPlayerCamera : CComponent
         xRotation -= mouseY;
         xRotation = Mathf.Clamp(xRotation, -90f, 90f);
 
-        transform.rotation = Quaternion.Euler(xRotation, yRotation, 0);
+        transform.rotation = Quaternion.Euler(xRotation, yRotation, 0f);
         orientation.rotation = Quaternion.Euler(0f, yRotation, 0f);
+    }
+
+    public void ResetTargetRotation()
+    {
+        orientation.rotation = Quaternion.LookRotation(transform.forward, Vector3.up);
     }
 }

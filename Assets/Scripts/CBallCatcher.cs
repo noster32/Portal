@@ -7,6 +7,7 @@ public class CBallCatcher : CComponent
 {
     #region public
     public GameObject connectLauncher;
+    [SerializeField] private GameObject target;
     #endregion
     private new Animation animation;
 
@@ -20,12 +21,16 @@ public class CBallCatcher : CComponent
     private void OnTriggerEnter(Collider other)
     {
         string objectTag = other.gameObject.tag;
-        if(objectTag == "Ball")
+        string targetTag = target.gameObject.tag;
+        if (objectTag == "Ball")
         {
             Destroy(other.gameObject);
             connectLauncher.GetComponent<CBallLauncher>().ballConnect = true;
             animation.Play("close");
-            Debug.Log("Destroy!");
+            if (targetTag == "Door")
+            {
+                target.GetComponent<CDoor1>().interaction = true;
+            }
         }
     }
 }

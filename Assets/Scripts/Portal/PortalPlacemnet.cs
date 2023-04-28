@@ -15,7 +15,7 @@ public class PortalPlacemnet : CComponent
     //[SerializeField]
     //private Crosshair crosshair;
 
-    private CameraMove cameraMove;
+    private CPlayerCamera playerCamera;
 
     private Transform mainCamera;
 
@@ -23,7 +23,7 @@ public class PortalPlacemnet : CComponent
     {
         base.Awake();
 
-        cameraMove = GetComponent<CameraMove>();
+        playerCamera = GetComponent<CPlayerCamera>();
         mainCamera = transform.GetChild(1);
     }
 
@@ -74,7 +74,7 @@ public class PortalPlacemnet : CComponent
                 return;
             }
 
-            var cameraRotation = cameraMove.qCharacterRotation;
+            var cameraRotation = playerCamera.orientation.rotation;
 
             var portalRight = cameraRotation * Vector3.right;
 
