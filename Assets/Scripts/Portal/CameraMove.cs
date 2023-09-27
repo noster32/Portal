@@ -50,16 +50,10 @@ public class CameraMove : CComponent
 
         if(qCharacterRotation.eulerAngles != Vector3.zero)
         {
-
             Quaternion characterRot = Quaternion.LookRotation(qCharacterRotation.eulerAngles);
 
             characterRot.x = characterRot.z = 0;
-
-            chellAnimator.SetFloat("aLookRotation", characterRot.eulerAngles.y);
         }
-
-
-  
     }
 
     public override void FixedUpdate()

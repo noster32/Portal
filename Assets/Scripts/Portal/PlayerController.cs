@@ -4,14 +4,13 @@ using UnityEngine;
 
 public class PlayerController : PortalableObject
 {
-    private CPlayerMovemnet playerMove;
-    private CPlayerCamera cameraMove;
+
+    private CameraMove cameraMove;
 
     public override void Awake()
     {
         base.Awake();
-
-        cameraMove = GetComponent<CCameraPosition>();
+        cameraMove = GetComponent<CameraMove>();
     }
 
     public override void Warp()

@@ -1,0 +1,45 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!319 &31900000
+AvatarMask:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: TurretMask
+  m_Mask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+  m_Elements:
+  - m_Path: 
+    m_Weight: 1
+  - m_Path: turret_01.qc_skeleton
+    m_Weight: 1
+  - m_Path: turret_01.qc_skeleton/Base
+    m_Weight: 1
+  - m_Path: turret_01.qc_skeleton/Base/Aim_LR
+    m_Weight: 1
+  - m_Path: turret_01.qc_skeleton/Base/Aim_LR/Aim_UD
+    m_Weight: 1
+  - m_Path: turret_01.qc_skeleton/Base/Aim_LR/Aim_UD/LFT_Wing
+    m_Weight: 1
+  - m_Path: turret_01.qc_skeleton/Base/Aim_LR/Aim_UD/LFT_Wing/LFT_Gun1
+    m_Weight: 1
+  - m_Path: turret_01.qc_skeleton/Base/Aim_LR/Aim_UD/LFT_Wing/LFT_Gun1/LFT_Gun1_end
+    m_Weight: 1
+  - m_Path: turret_01.qc_skeleton/Base/Aim_LR/Aim_UD/LFT_Wing/LFT_Gun2
+    m_Weight: 1
+  - m_Path: turret_01.qc_skeleton/Base/Aim_LR/Aim_UD/LFT_Wing/LFT_Gun2/LFT_Gun2_end
+    m_Weight: 1
+  - m_Path: turret_01.qc_skeleton/Base/Aim_LR/Aim_UD/RT_Wing
+    m_Weight: 1
+  - m_Path: turret_01.qc_skeleton/Base/Aim_LR/Aim_UD/RT_Wing/RT_Gun1
+    m_Weight: 1
+  - m_Path: turret_01.qc_skeleton/Base/Aim_LR/Aim_UD/RT_Wing/RT_Gun1/RT_Gun1_end
+    m_Weight: 1
+  - m_Path: turret_01.qc_skeleton/Base/Aim_LR/Aim_UD/RT_Wing/RT_Gun2
+    m_Weight: 1
+  - m_Path: turret_01.qc_skeleton/Base/Aim_LR/Aim_UD/RT_Wing/RT_Gun2/RT_Gun2_end
+    m_Weight: 1
+  - m_Path: turret_01_physics
+    m_Weight: 1
+  - m_Path: Turret_01_reference
+    m_Weight: 1

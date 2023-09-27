@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(CameraMove))]
+//[RequireComponent(typeof(CameraMove))]
 
 public class PortalPlacemnet : CComponent
 {
@@ -12,19 +12,18 @@ public class PortalPlacemnet : CComponent
     [SerializeField]
     private LayerMask layerMask;
 
+
     //[SerializeField]
     //private Crosshair crosshair;
 
-    private CPlayerCamera playerCamera;
-
-    private Transform mainCamera;
+    private CameraMove playerCamera;
 
     public override void Awake()
     {
         base.Awake();
 
-        playerCamera = GetComponent<CPlayerCamera>();
-        mainCamera = transform.GetChild(1);
+        playerCamera = transform.GetComponent<CameraMove>();
+
     }
 
     public override void Update()
@@ -33,11 +32,11 @@ public class PortalPlacemnet : CComponent
 
         if (Input.GetButtonDown("Fire1"))
         {
-            FirePortal(0, mainCamera.transform.position, mainCamera.transform.forward, 250.0f);
+            FirePortal(0, transform.GetChild(1).position, transform.GetChild(1).forward, 250.0f);
         }
         else if(Input.GetButtonDown("Fire2"))
         {
-            FirePortal(1, mainCamera.transform.position, mainCamera.transform.forward, 250.0f);
+            FirePortal(1, transform.GetChild(1).position, transform.GetChild(1).forward, 250.0f);
         }
     }
 
@@ -46,7 +45,7 @@ public class PortalPlacemnet : CComponent
         RaycastHit hit;
         Physics.Raycast(pos, dir, out hit, distance, layerMask);
 
-        if(hit.collider != null)
+        if(hit.collider != null && hit.collider.tag == "Concret")
         {
             if(hit.collider.tag == "Portal")
             {
@@ -74,7 +73,7 @@ public class PortalPlacemnet : CComponent
                 return;
             }
 
-            var cameraRotation = playerCamera.orientation.rotation;
+            var cameraRotation = playerCamera.qCharacterRotation;
 
             var portalRight = cameraRotation * Vector3.right;
 

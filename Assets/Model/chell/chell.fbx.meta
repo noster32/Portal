@@ -1,38 +1,71 @@
 fileFormatVersion: 2
-guid: e6c717a0d1429ef469f7b4b054361197
+guid: 6cfe4b9c17d44a54db48bd57120cb278
 ModelImporter:
   serializedVersion: 21202
   internalIDToNameTable:
   - first:
+      74: 4411783012192773018
+    second: crouchE
+  - first:
+      74: 7546666420205359570
+    second: chell.qc_skeleton|a_crouchE_PORTALGUN
+  - first:
+      74: -8886057789313092515
+    second: chell.qc_skeleton|a_CrouchIdle
+  - first:
+      74: -616128155635238758
+    second: chell.qc_skeleton|a_CROUCHidle_PORTALGUN
+  - first:
+      74: 1439315867333977733
+    second: crouchN
+  - first:
+      74: 5073667687984232255
+    second: chell.qc_skeleton|a_crouchN_PORTALGUN
+  - first:
       74: 2355194793168647681
     second: chell.qc_skeleton|a_crouchS
+  - first:
+      74: -2561068200984584397
+    second: chell.qc_skeleton|a_crouchS_PORTALGUN
+  - first:
+      74: 4571774412815491071
+    second: chell.qc_skeleton|a_crouchW
+  - first:
+      74: -9184007914378284118
+    second: chell.qc_skeleton|a_crouchW_PORTALGUN
   - first:
       74: 2182832858670656997
     second: chell.qc_skeleton|a_idle
   - first:
+      74: -3249051849799028714
+    second: chell.qc_skeleton|a_idle_PORTALGUN
+  - first:
       74: 5718659205199255411
     second: chell.qc_skeleton|a_runE
+  - first:
+      74: 1697124923684027965
+    second: chell.qc_skeleton|a_runE_PORTALGUN
   - first:
       74: 1484363012322183430
     second: chell.qc_skeleton|a_runN
   - first:
-      74: 8841069635965919818
-    second: chell.qc_skeleton|a_runNE
-  - first:
-      74: -565977412634321793
-    second: chell.qc_skeleton|a_runNW
+      74: -7726934495313343257
+    second: chell.qc_skeleton|a_runN_PORTALGUN
   - first:
       74: 6423861163783535292
     second: chell.qc_skeleton|a_runS
   - first:
-      74: -101180551443125425
-    second: chell.qc_skeleton|a_runSE
-  - first:
-      74: 474083003604387764
-    second: chell.qc_skeleton|a_runSW
+      74: 4484809926424968000
+    second: chell.qc_skeleton|a_runS_PORTALGUN
   - first:
       74: 3059649377297562228
     second: chell.qc_skeleton|a_runW
+  - first:
+      74: -8949288712427308701
+    second: chell.qc_skeleton|a_runW_PORTALGUN
+  - first:
+      74: -369699984606261539
+    second: chell.qc_skeleton|portalgun_standing_jump
   - first:
       74: -6334178279191241419
     second: chell.qc_skeleton|ragdoll
@@ -42,6 +75,72 @@ ModelImporter:
   - first:
       74: -745504938002053343
     second: chell.qc_skeleton|standing_jump
+  - first:
+      74: 8843838755159374449
+    second: crouchE_PORTALGUN
+  - first:
+      74: 4749916858553617154
+    second: CrouchIdle
+  - first:
+      74: -2472539882176019930
+    second: CROUCHidle_PORTALGUN
+  - first:
+      74: -514024241558628383
+    second: crouchN_PORTALGUN
+  - first:
+      74: 2634850081752087914
+    second: crouchS
+  - first:
+      74: -906616271398472084
+    second: crouchS_PORTALGUN
+  - first:
+      74: 2148643167202748474
+    second: crouchW
+  - first:
+      74: -4463366332481328401
+    second: crouchW_PORTALGUN
+  - first:
+      74: -5252816984213320552
+    second: idle
+  - first:
+      74: 2734611548796609210
+    second: idle_PORTALGUN
+  - first:
+      74: -4668418580951382562
+    second: runE
+  - first:
+      74: -7930742689327589132
+    second: runE_PORTALGUN
+  - first:
+      74: 2263229210073660189
+    second: runN
+  - first:
+      74: -793940886670547088
+    second: runN_PORTALGUN
+  - first:
+      74: 8925520505527737130
+    second: runS
+  - first:
+      74: 561735128050223819
+    second: runS_PORTALGUN
+  - first:
+      74: 4831346413014862460
+    second: runW
+  - first:
+      74: -6137208105211975720
+    second: runW_PORTALGUN
+  - first:
+      74: 1490474352613239198
+    second: portalgun_standing_jump
+  - first:
+      74: -7802337221129304445
+    second: ragdoll
+  - first:
+      74: 5683031037676915478
+    second: ref
+  - first:
+      74: -842208012217789628
+    second: standing_jump
   externalObjects:
   - first:
       type: UnityEngine:Material
@@ -83,55 +182,107 @@ ModelImporter:
     rigImportErrors: 
     rigImportWarnings: 
     animationImportErrors: 
-    animationImportWarnings: "\nClip 'chell.qc_skeleton|a_crouchS' has import animation
+    animationImportWarnings: "\nClip 'chell.qc_skeleton|a_crouchE' has import animation
       warnings that might lower retargeting quality:\nNote: Activate translation
       DOF on avatar to improve retargeting quality.\n\t'hips' is inbetween humanoid
       transforms and has rotation animation that will be discarded.\n\t'thigh_twist_L'
       has translation animation that will be discarded.\n\t'thigh_twist_L' is inbetween
       humanoid transforms and has rotation animation that will be discarded.\n\nClip
+      'chell.qc_skeleton|a_crouchE_PORTALGUN' has import animation warnings that
+      might lower retargeting quality:\nNote: Activate translation DOF on avatar
+      to improve retargeting quality.\n\t'hips' is inbetween humanoid transforms
+      and has rotation animation that will be discarded.\n\t'thigh_twist_L' has translation
+      animation that will be discarded.\n\t'thigh_twist_L' is inbetween humanoid
+      transforms and has rotation animation that will be discarded.\n\nClip 'chell.qc_skeleton|a_CROUCHidle_PORTALGUN'
+      has import animation warnings that might lower retargeting quality:\nNote:
+      Activate translation DOF on avatar to improve retargeting quality.\n\t'thigh_twist_L'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\nClip
+      'chell.qc_skeleton|a_crouchN' has import animation warnings that might lower
+      retargeting quality:\nNote: Activate translation DOF on avatar to improve retargeting
+      quality.\n\t'hips' is inbetween humanoid transforms and has rotation animation
+      that will be discarded.\n\t'thigh_twist_L' has translation animation that will
+      be discarded.\n\t'thigh_twist_L' is inbetween humanoid transforms and has rotation
+      animation that will be discarded.\n\nClip 'chell.qc_skeleton|a_crouchN_PORTALGUN'
+      has import animation warnings that might lower retargeting quality:\nNote:
+      Activate translation DOF on avatar to improve retargeting quality.\n\t'hips'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'thigh_twist_L'
+      has translation animation that will be discarded.\n\t'thigh_twist_L' is inbetween
+      humanoid transforms and has rotation animation that will be discarded.\n\nClip
+      'chell.qc_skeleton|a_crouchS' has import animation warnings that might lower
+      retargeting quality:\nNote: Activate translation DOF on avatar to improve retargeting
+      quality.\n\t'hips' is inbetween humanoid transforms and has rotation animation
+      that will be discarded.\n\t'thigh_twist_L' has translation animation that will
+      be discarded.\n\t'thigh_twist_L' is inbetween humanoid transforms and has rotation
+      animation that will be discarded.\n\nClip 'chell.qc_skeleton|a_crouchS_PORTALGUN'
+      has import animation warnings that might lower retargeting quality:\nNote:
+      Activate translation DOF on avatar to improve retargeting quality.\n\t'hips'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'thigh_twist_L'
+      has translation animation that will be discarded.\n\t'thigh_twist_L' is inbetween
+      humanoid transforms and has rotation animation that will be discarded.\n\nClip
+      'chell.qc_skeleton|a_crouchW' has import animation warnings that might lower
+      retargeting quality:\nNote: Activate translation DOF on avatar to improve retargeting
+      quality.\n\t'hips' is inbetween humanoid transforms and has rotation animation
+      that will be discarded.\n\t'thigh_twist_L' has translation animation that will
+      be discarded.\n\t'thigh_twist_L' is inbetween humanoid transforms and has rotation
+      animation that will be discarded.\n\nClip 'chell.qc_skeleton|a_crouchW_PORTALGUN'
+      has import animation warnings that might lower retargeting quality:\nNote:
+      Activate translation DOF on avatar to improve retargeting quality.\n\t'hips'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'thigh_twist_L'
+      has translation animation that will be discarded.\n\t'thigh_twist_L' is inbetween
+      humanoid transforms and has rotation animation that will be discarded.\n\nClip
       'chell.qc_skeleton|a_idle' has import animation warnings that might lower retargeting
       quality:\nNote: Activate translation DOF on avatar to improve retargeting quality.\n\t'thigh_twist_L'
       is inbetween humanoid transforms and has rotation animation that will be discarded.\n\nClip
-      'chell.qc_skeleton|a_runE' has import animation warnings that might lower retargeting
-      quality:\nNote: Activate translation DOF on avatar to improve retargeting quality.\n\t'hips'
+      'chell.qc_skeleton|a_idle_PORTALGUN' has import animation warnings that might
+      lower retargeting quality:\nNote: Activate translation DOF on avatar to improve
+      retargeting quality.\n\t'thigh_twist_L' is inbetween humanoid transforms and
+      has rotation animation that will be discarded.\n\nClip 'chell.qc_skeleton|a_runE'
+      has import animation warnings that might lower retargeting quality:\nNote:
+      Activate translation DOF on avatar to improve retargeting quality.\n\t'hips'
       is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'thigh_twist_L'
       has translation animation that will be discarded.\n\t'thigh_twist_L' is inbetween
       humanoid transforms and has rotation animation that will be discarded.\n\nClip
-      'chell.qc_skeleton|a_runN' has import animation warnings that might lower retargeting
-      quality:\nNote: Activate translation DOF on avatar to improve retargeting quality.\n\t'hips'
+      'chell.qc_skeleton|a_runE_PORTALGUN' has import animation warnings that might
+      lower retargeting quality:\nNote: Activate translation DOF on avatar to improve
+      retargeting quality.\n\t'hips' is inbetween humanoid transforms and has rotation
+      animation that will be discarded.\n\t'thigh_twist_L' has translation animation
+      that will be discarded.\n\t'thigh_twist_L' is inbetween humanoid transforms
+      and has rotation animation that will be discarded.\n\nClip 'chell.qc_skeleton|a_runN'
+      has import animation warnings that might lower retargeting quality:\nNote:
+      Activate translation DOF on avatar to improve retargeting quality.\n\t'hips'
       is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'thigh_twist_L'
       has translation animation that will be discarded.\n\t'thigh_twist_L' is inbetween
       humanoid transforms and has rotation animation that will be discarded.\n\nClip
-      'chell.qc_skeleton|a_runNE' has import animation warnings that might lower
-      retargeting quality:\nNote: Activate translation DOF on avatar to improve retargeting
-      quality.\n\t'hips' is inbetween humanoid transforms and has rotation animation
-      that will be discarded.\n\t'thigh_twist_L' has translation animation that will
-      be discarded.\n\t'thigh_twist_L' is inbetween humanoid transforms and has rotation
-      animation that will be discarded.\n\nClip 'chell.qc_skeleton|a_runNW' has import
-      animation warnings that might lower retargeting quality:\nNote: Activate translation
-      DOF on avatar to improve retargeting quality.\n\t'hips' is inbetween humanoid
-      transforms and has rotation animation that will be discarded.\n\t'thigh_twist_L'
-      has translation animation that will be discarded.\n\t'thigh_twist_L' is inbetween
-      humanoid transforms and has rotation animation that will be discarded.\n\nClip
-      'chell.qc_skeleton|a_runS' has import animation warnings that might lower retargeting
-      quality:\nNote: Activate translation DOF on avatar to improve retargeting quality.\n\t'hips'
+      'chell.qc_skeleton|a_runN_PORTALGUN' has import animation warnings that might
+      lower retargeting quality:\nNote: Activate translation DOF on avatar to improve
+      retargeting quality.\n\t'hips' is inbetween humanoid transforms and has rotation
+      animation that will be discarded.\n\t'thigh_twist_L' has translation animation
+      that will be discarded.\n\t'thigh_twist_L' is inbetween humanoid transforms
+      and has rotation animation that will be discarded.\n\nClip 'chell.qc_skeleton|a_runS'
+      has import animation warnings that might lower retargeting quality:\nNote:
+      Activate translation DOF on avatar to improve retargeting quality.\n\t'hips'
       is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'thigh_twist_L'
       has translation animation that will be discarded.\n\t'thigh_twist_L' is inbetween
       humanoid transforms and has rotation animation that will be discarded.\n\nClip
-      'chell.qc_skeleton|a_runSE' has import animation warnings that might lower
-      retargeting quality:\nNote: Activate translation DOF on avatar to improve retargeting
-      quality.\n\t'hips' is inbetween humanoid transforms and has rotation animation
-      that will be discarded.\n\t'thigh_twist_L' has translation animation that will
-      be discarded.\n\t'thigh_twist_L' is inbetween humanoid transforms and has rotation
-      animation that will be discarded.\n\nClip 'chell.qc_skeleton|a_runSW' has import
-      animation warnings that might lower retargeting quality:\nNote: Activate translation
-      DOF on avatar to improve retargeting quality.\n\t'hips' is inbetween humanoid
-      transforms and has rotation animation that will be discarded.\n\t'thigh_twist_L'
+      'chell.qc_skeleton|a_runS_PORTALGUN' has import animation warnings that might
+      lower retargeting quality:\nNote: Activate translation DOF on avatar to improve
+      retargeting quality.\n\t'hips' is inbetween humanoid transforms and has rotation
+      animation that will be discarded.\n\t'thigh_twist_L' has translation animation
+      that will be discarded.\n\t'thigh_twist_L' is inbetween humanoid transforms
+      and has rotation animation that will be discarded.\n\nClip 'chell.qc_skeleton|a_runW'
+      has import animation warnings that might lower retargeting quality:\nNote:
+      Activate translation DOF on avatar to improve retargeting quality.\n\t'hips'
+      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'thigh_twist_L'
       has translation animation that will be discarded.\n\t'thigh_twist_L' is inbetween
       humanoid transforms and has rotation animation that will be discarded.\n\nClip
-      'chell.qc_skeleton|a_runW' has import animation warnings that might lower retargeting
-      quality:\nNote: Activate translation DOF on avatar to improve retargeting quality.\n\t'hips'
-      is inbetween humanoid transforms and has rotation animation that will be discarded.\n\t'thigh_twist_L'
+      'chell.qc_skeleton|a_runW_PORTALGUN' has import animation warnings that might
+      lower retargeting quality:\nNote: Activate translation DOF on avatar to improve
+      retargeting quality.\n\t'hips' is inbetween humanoid transforms and has rotation
+      animation that will be discarded.\n\t'thigh_twist_L' has translation animation
+      that will be discarded.\n\t'thigh_twist_L' is inbetween humanoid transforms
+      and has rotation animation that will be discarded.\n\nClip 'chell.qc_skeleton|portalgun_standing_jump'
+      has import animation warnings that might lower retargeting quality:\nNote:
+      Activate translation DOF on avatar to improve retargeting quality.\n\t'thigh_twist_L'
       has translation animation that will be discarded.\n\t'thigh_twist_L' is inbetween
       humanoid transforms and has rotation animation that will be discarded.\n\nClip
       'chell.qc_skeleton|standing_jump' has import animation warnings that might
@@ -152,8 +303,8 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: chell.qc_skeleton|a_crouchS
-      takeName: chell.qc_skeleton|a_crouchS
+      name: crouchE
+      takeName: chell.qc_skeleton|a_crouchE
       internalID: 0
       firstFrame: 0
       lastFrame: 25
@@ -163,8 +314,8 @@ ModelImporter:
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 1
-      loopBlend: 1
+      loopTime: 0
+      loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
       loopBlendPositionXZ: 0
@@ -181,7 +332,268 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: chell.qc_skeleton|a_idle
+      name: crouchE_PORTALGUN
+      takeName: chell.qc_skeleton|a_crouchE_PORTALGUN
+      internalID: 0
+      firstFrame: 0
+      lastFrame: 25
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: CrouchIdle
+      takeName: chell.qc_skeleton|a_CrouchIdle
+      internalID: 0
+      firstFrame: 0
+      lastFrame: 25
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: CROUCHidle_PORTALGUN
+      takeName: chell.qc_skeleton|a_CROUCHidle_PORTALGUN
+      internalID: 0
+      firstFrame: 0
+      lastFrame: 160
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: crouchN
+      takeName: chell.qc_skeleton|a_crouchN
+      internalID: 0
+      firstFrame: 0
+      lastFrame: 25
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: crouchN_PORTALGUN
+      takeName: chell.qc_skeleton|a_crouchN_PORTALGUN
+      internalID: 0
+      firstFrame: 0
+      lastFrame: 25
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: crouchS
+      takeName: chell.qc_skeleton|a_crouchS
+      internalID: 0
+      firstFrame: 0
+      lastFrame: 25
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: crouchS_PORTALGUN
+      takeName: chell.qc_skeleton|a_crouchS_PORTALGUN
+      internalID: 0
+      firstFrame: 0
+      lastFrame: 25
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: crouchW
+      takeName: chell.qc_skeleton|a_crouchW
+      internalID: 0
+      firstFrame: 0
+      lastFrame: 25
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: crouchW_PORTALGUN
+      takeName: chell.qc_skeleton|a_crouchW_PORTALGUN
+      internalID: 0
+      firstFrame: 0
+      lastFrame: 25
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: idle
       takeName: chell.qc_skeleton|a_idle
       internalID: 0
       firstFrame: 0
@@ -193,7 +605,7 @@ ModelImporter:
       loop: 0
       hasAdditiveReferencePose: 0
       loopTime: 1
-      loopBlend: 1
+      loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
       loopBlendPositionXZ: 0
@@ -210,7 +622,36 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: chell.qc_skeleton|a_runE
+      name: idle_PORTALGUN
+      takeName: chell.qc_skeleton|a_idle_PORTALGUN
+      internalID: 0
+      firstFrame: 0
+      lastFrame: 160
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: runE
       takeName: chell.qc_skeleton|a_runE
       internalID: 0
       firstFrame: 0
@@ -222,7 +663,7 @@ ModelImporter:
       loop: 0
       hasAdditiveReferencePose: 0
       loopTime: 1
-      loopBlend: 1
+      loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
       loopBlendPositionXZ: 0
@@ -239,7 +680,36 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: chell.qc_skeleton|a_runN
+      name: runE_PORTALGUN
+      takeName: chell.qc_skeleton|a_runE_PORTALGUN
+      internalID: 0
+      firstFrame: 0
+      lastFrame: 30
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: runN
       takeName: chell.qc_skeleton|a_runN
       internalID: 0
       firstFrame: 0
@@ -251,7 +721,7 @@ ModelImporter:
       loop: 0
       hasAdditiveReferencePose: 0
       loopTime: 1
-      loopBlend: 1
+      loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
       loopBlendPositionXZ: 0
@@ -268,8 +738,8 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: chell.qc_skeleton|a_runNE
-      takeName: chell.qc_skeleton|a_runNE
+      name: runN_PORTALGUN
+      takeName: chell.qc_skeleton|a_runN_PORTALGUN
       internalID: 0
       firstFrame: 0
       lastFrame: 30
@@ -279,8 +749,8 @@ ModelImporter:
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 1
-      loopBlend: 1
+      loopTime: 0
+      loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
       loopBlendPositionXZ: 0
@@ -297,36 +767,7 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: chell.qc_skeleton|a_runNW
-      takeName: chell.qc_skeleton|a_runNW
-      internalID: 0
-      firstFrame: 0
-      lastFrame: 30
-      wrapMode: 0
-      orientationOffsetY: 0
-      level: 0
-      cycleOffset: 0
-      loop: 0
-      hasAdditiveReferencePose: 0
-      loopTime: 1
-      loopBlend: 1
-      loopBlendOrientation: 0
-      loopBlendPositionY: 0
-      loopBlendPositionXZ: 0
-      keepOriginalOrientation: 0
-      keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 0
-      heightFromFeet: 0
-      mirror: 0
-      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
-      curves: []
-      events: []
-      transformMask: []
-      maskType: 3
-      maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 0
-    - serializedVersion: 16
-      name: chell.qc_skeleton|a_runS
+      name: runS
       takeName: chell.qc_skeleton|a_runS
       internalID: 0
       firstFrame: 0
@@ -338,7 +779,7 @@ ModelImporter:
       loop: 0
       hasAdditiveReferencePose: 0
       loopTime: 1
-      loopBlend: 1
+      loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
       loopBlendPositionXZ: 0
@@ -355,8 +796,8 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: chell.qc_skeleton|a_runSE
-      takeName: chell.qc_skeleton|a_runSE
+      name: runS_PORTALGUN
+      takeName: chell.qc_skeleton|a_runS_PORTALGUN
       internalID: 0
       firstFrame: 0
       lastFrame: 30
@@ -366,8 +807,8 @@ ModelImporter:
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 1
-      loopBlend: 1
+      loopTime: 0
+      loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
       loopBlendPositionXZ: 0
@@ -384,36 +825,7 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: chell.qc_skeleton|a_runSW
-      takeName: chell.qc_skeleton|a_runSW
-      internalID: 0
-      firstFrame: 0
-      lastFrame: 30
-      wrapMode: 0
-      orientationOffsetY: 0
-      level: 0
-      cycleOffset: 0
-      loop: 0
-      hasAdditiveReferencePose: 0
-      loopTime: 1
-      loopBlend: 1
-      loopBlendOrientation: 0
-      loopBlendPositionY: 0
-      loopBlendPositionXZ: 0
-      keepOriginalOrientation: 0
-      keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 0
-      heightFromFeet: 0
-      mirror: 0
-      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
-      curves: []
-      events: []
-      transformMask: []
-      maskType: 3
-      maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 0
-    - serializedVersion: 16
-      name: chell.qc_skeleton|a_runW
+      name: runW
       takeName: chell.qc_skeleton|a_runW
       internalID: 0
       firstFrame: 0
@@ -425,7 +837,7 @@ ModelImporter:
       loop: 0
       hasAdditiveReferencePose: 0
       loopTime: 1
-      loopBlend: 1
+      loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
       loopBlendPositionXZ: 0
@@ -442,7 +854,65 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: chell.qc_skeleton|ragdoll
+      name: runW_PORTALGUN
+      takeName: chell.qc_skeleton|a_runW_PORTALGUN
+      internalID: 0
+      firstFrame: 0
+      lastFrame: 30
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: portalgun_standing_jump
+      takeName: chell.qc_skeleton|portalgun_standing_jump
+      internalID: 0
+      firstFrame: 0
+      lastFrame: 25
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: ragdoll
       takeName: chell.qc_skeleton|ragdoll
       internalID: 0
       firstFrame: 0
@@ -471,7 +941,7 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: chell.qc_skeleton|ref
+      name: ref
       takeName: chell.qc_skeleton|ref
       internalID: 0
       firstFrame: 0
@@ -500,7 +970,7 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: chell.qc_skeleton|standing_jump
+      name: standing_jump
       takeName: chell.qc_skeleton|standing_jump
       internalID: 0
       firstFrame: 0
@@ -511,8 +981,8 @@ ModelImporter:
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 0
-      loopBlend: 0
+      loopTime: 1
+      loopBlend: 1
       loopBlendOrientation: 0
       loopBlendPositionY: 0
       loopBlendPositionXZ: 0
@@ -1005,39 +1475,39 @@ ModelImporter:
       scale: {x: 100, y: 100, z: 100}
     - name: root
       parentName: chell.qc_skeleton
-      position: {x: 0.0014314818, y: -0.41007617, z: -0.026836772}
-      rotation: {x: 0.99764246, y: 0.038941637, z: 0.0008585099, w: 0.056501936}
+      position: {x: -0.0008528292, y: -0.41125014, z: -0.033985432}
+      rotation: {x: 0.99233264, y: 0.059321113, z: -0.07228102, w: 0.08082335}
       scale: {x: 1, y: 1, z: 1}
     - name: hips
       parentName: root
-      position: {x: -0.000000023841856, y: 0.00000009275973, z: -2.9802322e-10}
-      rotation: {x: -0.1337227, y: -0.0020436395, z: 0.008691149, w: 0.9909786}
-      scale: {x: 1, y: 0.9999999, z: 1}
+      position: {x: 5.9604643e-10, y: -0.00000004887581, z: -0.000000006854534}
+      rotation: {x: 0.013597871, y: -0.0062989187, z: 0.074388884, w: 0.99711674}
+      scale: {x: 1, y: 0.9999999, z: 0.99999976}
     - name: thigh_L
       parentName: hips
-      position: {x: -0.04350457, y: -0.02452281, z: -0.0022045658}
-      rotation: {x: 0.9899301, y: 0.11273198, z: 0.08020806, w: -0.029943123}
-      scale: {x: 0.9999999, y: 1.0000062, z: 0.9999938}
+      position: {x: -0.043504566, y: -0.024522701, z: -0.0022044266}
+      rotation: {x: 0.98040754, y: 0.12436843, z: 0.10818428, w: -0.10784179}
+      scale: {x: 1, y: 1.0000001, z: 1.0000001}
     - name: thigh_twist_L
       parentName: thigh_L
-      position: {x: -0.025235126, y: 0.078798674, z: 0.009843967}
-      rotation: {x: 0.54626876, y: -0.3424309, z: -0.48072183, w: 0.5943383}
-      scale: {x: 1.0000001, y: 1.0000001, z: 1.0000001}
+      position: {x: -0.02656331, y: 0.075126745, z: -0.024336705}
+      rotation: {x: 0.48392555, y: -0.47531426, z: -0.338406, w: 0.65220696}
+      scale: {x: 1.0000002, y: 1, z: 1}
     - name: knee_L
       parentName: thigh_twist_L
-      position: {x: -0.08333016, y: 0.0000000047683715, z: 0.000000010728836}
-      rotation: {x: -0.5896355, y: 0.19821532, z: 0.20019452, w: -0.7569431}
-      scale: {x: 0.99999994, y: 1, z: 0.9999999}
+      position: {x: -0.083330154, y: 0.000000031888483, z: -0.0000000034458933}
+      rotation: {x: 0.6161818, y: -0.19012436, z: -0.21325754, w: 0.73395777}
+      scale: {x: 1, y: 0.9999999, z: 1.0000001}
     - name: ankle_L
       parentName: knee_L
-      position: {x: -0.18142761, y: 0.000000024437904, z: -0.000000024102627}
-      rotation: {x: -0.6777158, y: 0.56235904, z: 0.38006148, w: -0.28285503}
-      scale: {x: 1.0000001, y: 0.9999999, z: 0.99999994}
+      position: {x: -0.18142761, y: 0.000000014305114, z: -0.0000000035762786}
+      rotation: {x: -0.6039734, y: 0.444279, z: 0.4831866, w: -0.45206532}
+      scale: {x: 0.99999994, y: 0.99999994, z: 1.0000001}
     - name: toe_L
       parentName: ankle_L
-      position: {x: -0.00003752728, y: 0.06164952, z: 0.0015208769}
-      rotation: {x: -0.60247797, y: -0.009843926, z: -0.0074316366, w: 0.7980402}
-      scale: {x: 0.99999994, y: 1.0000001, z: 1}
+      position: {x: -0.00003752589, y: 0.061649583, z: 0.001520673}
+      rotation: {x: -0.4378399, y: -0.01108889, z: -0.0054008104, w: 0.89896834}
+      scale: {x: 1, y: 1, z: 0.99999994}
     - name: toe_L_end
       parentName: toe_L
       position: {x: -0, y: 0.0021761816, z: 0}
@@ -1045,54 +1515,54 @@ ModelImporter:
       scale: {x: 1, y: 1, z: 1}
     - name: spring_base_L
       parentName: knee_L
-      position: {x: -0.046177056, y: 0.005319953, z: -0.024902403}
-      rotation: {x: -0.6651324, y: 0.7383605, z: 0.08705027, w: -0.06960507}
-      scale: {x: 1, y: 1.0000001, z: 1}
-    - name: spring_1_L
-      parentName: spring_base_L
-      position: {x: 0.0012900656, y: 0.18597664, z: 0.041677836}
-      rotation: {x: 0.99146414, y: 0.0010623471, z: -0.022640193, w: 0.12839475}
-      scale: {x: 0.9999998, y: 0.99999976, z: 0.99999964}
-    - name: spring_1_L_end
-      parentName: spring_1_L
-      position: {x: -0, y: 0.0021761816, z: 0}
-      rotation: {x: 0, y: -0, z: -0, w: 1}
-      scale: {x: 1, y: 1, z: 1}
+      position: {x: -0.046177067, y: 0.005319951, z: -0.024902398}
+      rotation: {x: -0.67971104, y: 0.723732, z: -0.039696433, w: -0.11237983}
+      scale: {x: 0.9999999, y: 0.9999999, z: 1}
     - name: spring_end_L
       parentName: spring_base_L
-      position: {x: 0.000000005960464, y: 0.2215311, z: -0.00000008030794}
-      rotation: {x: 0.95312405, y: 0.08313333, z: 0.0035988095, w: 0.29091325}
-      scale: {x: 0.9999999, y: 0.99999946, z: 1.0000002}
+      position: {x: 8.9406965e-10, y: 0.19102241, z: -0.000000007152557}
+      rotation: {x: 0.9931499, y: 0.094522335, z: 0.02714078, w: 0.06310555}
+      scale: {x: 0.99999994, y: 0.9999999, z: 0.9999998}
     - name: spring_end_L_end
       parentName: spring_end_L
       position: {x: -0, y: 0.0021761816, z: 0}
       rotation: {x: 0, y: -0, z: -0, w: 1}
       scale: {x: 1, y: 1, z: 1}
+    - name: spring_1_L
+      parentName: spring_base_L
+      position: {x: 0.0012900895, y: 0.17617168, z: 0.042029604}
+      rotation: {x: 0.9716667, y: 0.0035149083, z: -0.0223913, w: 0.2352661}
+      scale: {x: 0.99999994, y: 1.0000002, z: 0.99999994}
+    - name: spring_1_L_end
+      parentName: spring_1_L
+      position: {x: -0, y: 0.0021761816, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
     - name: thigh_R
       parentName: hips
-      position: {x: 0.043504603, y: -0.0245224, z: -0.002204415}
-      rotation: {x: 0.103658035, y: -0.08765169, z: 0.019814951, w: 0.99054515}
-      scale: {x: 0.99999994, y: 1, z: 1.0000001}
+      position: {x: 0.043504614, y: -0.024522364, z: -0.0022044182}
+      rotation: {x: -0.013139303, y: 0.3200601, z: 0.04140013, w: 0.9464011}
+      scale: {x: 1, y: 1, z: 1}
     - name: thigh_twist_R
       parentName: thigh_R
-      position: {x: -0.000000051185488, y: -0.08333084, z: -0.000000102519984}
-      rotation: {x: 0.000000013170889, y: -0.000000003621995, z: 0.7071067, w: 0.7071069}
-      scale: {x: 0.99999994, y: 1, z: 0.99999994}
+      position: {x: -0.000000026226044, y: -0.08333091, z: -0.0000001719594}
+      rotation: {x: 0.0000000039512673, y: -6.5854466e-10, z: 0.7071067, w: 0.7071069}
+      scale: {x: 0.9999999, y: 0.99999994, z: 0.9999999}
     - name: knee_R
       parentName: thigh_twist_R
-      position: {x: -0.08332999, y: 0.000000007450581, z: 0.000000013113022}
-      rotation: {x: 0.65372276, y: -0.20432325, z: 0.2087993, w: 0.6980698}
-      scale: {x: 1, y: 0.99999994, z: 1.0000001}
+      position: {x: -0.08332992, y: -0.0000000047683715, z: -0.000000002235174}
+      rotation: {x: 0.632211, y: -0.17236024, z: 0.2245287, w: 0.7212406}
+      scale: {x: 1, y: 1, z: 1}
     - name: ankle_R
       parentName: knee_R
-      position: {x: -0.18142737, y: -0.000000015739351, z: -0.000000005066395}
-      rotation: {x: 0.6632983, y: 0.01977519, z: 0.7365023, w: -0.13118224}
-      scale: {x: 0.99999994, y: 1, z: 0.99999994}
+      position: {x: -0.18142734, y: 0.0000000047683715, z: -0.000000017881392}
+      rotation: {x: 0.6241101, y: 0.3462986, z: 0.6660645, w: -0.2166149}
+      scale: {x: 1, y: 0.9999999, z: 1}
     - name: toe_R
       parentName: ankle_R
-      position: {x: 0.00003752209, y: -0.061649546, z: -0.0015206765}
-      rotation: {x: -0.37625697, y: -0.011427668, z: -0.004641175, w: 0.92643327}
-      scale: {x: 1.0000001, y: 1, z: 0.9999999}
+      position: {x: 0.000037505924, y: -0.06164957, z: -0.0015207095}
+      rotation: {x: -0.38622695, y: -0.011376981, z: -0.004764177, w: 0.9223213}
+      scale: {x: 0.99999994, y: 1, z: 1.0000001}
     - name: toe_R_end
       parentName: toe_R
       position: {x: -0, y: 0.0021761816, z: 0}
@@ -1100,349 +1570,59 @@ ModelImporter:
       scale: {x: 1, y: 1, z: 1}
     - name: spring_base_R
       parentName: knee_R
-      position: {x: -0.046177167, y: -0.02490234, z: 0.00531992}
-      rotation: {x: 0.5665863, y: 0.4422883, z: 0.54544675, w: -0.4311019}
-      scale: {x: 0.9999999, y: 1.0000001, z: 1}
-    - name: spring_1_R
-      parentName: spring_base_R
-      position: {x: -0.0012900617, y: -0.17437446, z: -0.04214685}
-      rotation: {x: 0.9638092, y: -0.054588437, z: -0.05552598, w: 0.25496852}
-      scale: {x: 0.99999994, y: 0.99999976, z: 1.0000002}
-    - name: spring_1_R_end
-      parentName: spring_1_R
-      position: {x: -0, y: 0.002176182, z: 0}
-      rotation: {x: 0, y: -0, z: -0, w: 1}
-      scale: {x: 1, y: 1, z: 1}
+      position: {x: -0.04617709, y: -0.024902377, z: 0.0053199194}
+      rotation: {x: 0.7074142, y: 0.56437695, z: 0.24814436, w: -0.34564176}
+      scale: {x: 0.99999994, y: 0.9999999, z: 0.9999999}
     - name: spring_end_R
       parentName: spring_base_R
-      position: {x: 0.00000003346242, y: -0.18719383, z: -0.000000012209639}
-      rotation: {x: 0.9873985, y: 0.039292116, z: -0.038815483, w: 0.14830282}
-      scale: {x: 1, y: 0.9999998, z: 1}
+      position: {x: 0.00000003039837, y: -0.22313249, z: -0.00000004053116}
+      rotation: {x: 0.9722628, y: -0.0113765085, z: -0.013201946, w: 0.23324099}
+      scale: {x: 1, y: 0.9999998, z: 0.9999999}
     - name: spring_end_R_end
       parentName: spring_end_R
       position: {x: -0, y: 0.0021761816, z: 0}
       rotation: {x: 0, y: -0, z: -0, w: 1}
       scale: {x: 1, y: 1, z: 1}
+    - name: spring_1_R
+      parentName: spring_base_R
+      position: {x: -0.0010166316, y: -0.1996487, z: -0.03409968}
+      rotation: {x: 0.98973817, y: -0.061714754, z: -0.047479603, w: 0.11981389}
+      scale: {x: 1, y: 1.0000001, z: 1}
+    - name: spring_1_R_end
+      parentName: spring_1_R
+      position: {x: -0, y: 0.002176182, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
     - name: spine_base
       parentName: root
-      position: {x: -0.004, y: 0.039, z: 0.001}
-      rotation: {x: 0.12924361, y: -0.030311886, z: -0.026453754, w: 0.9907964}
-      scale: {x: 0.9999998, y: 1, z: 1.0000001}
+      position: {x: 0.0000000011920929, y: 0.039180364, z: 0.0010709953}
+      rotation: {x: 0.13278589, y: -0.043466087, z: -0.010614398, w: 0.99013436}
+      scale: {x: 1, y: 0.99999994, z: 0.9999998}
     - name: spine_mid
       parentName: spine_base
-      position: {x: -0.009, y: 0.037, z: -0}
-      rotation: {x: 0.0668493, y: -0.018189581, z: 0.06717519, w: 0.9953331}
-      scale: {x: 1, y: 0.99999994, z: 0.99999994}
+      position: {x: 0.000000013113022, y: 0.037932787, z: 0.000000023543834}
+      rotation: {x: 0.060739197, y: 0.12173808, z: 0.04739061, w: 0.989568}
+      scale: {x: 1.0000001, y: 0.99999994, z: 0.9999999}
     - name: chest
       parentName: spine_mid
-      position: {x: -0.000000005364418, y: 0.04392047, z: 0.00000005841255}
-      rotation: {x: -0.056610797, y: 0.023647832, z: 0.06859555, w: 0.9957563}
-      scale: {x: 1, y: 1.0000001, z: 1}
-    - name: clavicle_L
-      parentName: chest
-      position: {x: -0.0089585995, y: 0.039179042, z: 0.0065697646}
-      rotation: {x: 0.0566518, y: 0.14754893, z: -0.029190479, w: 0.9869994}
-      scale: {x: 0.9999999, y: 1.0000001, z: 1.0000001}
-    - name: bicep_L
-      parentName: clavicle_L
-      position: {x: -0.04123593, y: -0.0011764783, z: -0.024400203}
-      rotation: {x: 0.9852214, y: -0.017632522, z: 0.09266491, w: -0.14297284}
-      scale: {x: 1.0000001, y: 1, z: 1.0000002}
-    - name: bicep_twist_L
-      parentName: bicep_L
-      position: {x: -0.048984397, y: -0.000023753493, z: 0.0010784507}
-      rotation: {x: 0.707234, y: -0.7068917, z: -0.0077819224, w: 0.00797525}
-      scale: {x: 0.99999994, y: 1, z: 1.0000001}
-    - name: bicep_twist_L_end
-      parentName: bicep_twist_L
-      position: {x: -0, y: 0.0021761854, z: 0}
-      rotation: {x: 0, y: -0, z: -0, w: 1}
-      scale: {x: 1, y: 1, z: 1}
-    - name: elbow_L
-      parentName: bicep_L
-      position: {x: -0.09800015, y: -0.0000389868, z: 0.0021483921}
-      rotation: {x: -0.6990569, y: -0.008075776, z: 0.020255504, w: 0.7147335}
-      scale: {x: 0.9999999, y: 0.99999976, z: 0.9999998}
-    - name: wrist_L
-      parentName: elbow_L
-      position: {x: -0.09800001, y: -0.000000026226044, z: -0.000000079497696}
-      rotation: {x: -0.5874968, y: 0.6346085, z: 0.29702836, w: 0.404838}
-      scale: {x: 1.0000001, y: 0.99999994, z: 1.0000001}
-    - name: index_base_L
-      parentName: wrist_L
-      position: {x: 0.009421802, y: 0.04324298, z: 0.013065479}
-      rotation: {x: 0.054442354, y: 0.045221623, z: 0.007341052, w: 0.9974654}
-      scale: {x: 1, y: 1, z: 1.0000001}
-    - name: index_mid_L
-      parentName: index_base_L
-      position: {x: -8.9406965e-10, y: 0.0128734475, z: -0.00000004053116}
-      rotation: {x: -0.000002749262, y: 0.00000002607701, z: 0.037174366, w: 0.9993088}
-      scale: {x: 1.0000002, y: 1.0000001, z: 1}
-    - name: index_end_L
-      parentName: index_mid_L
-      position: {x: 0.000000009536743, y: 0.010443896, z: 0.00000004053116}
-      rotation: {x: 1.3419623e-17, y: -0.000000009321017, z: 0.040879104, w: 0.9991641}
-      scale: {x: 1.0000001, y: 1.0000001, z: 1.0000001}
-    - name: index_end_L_end
-      parentName: index_end_L
-      position: {x: -0, y: 0.002176176, z: 0}
-      rotation: {x: 0, y: -0, z: -0, w: 1}
-      scale: {x: 1, y: 1, z: 1}
-    - name: mid_base_L
-      parentName: wrist_L
-      position: {x: 0.006625928, y: 0.044554275, z: 0.0038519388}
-      rotation: {x: 0.041712742, y: 0.16673678, z: 0.008733831, w: 0.98508}
-      scale: {x: 1, y: 1.0000001, z: 1.0000001}
-    - name: mid_mid_L
-      parentName: mid_base_L
-      position: {x: -0.00000011563301, y: 0.015608499, z: 0.00000012636184}
-      rotation: {x: 0.0000030286587, y: 0.00000047683682, z: 0.03691065, w: 0.9993186}
-      scale: {x: 1.0000001, y: 1.0000001, z: 1}
-    - name: mid_end_L
-      parentName: mid_mid_L
-      position: {x: 0.000000074505806, y: 0.010525938, z: 0.0000000017881393}
-      rotation: {x: 0.0000015889552, y: -0.000000025331907, z: 0.040398218, w: 0.9991837}
-      scale: {x: 1.0000001, y: 1, z: 1}
-    - name: mid_end_L_end
-      parentName: mid_end_L
-      position: {x: -0, y: 0.002176188, z: 0}
-      rotation: {x: 0, y: -0, z: -0, w: 1}
-      scale: {x: 1, y: 1, z: 1}
-    - name: pinky_base_L
-      parentName: wrist_L
-      position: {x: -0.0014135318, y: 0.03871775, z: -0.013632817}
-      rotation: {x: 0.041163933, y: 0.41158247, z: 0.008390032, w: 0.9104038}
-      scale: {x: 0.9999999, y: 1, z: 0.99999994}
-    - name: pinky_mid_L
-      parentName: pinky_base_L
-      position: {x: -0.000000038743018, y: 0.010657895, z: -0.00000006943941}
-      rotation: {x: 0.0000024400638, y: -0.0000018477429, z: 0.030128783, w: 0.99954605}
-      scale: {x: 1, y: 1, z: 0.99999994}
-    - name: pinky_end_L
-      parentName: pinky_mid_L
-      position: {x: 0.00000004358357, y: 0.0077918223, z: -0.00000006268732}
-      rotation: {x: -0.0000017733804, y: -0.0000014465346, z: 0.033293687, w: 0.9994457}
-      scale: {x: 0.99999994, y: 0.9999999, z: 1}
-    - name: pinky_end_L_end
-      parentName: pinky_end_L
-      position: {x: -0, y: 0.0021761847, z: 0}
-      rotation: {x: 0, y: -0, z: -0, w: 1}
-      scale: {x: 1, y: 1, z: 1}
-    - name: ring_base_L
-      parentName: wrist_L
-      position: {x: 0.0025995076, y: 0.04274169, z: -0.005397572}
-      rotation: {x: 0.048304018, y: 0.23569614, z: 0.0039197193, w: 0.9706177}
-      scale: {x: 1, y: 1, z: 1.0000002}
-    - name: ring_mid_L
-      parentName: ring_base_L
-      position: {x: 0.000000049844385, y: 0.01433731, z: -0.000000067427756}
-      rotation: {x: -0.0000037066602, y: 0.00000010430803, z: 0.038293898, w: 0.99926656}
-      scale: {x: 1, y: 0.9999999, z: 0.9999999}
-    - name: ring_end_L
-      parentName: ring_mid_L
-      position: {x: 0.000000056177377, y: 0.0105259055, z: 0.00000007510185}
-      rotation: {x: 0.0000009519107, y: 0.00000003389556, z: 0.041353486, w: 0.9991446}
-      scale: {x: 0.9999999, y: 0.99999994, z: 0.99999994}
-    - name: ring_end_L_end
-      parentName: ring_end_L
-      position: {x: -0, y: 0.0021761896, z: 0}
-      rotation: {x: 0, y: -0, z: -0, w: 1}
-      scale: {x: 1, y: 1, z: 1}
-    - name: thumb_base_L
-      parentName: wrist_L
-      position: {x: 0.0018786099, y: 0.012417058, z: 0.012020235}
-      rotation: {x: 0.3382178, y: -0.4850423, z: -0.18856788, w: 0.7840822}
-      scale: {x: 0.99999994, y: 1.0000001, z: 1.0000001}
-    - name: thumb_mid_L
-      parentName: thumb_base_L
-      position: {x: 0.00000020559877, y: 0.015904548, z: -0.000000013709068}
-      rotation: {x: -0.0013112118, y: 0.0060616387, z: 0.037868235, w: 0.9992635}
-      scale: {x: 0.99999994, y: 1.0000001, z: 0.99999994}
-    - name: thumb_end_L
-      parentName: thumb_mid_L
-      position: {x: 0.000000062584874, y: 0.011798452, z: 0.0000000166893}
-      rotation: {x: 0.005362193, y: 0.0025233473, z: 0.04080688, w: 0.9991495}
-      scale: {x: 1, y: 0.99999994, z: 0.9999999}
-    - name: thumb_end_L_end
-      parentName: thumb_end_L
-      position: {x: -0, y: 0.0021761828, z: 0}
-      rotation: {x: 0, y: -0, z: -0, w: 1}
-      scale: {x: 1, y: 1, z: 1}
-    - name: wrist_twist_L
-      parentName: elbow_L
-      position: {x: -0.04899999, y: -0.000000085830685, z: 0.0000000052154063}
-      rotation: {x: 0.50000024, y: -0.49999976, z: -0.50000006, w: -0.49999997}
-      scale: {x: 1, y: 0.99999994, z: 0.9999999}
-    - name: wrist_twist_L_end
-      parentName: wrist_twist_L
-      position: {x: -0, y: 0.0021761702, z: 0}
-      rotation: {x: 0, y: -0, z: -0, w: 1}
-      scale: {x: 1, y: 1, z: 1}
-    - name: clavicle_R
-      parentName: chest
-      position: {x: 0.008958578, y: 0.03917967, z: 0.0065697785}
-      rotation: {x: 0.99693817, y: 0.0033449188, z: 0.07746245, w: -0.010136576}
-      scale: {x: 1.0000001, y: 1.0000001, z: 1.0000002}
-    - name: bicep_R
-      parentName: clavicle_R
-      position: {x: 0.041236084, y: 0.0011767835, z: 0.024400119}
-      rotation: {x: -0.13460426, y: 0.28794658, z: 0.94665766, w: -0.052988872}
-      scale: {x: 1, y: 1, z: 0.99999994}
-    - name: bicep_twist_R
-      parentName: bicep_R
-      position: {x: -0.048984323, y: 0.000023795366, z: 0.0010785591}
-      rotation: {x: -0.0077821985, y: 0.0077859107, z: -0.7072342, w: 0.7068936}
-      scale: {x: 1, y: 0.99999994, z: 1}
-    - name: bicep_twist_R_end
-      parentName: bicep_twist_R
-      position: {x: -0, y: 0.0021761854, z: 0}
-      rotation: {x: 0, y: -0, z: -0, w: 1}
-      scale: {x: 1, y: 1, z: 1}
-    - name: elbow_R
-      parentName: bicep_R
-      position: {x: -0.098000534, y: 0.000038868784, z: 0.002148534}
-      rotation: {x: -0.44037506, y: -0.013509956, z: -0.003365114, w: 0.897706}
-      scale: {x: 1, y: 1, z: 0.99999994}
-    - name: wrist_R
-      parentName: elbow_R
-      position: {x: -0.09799887, y: -0.000000019569415, z: -0.000000028572975}
-      rotation: {x: 0.06498422, y: 0.05728078, z: -0.6561869, w: 0.74960977}
-      scale: {x: 0.9999998, y: 0.9999999, z: 0.99999994}
-    - name: index_base_R
-      parentName: wrist_R
-      position: {x: -0.009422218, y: -0.043243363, z: -0.013065509}
-      rotation: {x: 0.051794715, y: 0.05134793, z: 0.0022735316, w: 0.99733424}
-      scale: {x: 1.0000001, y: 1, z: 1}
-    - name: index_mid_R
-      parentName: index_base_R
-      position: {x: 0.00000029042363, y: -0.012872757, z: -0.00000014901161}
-      rotation: {x: 0.000018861138, y: -0.0000012069936, z: 0.0368846, w: 0.9993196}
-      scale: {x: 0.9999998, y: 1, z: 1}
-    - name: index_end_R
-      parentName: index_mid_R
-      position: {x: -0.00000043317675, y: -0.0104447985, z: 0.00000035643578}
-      rotation: {x: 0.00036109542, y: 0.000019689913, z: 1, w: 0.00002292913}
-      scale: {x: 0.99999994, y: 1, z: 1}
-    - name: index_end_R_end
-      parentName: index_end_R
-      position: {x: -0, y: 0.002176176, z: 0}
-      rotation: {x: 0, y: -0, z: -0, w: 1}
-      scale: {x: 1, y: 1, z: 1}
-    - name: mid_base_R
-      parentName: wrist_R
-      position: {x: -0.0066265534, y: -0.044554878, z: -0.0038517825}
-      rotation: {x: 0.04669469, y: 0.16992564, z: 0.006806192, w: 0.9843265}
-      scale: {x: 0.99999976, y: 0.99999994, z: 0.9999999}
-    - name: mid_mid_R
-      parentName: mid_base_R
-      position: {x: 0.0000003058836, y: -0.015608632, z: 0.00000028073788}
-      rotation: {x: -0.000009752806, y: -0.0000016540283, z: 0.031479973, w: 0.99950445}
-      scale: {x: 0.99999994, y: 1.0000001, z: 1}
-    - name: mid_end_R
-      parentName: mid_mid_R
-      position: {x: 0.00000003427267, y: -0.010525406, z: -0.000000019371509}
-      rotation: {x: -0.000026649663, y: 0.0000025971415, z: 1, w: -0.000009436175}
-      scale: {x: 1, y: 0.9999998, z: 1}
-    - name: mid_end_R_end
-      parentName: mid_end_R
-      position: {x: -0, y: 0.002176188, z: 0}
-      rotation: {x: 0, y: -0, z: -0, w: 1}
-      scale: {x: 1, y: 1, z: 1}
-    - name: pinky_base_R
-      parentName: wrist_R
-      position: {x: 0.0014131551, y: -0.03871775, z: 0.013632698}
-      rotation: {x: 0.04348046, y: 0.40199026, z: 0.008725427, w: 0.9145693}
-      scale: {x: 1, y: 1.0000001, z: 1}
-    - name: pinky_mid_R
-      parentName: pinky_base_R
-      position: {x: 0.000000012516975, y: -0.010658713, z: -0.0000000333786}
-      rotation: {x: -0.0000069513876, y: 0.0000011324876, z: 0.03730519, w: 0.99930394}
-      scale: {x: 1, y: 1, z: 1}
-    - name: pinky_end_R
-      parentName: pinky_mid_R
-      position: {x: -0.00000030457971, y: -0.0077912025, z: -0.00000015377998}
-      rotation: {x: -0.00016844731, y: -0.000010558, z: 1, w: 0.000027008335}
-      scale: {x: 0.99999994, y: 0.99999994, z: 1}
-    - name: pinky_end_R_end
-      parentName: pinky_end_R
-      position: {x: -0, y: 0.0021761847, z: 0}
-      rotation: {x: 0, y: -0, z: -0, w: 1}
-      scale: {x: 1, y: 1, z: 1}
-    - name: ring_base_R
-      parentName: wrist_R
-      position: {x: -0.0025993222, y: -0.042741682, z: 0.0053976807}
-      rotation: {x: 0.04525852, y: 0.22867915, z: 0.0060238736, w: 0.97243065}
-      scale: {x: 1, y: 0.99999994, z: 1}
-    - name: ring_mid_R
-      parentName: ring_base_R
-      position: {x: -0.00000054955484, y: -0.014337687, z: -0.00000027477742}
-      rotation: {x: 0.00000922009, y: 0.0000007301566, z: 0.03631711, w: 0.99934036}
-      scale: {x: 0.99999994, y: 0.99999994, z: 0.99999994}
-    - name: ring_end_R
-      parentName: ring_mid_R
-      position: {x: 0.00000038698315, y: -0.010525635, z: 0.000000049769877}
-      rotation: {x: -0.00008863985, y: 0.00001402056, z: 1, w: -0.000008910892}
-      scale: {x: 1, y: 0.9999998, z: 0.9999999}
-    - name: ring_end_R_end
-      parentName: ring_end_R
-      position: {x: -0, y: 0.0021761893, z: 0}
-      rotation: {x: 0, y: -0, z: -0, w: 1}
-      scale: {x: 1, y: 1, z: 1}
-    - name: thumb_base_R
-      parentName: wrist_R
-      position: {x: -0.0018786374, y: -0.0124172205, z: -0.012020248}
-      rotation: {x: 0.30187908, y: -0.36480168, z: -0.2500121, w: 0.8445607}
-      scale: {x: 1, y: 1.0000001, z: 1.0000001}
-    - name: thumb_mid_R
-      parentName: thumb_base_R
-      position: {x: -0.0000003105402, y: -0.015904246, z: -0.00000004529953}
-      rotation: {x: -0.023324119, y: 0.09950858, z: 0.027633963, w: 0.9943794}
-      scale: {x: 1, y: 0.9999999, z: 1.0000001}
-    - name: thumb_end_R
-      parentName: thumb_mid_R
-      position: {x: 0.0000006186962, y: -0.01179872, z: 0.00000020503997}
-      rotation: {x: 0.15783416, y: 0.000011153986, z: 0.9874656, w: -0.00001576217}
-      scale: {x: 1, y: 1, z: 0.9999999}
-    - name: thumb_end_R_end
-      parentName: thumb_end_R
-      position: {x: -0, y: 0.0021761828, z: 0}
-      rotation: {x: 0, y: -0, z: -0, w: 1}
-      scale: {x: 1, y: 1, z: 1}
-    - name: weapon_bone
-      parentName: wrist_R
-      position: {x: -0.0032556027, y: 0.000192619, z: 0.0043860935}
-      rotation: {x: -0.44977504, y: 0.5456212, z: 0.54562074, w: 0.4497754}
-      scale: {x: 1, y: 1, z: 1.0000001}
-    - name: weapon_bone_end
-      parentName: weapon_bone
-      position: {x: -0, y: 0.0021761993, z: 0}
-      rotation: {x: 0, y: -0, z: -0, w: 1}
-      scale: {x: 1, y: 1, z: 1}
-    - name: wrist_twist_R
-      parentName: elbow_R
-      position: {x: -0.048999403, y: -0.000000010770745, z: 0.000000010728836}
-      rotation: {x: -0.00000073983335, y: 0.00000069130704, z: -0.7071067, w: 0.7071069}
-      scale: {x: 0.99999994, y: 1.0000001, z: 0.99999994}
-    - name: wrist_twist_R_end
-      parentName: wrist_twist_R
-      position: {x: -0, y: 0.0021761698, z: 0}
-      rotation: {x: 0, y: -0, z: -0, w: 1}
-      scale: {x: 1, y: 1, z: 1}
+      position: {x: -0.000000019073486, y: 0.043920487, z: 0.00000004887581}
+      rotation: {x: -0.052226882, y: 0.0144298915, z: 0.039570913, w: 0.99774665}
+      scale: {x: 1, y: 1.0000001, z: 0.99999994}
     - name: neck
       parentName: chest
-      position: {x: 0.0000000047683715, y: 0.0738758, z: 0.000000013113022}
-      rotation: {x: 0.033114005, y: -0.07977375, z: -0.0051160227, w: 0.9962497}
+      position: {x: 0.000000023841856, y: 0.073875695, z: -0.000000076293944}
+      rotation: {x: 0.02795205, y: -0.17262971, z: -0.006043535, w: 0.9845716}
       scale: {x: 1, y: 1, z: 1}
     - name: head
       parentName: neck
-      position: {x: 0.0000000028312206, y: 0.03276237, z: -0.00000007688999}
-      rotation: {x: -0.09479317, y: -0.014528149, z: -0.009193973, w: 0.9953485}
-      scale: {x: 1, y: 1.0000001, z: 1}
+      position: {x: -0.000000005960464, y: 0.032762226, z: 0.00000000923872}
+      rotation: {x: -0.07661118, y: 0.03644554, z: 0.010209315, w: 0.9963425}
+      scale: {x: 1, y: 0.9999999, z: 0.99999976}
     - name: forward
       parentName: head
-      position: {x: -0.0000000017881393, y: 0.024999978, z: 0.0000000090897085}
-      rotation: {x: -0.5, y: 0.5, z: 0.49999988, w: 0.5000001}
-      scale: {x: 1.0000002, y: 1.0000001, z: 1.0000002}
+      position: {x: -0.00000000834465, y: 0.025000118, z: 0}
+      rotation: {x: -0.50000006, y: 0.49999994, z: 0.49999988, w: 0.5000001}
+      scale: {x: 1, y: 1, z: 0.9999999}
     - name: forward_end
       parentName: forward
       position: {x: -0, y: 0.0021761816, z: 0}
@@ -1450,12 +1630,302 @@ ModelImporter:
       scale: {x: 1, y: 1, z: 1}
     - name: ponytail
       parentName: head
-      position: {x: -0.0000000017881393, y: 0.020176597, z: -0.030691538}
-      rotation: {x: -0.33312488, y: 0.000000001111207, z: 9.877394e-10, w: 0.9428827}
-      scale: {x: 1, y: 1.0000001, z: 1.0000002}
+      position: {x: -0.0000000023841857, y: 0.02017663, z: -0.03069159}
+      rotation: {x: -0.33312553, y: 0.000000011914613, z: 9.877403e-10, w: 0.9428825}
+      scale: {x: 0.99999994, y: 1, z: 1}
     - name: ponytail_end
       parentName: ponytail
       position: {x: -0, y: 0.002176183, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: clavicle_L
+      parentName: chest
+      position: {x: -0.008958592, y: 0.039179135, z: 0.0065697357}
+      rotation: {x: 0.05374677, y: 0.13951962, z: -0.05397989, w: 0.9872851}
+      scale: {x: 0.99999994, y: 1, z: 1}
+    - name: bicep_L
+      parentName: clavicle_L
+      position: {x: -0.041235995, y: -0.0011764682, z: -0.024400169}
+      rotation: {x: 0.97370464, y: 0.051461715, z: 0.1172888, w: -0.18839957}
+      scale: {x: 0.99999994, y: 0.9999998, z: 0.9999999}
+    - name: bicep_twist_L
+      parentName: bicep_L
+      position: {x: -0.048984356, y: -0.000023782253, z: 0.0010784995}
+      rotation: {x: 0.70723397, y: -0.7068918, z: -0.0077818963, w: 0.007975353}
+      scale: {x: 0.99999994, y: 0.99999994, z: 0.9999999}
+    - name: bicep_twist_L_end
+      parentName: bicep_twist_L
+      position: {x: -0, y: 0.0021761854, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: elbow_L
+      parentName: bicep_L
+      position: {x: -0.09799998, y: -0.00003906727, z: 0.002148509}
+      rotation: {x: -0.6734684, y: -0.0036669485, z: 0.016098253, w: 0.7390316}
+      scale: {x: 0.99999994, y: 0.99999994, z: 1}
+    - name: wrist_twist_L
+      parentName: elbow_L
+      position: {x: -0.04900006, y: -0.000000017881392, z: 0.00000003427267}
+      rotation: {x: 0.5000003, y: -0.4999997, z: -0.5000002, w: -0.49999982}
+      scale: {x: 1.0000001, y: 1.0000001, z: 1}
+    - name: wrist_twist_L_end
+      parentName: wrist_twist_L
+      position: {x: -0, y: 0.0021761702, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: wrist_L
+      parentName: elbow_L
+      position: {x: -0.098, y: -0.000000009536743, z: -0.000000020861625}
+      rotation: {x: -0.59221584, y: 0.6444628, z: 0.30652687, w: 0.37415168}
+      scale: {x: 1, y: 0.9999999, z: 1}
+    - name: thumb_base_L
+      parentName: wrist_L
+      position: {x: 0.0018786251, y: 0.012417035, z: 0.012020192}
+      rotation: {x: 0.3195196, y: -0.3858676, z: -0.19231205, w: 0.84381837}
+      scale: {x: 0.9999999, y: 1, z: 0.99999994}
+    - name: thumb_mid_L
+      parentName: thumb_base_L
+      position: {x: -0.00000004351139, y: 0.015904522, z: -0.0000000011920929}
+      rotation: {x: -0.023331333, y: 0.09950751, z: 0.027667994, w: 0.9943784}
+      scale: {x: 1, y: 1, z: 1}
+    - name: thumb_end_L
+      parentName: thumb_mid_L
+      position: {x: -0.000000025629996, y: 0.011798501, z: -0.000000026226044}
+      rotation: {x: 0.006289271, y: 0.0024107667, z: 0.0394076, w: 0.9992005}
+      scale: {x: 0.99999994, y: 1, z: 1}
+    - name: thumb_end_L_end
+      parentName: thumb_end_L
+      position: {x: -0, y: 0.0021761828, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: index_base_L
+      parentName: wrist_L
+      position: {x: 0.009421937, y: 0.043242965, z: 0.013065548}
+      rotation: {x: 0.051800728, y: 0.05134563, z: 0.0022919164, w: 0.997334}
+      scale: {x: 0.9999998, y: 1.0000001, z: 1.0000001}
+    - name: index_mid_L
+      parentName: index_base_L
+      position: {x: 0.000000016242266, y: 0.012873425, z: -0.000000019073486}
+      rotation: {x: -0.000002104788, y: -0, z: 0.036848288, w: 0.9993209}
+      scale: {x: 0.99999994, y: 0.9999998, z: 0.9999999}
+    - name: index_end_L
+      parentName: index_mid_L
+      position: {x: -0.000000014305114, y: 0.010443943, z: 0.000000009536743}
+      rotation: {x: 0.000000013892969, y: 0.00000002082778, z: 0.041195475, w: 0.9991512}
+      scale: {x: 1, y: 0.99999976, z: 0.9999998}
+    - name: index_end_L_end
+      parentName: index_end_L
+      position: {x: -0, y: 0.002176176, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: mid_base_L
+      parentName: wrist_L
+      position: {x: 0.006626048, y: 0.044554234, z: 0.0038518715}
+      rotation: {x: 0.046688523, y: 0.1699271, z: 0.0068204957, w: 0.9843264}
+      scale: {x: 1, y: 1, z: 0.9999999}
+    - name: mid_mid_L
+      parentName: mid_base_L
+      position: {x: -0.000000034570693, y: 0.015608435, z: 0.000000008940696}
+      rotation: {x: -0.0000010393554, y: 0.000000029802305, z: 0.031471018, w: 0.99950475}
+      scale: {x: 1, y: 0.99999994, z: 1.0000001}
+    - name: mid_end_L
+      parentName: mid_mid_L
+      position: {x: 0.000000057220458, y: 0.01052587, z: -0.000000011324882}
+      rotation: {x: -0.0000042604847, y: 0.00000075310317, z: 0.035619285, w: 0.9993655}
+      scale: {x: 0.9999998, y: 0.99999994, z: 1}
+    - name: mid_end_L_end
+      parentName: mid_end_L
+      position: {x: -0, y: 0.002176188, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: ring_base_L
+      parentName: wrist_L
+      position: {x: 0.0025994694, y: 0.042741682, z: -0.005397601}
+      rotation: {x: 0.045264486, y: 0.22867991, z: 0.006004717, w: 0.9724302}
+      scale: {x: 0.99999994, y: 0.9999998, z: 0.99999994}
+    - name: ring_mid_L
+      parentName: ring_base_L
+      position: {x: -0.000000011026859, y: 0.014337288, z: 0.0000000047683715}
+      rotation: {x: 0.00000072643127, y: -0.000000059604616, z: 0.036348913, w: 0.9993392}
+      scale: {x: 1, y: 1.0000001, z: 1.0000002}
+    - name: ring_end_L
+      parentName: ring_mid_L
+      position: {x: -0.00000000834465, y: 0.010525904, z: 0.0000000023841857}
+      rotation: {x: -0.0000021998885, y: 0.0000002130337, z: 0.03946376, w: 0.9992211}
+      scale: {x: 0.99999994, y: 0.9999999, z: 0.99999994}
+    - name: ring_end_L_end
+      parentName: ring_end_L
+      position: {x: -0, y: 0.0021761896, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: pinky_base_L
+      parentName: wrist_L
+      position: {x: -0.0014134978, y: 0.038717754, z: -0.013632726}
+      rotation: {x: 0.043483566, y: 0.40198827, z: 0.008731926, w: 0.91457003}
+      scale: {x: 0.99999994, y: 1.0000001, z: 1}
+    - name: pinky_mid_L
+      parentName: pinky_base_L
+      position: {x: 0.00000002026558, y: 0.010657963, z: -0.000000042915342}
+      rotation: {x: 0.0000027306355, y: -0.0000009238712, z: 0.037277516, w: 0.99930495}
+      scale: {x: 1, y: 0.99999994, z: 1}
+    - name: pinky_end_L
+      parentName: pinky_mid_L
+      position: {x: -2.9802322e-10, y: 0.0077917576, z: -0.000000028610229}
+      rotation: {x: 0.0000015259983, y: -0.00000012628875, z: 0.040375944, w: 0.9991846}
+      scale: {x: 0.9999999, y: 1, z: 0.99999994}
+    - name: pinky_end_L_end
+      parentName: pinky_end_L
+      position: {x: -0, y: 0.0021761847, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: clavicle_R
+      parentName: chest
+      position: {x: 0.008958612, y: 0.03917941, z: 0.0065698433}
+      rotation: {x: 0.99288726, y: 0.005155157, z: 0.11844154, w: -0.010950303}
+      scale: {x: 1, y: 0.99999994, z: 1.0000001}
+    - name: bicep_R
+      parentName: clavicle_R
+      position: {x: 0.04123598, y: 0.001176905, z: 0.024400242}
+      rotation: {x: -0.12169635, y: 0.37267128, z: 0.91989213, w: -0.010231852}
+      scale: {x: 1.0000001, y: 1, z: 0.99999994}
+    - name: bicep_twist_R
+      parentName: bicep_R
+      position: {x: -0.048984367, y: 0.000023881197, z: 0.0010784358}
+      rotation: {x: -0.0077821463, y: 0.007785897, z: -0.7072342, w: 0.7068936}
+      scale: {x: 1, y: 1, z: 1}
+    - name: bicep_twist_R_end
+      parentName: bicep_twist_R
+      position: {x: -0, y: 0.0021761854, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: elbow_R
+      parentName: bicep_R
+      position: {x: -0.098000556, y: 0.000039055943, z: 0.002148471}
+      rotation: {x: -0.57472587, y: -0.016823612, z: 0.005970195, w: 0.8181513}
+      scale: {x: 0.9999999, y: 1.0000001, z: 0.99999994}
+    - name: wrist_twist_R
+      parentName: elbow_R
+      position: {x: -0.048999537, y: -0.000000013113022, z: -0.00000006198883}
+      rotation: {x: -0.00000072966725, y: 0.00000072703307, z: -0.7071067, w: 0.7071069}
+      scale: {x: 1.0000001, y: 0.9999999, z: 1}
+    - name: wrist_twist_R_end
+      parentName: wrist_twist_R
+      position: {x: -0, y: 0.0021761698, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: wrist_R
+      parentName: elbow_R
+      position: {x: -0.09799914, y: 0.000000034570693, z: 0.000000026226044}
+      rotation: {x: 0.05460679, y: 0.014156601, z: -0.67005247, w: 0.74016714}
+      scale: {x: 0.99999994, y: 0.9999999, z: 1}
+    - name: thumb_base_R
+      parentName: wrist_R
+      position: {x: -0.0018786561, y: -0.012417178, z: -0.012020199}
+      rotation: {x: 0.26157996, y: -0.42419392, z: -0.3263452, w: 0.80320257}
+      scale: {x: 0.9999999, y: 0.9999999, z: 0.9999999}
+    - name: thumb_mid_R
+      parentName: thumb_base_R
+      position: {x: -0.00000037431715, y: -0.015904259, z: -0.00000016570091}
+      rotation: {x: -0.0012978162, y: 0.006061343, z: 0.037829526, w: 0.9992651}
+      scale: {x: 0.9999998, y: 0.9999998, z: 0.9999999}
+    - name: thumb_end_R
+      parentName: thumb_mid_R
+      position: {x: 0.0000006556511, y: -0.011798903, z: 0.00000023961067}
+      rotation: {x: 0.1305331, y: 0.000016159904, z: 0.99144393, w: -0.000033575794}
+      scale: {x: 0.9999999, y: 0.9999999, z: 1}
+    - name: thumb_end_R_end
+      parentName: thumb_end_R
+      position: {x: -0, y: 0.0021761828, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: index_base_R
+      parentName: wrist_R
+      position: {x: -0.009422137, y: -0.04324327, z: -0.013065557}
+      rotation: {x: 0.054438386, y: 0.04522277, z: 0.007328041, w: 0.9974656}
+      scale: {x: 1, y: 0.99999994, z: 0.99999994}
+    - name: index_mid_R
+      parentName: index_base_R
+      position: {x: 0.00000015735625, y: -0.012872717, z: -0.00000007688999}
+      rotation: {x: 0.000013746315, y: -0.0000010691579, z: 0.037202835, w: 0.9993078}
+      scale: {x: 0.9999999, y: 0.9999999, z: 0.99999994}
+    - name: index_end_R
+      parentName: index_mid_R
+      position: {x: -0.0000004145503, y: -0.0104448125, z: 0.0000003108382}
+      rotation: {x: 0.00042616442, y: 0.000015093068, z: 0.9999999, w: 0.000022914226}
+      scale: {x: 0.9999998, y: 0.9999999, z: 0.9999998}
+    - name: index_end_R_end
+      parentName: index_end_R
+      position: {x: -0, y: 0.002176176, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: mid_base_R
+      parentName: wrist_R
+      position: {x: -0.0066264127, y: -0.044554643, z: -0.0038518}
+      rotation: {x: 0.041720588, y: 0.16673584, z: 0.008712853, w: 0.98508}
+      scale: {x: 0.9999998, y: 0.9999998, z: 0.99999994}
+    - name: mid_mid_R
+      parentName: mid_base_R
+      position: {x: 0.00000047445297, y: -0.015608656, z: 0.00000027120112}
+      rotation: {x: -0.000008504836, y: -0.00000040233127, z: 0.03692656, w: 0.999318}
+      scale: {x: 1.0000001, y: 0.99999994, z: 1.0000001}
+    - name: mid_end_R
+      parentName: mid_mid_R
+      position: {x: 0.000000014305114, y: -0.010525396, z: -0.000000099539754}
+      rotation: {x: -0.00011963879, y: -0.000000048345612, z: 1, w: -0.000010088082}
+      scale: {x: 1, y: 1.0000001, z: 1.0000001}
+    - name: mid_end_R_end
+      parentName: mid_end_R
+      position: {x: -0, y: 0.002176188, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: ring_base_R
+      parentName: wrist_R
+      position: {x: -0.0025991797, y: -0.042741645, z: 0.0053976155}
+      rotation: {x: 0.04830089, y: 0.23569383, z: 0.003941654, w: 0.9706183}
+      scale: {x: 1, y: 0.99999994, z: 0.9999999}
+    - name: ring_mid_R
+      parentName: ring_base_R
+      position: {x: -0.0000007534027, y: -0.014337644, z: -0.00000018954276}
+      rotation: {x: 0.000008329746, y: -0.000000029802312, z: 0.038247116, w: 0.9992683}
+      scale: {x: 1, y: 1.0000002, z: 1}
+    - name: ring_end_R
+      parentName: ring_mid_R
+      position: {x: 0.00000041007993, y: -0.010525849, z: 0.00000012814998}
+      rotation: {x: 0.00018937845, y: 0.000003675537, z: 1, w: -0.000020071855}
+      scale: {x: 0.9999999, y: 0.9999999, z: 1}
+    - name: ring_end_R_end
+      parentName: ring_end_R
+      position: {x: -0, y: 0.0021761893, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: pinky_base_R
+      parentName: wrist_R
+      position: {x: 0.0014132833, y: -0.038717583, z: 0.013632678}
+      rotation: {x: 0.041164037, y: 0.41157493, z: 0.008379708, w: 0.9104073}
+      scale: {x: 0.9999999, y: 0.99999994, z: 0.9999998}
+    - name: pinky_mid_R
+      parentName: pinky_base_R
+      position: {x: 0.0000001001358, y: -0.010658713, z: 0.000000067949294}
+      rotation: {x: -0.000009138133, y: 0.00000095367386, z: 0.030148258, w: 0.9995455}
+      scale: {x: 0.99999994, y: 0.99999994, z: 1}
+    - name: pinky_end_R
+      parentName: pinky_mid_R
+      position: {x: -0.00000023454427, y: -0.0077911615, z: -0.00000013113022}
+      rotation: {x: -0.00004846119, y: -0.0000021460623, z: 1, w: 0.00002849659}
+      scale: {x: 1, y: 1.0000001, z: 0.99999994}
+    - name: pinky_end_R_end
+      parentName: pinky_end_R
+      position: {x: -0, y: 0.0021761847, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: weapon_bone
+      parentName: wrist_R
+      position: {x: -0.0032555151, y: 0.00019274234, z: 0.0043859766}
+      rotation: {x: -0.44977486, y: 0.5456214, z: 0.54562056, w: 0.4497756}
+      scale: {x: 0.99999976, y: 0.9999998, z: 0.9999999}
+    - name: weapon_bone_end
+      parentName: weapon_bone
+      position: {x: -0, y: 0.0021761993, z: 0}
       rotation: {x: 0, y: -0, z: -0, w: 1}
       scale: {x: 1, y: 1, z: 1}
     - name: chell_reference_2

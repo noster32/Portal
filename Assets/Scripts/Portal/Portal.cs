@@ -23,11 +23,13 @@ public class Portal : CComponent
     [SerializeField]
     private Collider wallCollider;
 
-    private bool isPlaced = true;
+    private bool isPlaced = false;
 
     private List<PortalableObject> portalObjects = new List<PortalableObject>();
 
+    
     private Material material;
+    private Material[] materials;
     private new Renderer renderer;
     private new BoxCollider collider;
 
@@ -37,6 +39,7 @@ public class Portal : CComponent
 
         collider = GetComponent<BoxCollider>();
         renderer = GetComponent<Renderer>();
+        //materials = renderer.materials;
         material = renderer.material;
     }
 
@@ -44,7 +47,7 @@ public class Portal : CComponent
     {
         base.Start();
 
-        PlacePortal(wallCollider, transform.position, transform.rotation);
+        //PlacePortal(wallCollider, transform.position, transform.rotation);
         SetColor(portalColor);
     }
 
@@ -101,6 +104,10 @@ public class Portal : CComponent
 
     public void PlacePortal(Collider wallCollider, Vector3 pos, Quaternion rot)
     {
+        if(!isPlaced)
+        {
+            isPlaced = true;
+        }
         this.wallCollider = wallCollider;
         transform.position = pos;
         transform.rotation = rot;
