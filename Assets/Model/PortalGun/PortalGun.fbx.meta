@@ -33,6 +33,66 @@ ModelImporter:
   - first:
       74: -2419742328528219112
     second: v_portalgun.qc_skeleton|release
+  - first:
+      74: -7462351310864969694
+    second: draw
+  - first:
+      74: 1900567375743707202
+    second: fire1
+  - first:
+      74: -616845998113910636
+    second: fizzle
+  - first:
+      74: -2699753462411694201
+    second: holster
+  - first:
+      74: -5252816984213320552
+    second: idle
+  - first:
+      74: 541033951735176490
+    second: idletolow
+  - first:
+      74: -5060638581844018694
+    second: lowidle
+  - first:
+      74: 1062295577508430153
+    second: lowtoidle
+  - first:
+      74: -7620468718608648079
+    second: pickup
+  - first:
+      74: 4378171782457239556
+    second: release
+  - first:
+      74: 1065194378315135728
+    second: portalgun_draw
+  - first:
+      74: 92325456315591241
+    second: portalgun_fire1
+  - first:
+      74: 441294082053683970
+    second: portalgun_fizzle
+  - first:
+      74: -5387434406346639901
+    second: portalgun_holster
+  - first:
+      74: 297409846325782690
+    second: portalgun_idle
+  - first:
+      74: 6654250888671652441
+    second: portalgun_idletolow
+  - first:
+      74: -8491776999394277151
+    second: portalgun_lowidle
+  - first:
+      74: -311489169777162056
+    second: portalgun_lowtoidle
+  - first:
+      74: 5702153143879933476
+    second: portalgun_pickup
+  - first:
+      74: 384436730757051403
+    second: portalgun_release
   externalObjects:
   - first:
       type: UnityEngine:Material
@@ -78,7 +138,7 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: v_portalgun.qc_skeleton|draw
+      name: portalgun_draw
       takeName: v_portalgun.qc_skeleton|draw
       internalID: 0
       firstFrame: 0
@@ -107,7 +167,7 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: v_portalgun.qc_skeleton|fire1
+      name: portalgun_fire1
       takeName: v_portalgun.qc_skeleton|fire1
       internalID: 0
       firstFrame: 0
@@ -136,7 +196,7 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: v_portalgun.qc_skeleton|fizzle
+      name: portalgun_fizzle
       takeName: v_portalgun.qc_skeleton|fizzle
       internalID: 0
       firstFrame: 0
@@ -165,7 +225,7 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: v_portalgun.qc_skeleton|holster
+      name: portalgun_holster
       takeName: v_portalgun.qc_skeleton|holster
       internalID: 0
       firstFrame: 0
@@ -194,7 +254,7 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: v_portalgun.qc_skeleton|idle
+      name: portalgun_idle
       takeName: v_portalgun.qc_skeleton|idle
       internalID: 0
       firstFrame: 0
@@ -223,7 +283,7 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: v_portalgun.qc_skeleton|idletolow
+      name: portalgun_idletolow
       takeName: v_portalgun.qc_skeleton|idletolow
       internalID: 0
       firstFrame: 0
@@ -252,7 +312,7 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: v_portalgun.qc_skeleton|lowidle
+      name: portalgun_lowidle
       takeName: v_portalgun.qc_skeleton|lowidle
       internalID: 0
       firstFrame: 0
@@ -281,7 +341,7 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: v_portalgun.qc_skeleton|lowtoidle
+      name: portalgun_lowtoidle
       takeName: v_portalgun.qc_skeleton|lowtoidle
       internalID: 0
       firstFrame: 0
@@ -310,7 +370,7 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: v_portalgun.qc_skeleton|pickup
+      name: portalgun_pickup
       takeName: v_portalgun.qc_skeleton|pickup
       internalID: 0
       firstFrame: 0
@@ -339,7 +399,7 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: v_portalgun.qc_skeleton|release
+      name: portalgun_release
       takeName: v_portalgun.qc_skeleton|release
       internalID: 0
       firstFrame: 0

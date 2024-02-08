@@ -10,6 +10,10 @@ TagManager:
   - Ground
   - Concret
   - Turret
+  - PortalB
+  - PortalO
+  - Metal
+  - Toilet
   layers:
   - Default
   - TransparentFX
@@ -17,13 +21,13 @@ TagManager:
   - InvisiblePlayer
   - Water
   - UI
-  - Concret
+  - PortalPlaceable
   - Player
   - Portal
-  - Cube
+  - PlayerClone
   - Ground
-  - Obstruction
-  - 
+  - PlayerHand
+  - InteractionObject
   - 
   - 
   - 

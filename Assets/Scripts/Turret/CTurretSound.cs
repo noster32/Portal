@@ -21,7 +21,7 @@ public class CTurretSound : CComponent
         base.Awake();
 
         turretGunSoundSource = GetComponent<AudioSource>();
-        CSoundLoader.Instance.LoadSound(turretGunSoundSource, turretGunSoundClip, 1f, false, 1f, 10f);
+        CSoundLoader.Instance.AudioInit(turretGunSoundSource, turretGunSoundClip, 1f, false, 1f, 10f);
     }
 
     public override void Update()
@@ -31,12 +31,12 @@ public class CTurretSound : CComponent
 
     public void GunSoundTest(Transform turretPos)
     {
-        CSoundLoader.Instance.PlaySoundEffect3D(turretGunSoundSource, turretPos.position, turretPos.position, 0.2f);
+        CSoundLoader.Instance.PlaySoundOneShot3D(turretPos.position, 0.2f);
     }
 
     public void ActiveSoundTest(Transform turretPos)
     {
-        CSoundLoader.Instance.PlaySoundEffect3D(turretGunSoundSource, turretPos.position, turretPos.position, 0.2f);
+        CSoundLoader.Instance.PlaySoundOneShot3D(turretPos.position, 0.2f);
     }
 
 

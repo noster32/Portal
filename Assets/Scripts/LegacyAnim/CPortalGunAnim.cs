@@ -4,28 +4,61 @@ using UnityEngine;
 
 public class CPortalGunAnim : CComponent
 {
-    Animation PortalGun;
+    Animation portalGunAnim;
+
+    private float portalgunDrawTime = 1.6f;
+
+    public override void Awake()
+    {
+        base.Awake();
+
+        portalGunAnim = GetComponent<Animation>();
+        portalGunAnim["portalgun_draw"].speed = portalgunDrawTime;
+    }
 
     public override void Start()
     {
         base.Start();
 
-        PortalGun = this.gameObject.GetComponent<Animation>();
-
+        if(portalGunAnim) 
+        {
+            PortalGunDrawUp();
+        }
     }
 
     public override void Update()
     {
         base.Update();
 
-        PortalGunShoot();
+        if (Input.GetKeyDown(KeyCode.Mouse0) || Input.GetKeyDown(KeyCode.Mouse1))
+        {
+            PortalGunShoot();
+        }
+        
     }
 
     private void PortalGunShoot()
     {
-        if(Input.GetKeyDown(KeyCode.Mouse0) || Input.GetKeyDown(KeyCode.Mouse1))
-        {
-            PortalGun.Play("v_portalgun.qc_skeleton|fire1");
-        }
+        portalGunAnim.Play("portalgun_fire1");
+    }
+
+    public void PortalGunDrawUp()
+    {
+        portalGunAnim.Play("portalgun_draw");
+    }
+
+    public void PortalGunFizzle()
+    {
+        portalGunAnim.Play("portalgun_fizzle");
+    }
+
+    public void PortalGunGrab()
+    {
+        portalGunAnim.Play("portalgun_pickup");
+    }
+
+    public void PortalGunRelease()
+    {
+        portalGunAnim.Play("portalgun_release");
     }
 }

@@ -4,61 +4,90 @@ using UnityEngine;
 
 public class CSoundLoader : CSingleton<CSoundLoader>
 {
-    public void LoadSound(AudioSource audioSource, AudioClip audioclip, float volume = 1f, bool loop = false)
+    private AudioSource m_audioSource;
+    private Transform m_ListenerTransform;
+
+    public void AudioInit(AudioSource audioSource, AudioClip audioClip, float volume = 1f, bool loop = false, float minDis = 1f, float maxDis = 500f)
     {
-        audioSource.clip = audioclip;
-        audioSource.volume = volume;
-        audioSource.loop = loop;
+        m_audioSource = audioSource;
+        m_audioSource.clip = audioClip;
+        m_audioSource.volume = volume;
+        m_audioSource.loop = loop;
+        m_audioSource.minDistance = minDis;
+        m_audioSource.maxDistance = maxDis;
     }
 
-    public void LoadSound(AudioSource audioSource, AudioClip audioclip, float volume, bool loop, float minDis, float maxDis)
+    public void SetListener()
     {
-        audioSource.clip = audioclip;
-        audioSource.volume = volume;
-        audioSource.loop = loop;
-        audioSource.minDistance = minDis;
-        audioSource.maxDistance = maxDis;
-    }
-
-    public void PlaySound(AudioSource audioSource)
-    {
-        if (!audioSource.isPlaying)
+        Camera mainCamera = Camera.main;
+        AudioListener cameraListener = mainCamera.GetComponent<AudioListener>();
+        
+        if (cameraListener)
         {
-            audioSource.Play();
+            m_ListenerTransform = cameraListener.transform;
+            Debug.Log(m_ListenerTransform);
+        }
+        else
+            Debug.LogError("AudioListener not found.");
+    }
+
+    public void SetVolme(float value)
+    {
+        m_audioSource.volume = value;
+    }
+
+    public void PlaySound(AudioClip audioClip = null)
+    {
+        if (audioClip != null)
+            m_audioSource.clip = audioClip;
+
+        if (!m_audioSource.isPlaying)
+        {
+            m_audioSource.Play();
         }
     }
 
-    public void PlaySoundEffect(AudioSource audioSource)
+    public void PlaySoundOneShot(AudioClip audioClip = null)
     {
-        audioSource.PlayOneShot(audioSource.clip);
+        if (audioClip != null)
+            m_audioSource.PlayOneShot(audioClip);
+        else
+            m_audioSource.PlayOneShot(m_audioSource.clip);
     }
 
 
-    public void PlaySound3D(AudioSource audioSource, Vector3 mainPos, Vector3 targetPos, float volumeMultipiler)
+    public void PlaySound3D(Vector3 mainPos, float volumeMultipiler)
     {
-        if(!audioSource.isPlaying)
+        //Debug.Log(m_ListenerTransform);
+        if (!m_ListenerTransform)
         {
-            audioSource.Play();
+            //Debug.Log("return test");
+            return;
         }
 
-        if (audioSource.isPlaying)
+        if(!m_audioSource.isPlaying)
         {
-            float distance = Vector3.Distance(targetPos, mainPos);
+            m_audioSource.Play();
+        }
 
-            float volume = Mathf.Clamp01((audioSource.maxDistance - distance) / (audioSource.maxDistance - audioSource.minDistance)) * volumeMultipiler;
+        if (m_audioSource.isPlaying)
+        {
+            float distance = Vector3.Distance(m_ListenerTransform.position, mainPos);
 
-            audioSource.volume = volume;
+            float volume = Mathf.Clamp01((m_audioSource.maxDistance - distance) / (m_audioSource.maxDistance - m_audioSource.minDistance)) * volumeMultipiler;
+
+            m_audioSource.volume = volume;
         }
     }
 
-    public void PlaySoundEffect3D(AudioSource audioSource, Vector3 mainPos, Vector3 targetPos, float volumeMultipiler)
+    public void PlaySoundOneShot3D(Vector3 mainPos, float volumeMultipiler)
     {
-        audioSource.PlayOneShot(audioSource.clip);
+        m_audioSource.PlayOneShot(m_audioSource.clip);
 
-        float distance = Vector3.Distance(targetPos, mainPos);
+        float distance = Vector3.Distance(m_ListenerTransform.position, mainPos);
 
-        float volume = Mathf.Clamp01((audioSource.maxDistance - distance) / (audioSource.maxDistance - audioSource.minDistance)) * volumeMultipiler;
+        float volume = Mathf.Clamp01((m_audioSource.maxDistance - distance) / (m_audioSource.maxDistance - m_audioSource.minDistance)) * volumeMultipiler;
 
-        audioSource.volume = volume;
+        m_audioSource.volume = volume;
     }
 }

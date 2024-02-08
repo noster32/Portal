@@ -11,18 +11,28 @@ public class CTurretPoolTest2 : CComponent
     {
         _killAction = killAction;
     }
-
     private void OnTriggerEnter(Collider other)
     {
         if (other.transform.CompareTag("Concret"))
-            _killAction(this);
+        {
+            if (_killAction != null)
+                _killAction(this);
+            else
+                Destroy(this.gameObject);
+        }
     }
 
     public override void FixedUpdate()
     {
         base.FixedUpdate();
 
-        if(_killAction != null && this.transform.position.y < -50f)
-            _killAction(this);
+        if(this.transform.position.y < -50f)
+        {
+            if (_killAction != null)
+                _killAction(this);
+            else
+                Destroy(this.gameObject);
+        }
     }
+
 }

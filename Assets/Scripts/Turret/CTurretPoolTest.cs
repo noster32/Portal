@@ -15,6 +15,7 @@ public class CTurretPoolTest : CComponent
     {
         base.Start();
 
+       
         pool = new ObjectPool<CTurretPoolTest2>(() =>
         {
             return Instantiate(cbullet);

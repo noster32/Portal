@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
@@ -7,24 +8,15 @@ public class CBullet : CComponent
 {
     
     #region public
-
     public float speed = 100.0f;
     public float distance = 500.0f;
-
     #endregion
 
     #region private
-    [SerializeField]
-    private TrailRenderer bulletTrail;
+    [SerializeField] private TrailRenderer bulletTrail;
+
+    private Action<CBullet> bulletDeleteAction;
     #endregion
-
-
-    public override void Start()
-    {
-        base.Start();
-
-    }
-
 
     public override void Update()
     {
@@ -38,28 +30,34 @@ public class CBullet : CComponent
 
         if(this.distance < 0 )
         {
-            Destroy(this.gameObject);
+            if(bulletDeleteAction != null)
+            {
+                bulletDeleteAction(this);
+            }
+            else
+            {
+                Destroy(this.gameObject);
+            }
         }
-
     }
 
     private void OnTriggerEnter(Collider collision)
     {
         if(collision.transform.CompareTag("Concret"))
-            Destroy(gameObject);
+        {
+            if (bulletDeleteAction != null)
+            {
+                bulletDeleteAction(this);
+            }
+            else
+            {
+                Destroy(this.gameObject);
+            }
+        }
     }
 
-    //private void OnTriggerEnter(Collider other)
-    //{
-    //    string otherTag = other.tag;
-    //
-    //
-    //    if(otherTag != "Turret")
-    //    {
-    //        Debug.Log("Collision!");
-    //        Destroy(this.gameObject);
-    //    }
-    //}
-
-
+    public void DeleteBullet(Action<CBullet> deleteAction)
+    {
+        bulletDeleteAction = deleteAction;
+    }
 }

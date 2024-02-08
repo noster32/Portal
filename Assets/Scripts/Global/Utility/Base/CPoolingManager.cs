@@ -6,16 +6,16 @@ using UnityEditor.SearchService;
 using UnityEngine;
 using UnityEngine.Pool;
 
-public abstract class CPoolingManager<T> : CComponent where T : CComponent 
+public abstract class CPoolingManager<T> : CComponent where T : CComponent
 {
     private T prefab;
     private ObjectPool<T> pool;
 
-    private ObjectPool<T> Pool
+    private ObjectPool<T> poolProperty
     {
         get
         {
-            if (pool != null)
+            if (pool == null)
                 throw new InvalidOperationException("You need to call InitPool before using it.");
             return pool;
         }
@@ -26,19 +26,23 @@ public abstract class CPoolingManager<T> : CComponent where T : CComponent
     protected void InitPool(T initPrefab, int initial = 10, int max = 20, bool collectionChecks = false)
     {
         prefab = initPrefab;
-        pool = new ObjectPool<T>
-        {
-
-        }
-    
+        poolProperty = new ObjectPool<T>(
+            ObjectCreate,
+            ObjectActive,
+            ObjectDeactive,
+            ObjectDestroy,
+            collectionChecks,
+            initial,
+            max
+            );
     }
 
-    protected virtual T CreateSetup() => Instantiate(prefab);
-    protected virtual void GetSetup(T obj) => obj.gameObject.SetActive(true);
-    protected virtual void ReleaseSetup(T obj) => obj.gameObject.SetActive(false);
-    protected virtual void DestroySetup(T obj) => Destroy(obj);
+    protected virtual T ObjectCreate() => Instantiate(prefab);
+    protected virtual void ObjectActive(T obj) => obj.gameObject.SetActive(true);
+    protected virtual void ObjectDeactive(T obj) => obj.gameObject.SetActive(false);
+    protected virtual void ObjectDestroy(T obj) => Destroy(obj);
 
-    public T Get() => Pool.Get();
-    public void Release(T obj) => Pool.Release(obj);
+    public T Get() => poolProperty.Get();
+    public void PoolRelease(T obj) => poolProperty.Release(obj);
 
 }
