@@ -18,19 +18,12 @@ public class CPortalPlacement : CComponent
     private CPortalBullet currentPortalBullet;
     #endregion
 
-    #region component
-    #endregion
-
     [SerializeField] private CPortalPair portalPair;
-
-    private AudioSource audioSource;
-    [SerializeField] private AudioClip portalShootBlueClip;
-    [SerializeField] private AudioClip portalShootOrangeClip;
 
     private Transform cameraTransform;
 
     Quaternion portalRotation;
-    bool isTest;
+
     private class PointData
     {
         public Vector3 point { get; set; }
@@ -46,36 +39,11 @@ public class CPortalPlacement : CComponent
     public override void Awake()
     {
         base.Awake();
-    }
 
-    public override void Start()
-    {
-        base.Start();
-
-        audioSource = GetComponent<AudioSource>();
         cameraTransform = Camera.main.transform;
     }
 
-    public override void Update()
-    {
-        base.Update();
-
-        if(Input.GetKeyDown(KeyCode.Mouse0))
-        {
-            FirePortal(0);
-            audioSource.PlayOneShot(portalShootBlueClip);
-        }
-        if(Input.GetKeyDown(KeyCode.Mouse1))
-        {
-            FirePortal(1);
-            audioSource.PlayOneShot(portalShootOrangeClip);
-        }
-
-        //Debug.DrawRay(positionTestCube[1].transform.position, portalRotation * -Vector3.right, Color.yellow);
-        //Debug.DrawRay(positionTestCube[1].transform.position, portalRotation * -Vector3.up, Color.yellow);
-    }
-
-    private void FirePortal(int portalNum)
+    public void FirePortal(int portalNum)
     {
         if(currentPortalBullet != null)
         {

@@ -5,15 +5,19 @@ using Unity.VisualScripting;
 using UnityEditor.Timeline;
 using UnityEngine;
 using UnityEngine.Rendering;
+using UnityEngine.UIElements;
 
 public class CPortalCamera : CComponent
 {
     #region private
-    [SerializeField] private CPortal[] ttPortals = new CPortal[2];
-
-
+    [SerializeField] private CPortalPair portalPair;
     [SerializeField] private Camera portalCamera;
 
+    [SerializeField] private Color colorBlue;
+    [SerializeField] private Color colorOrange;
+
+    private Texture2D defaultTexture1;
+    private Texture2D defaultTexture2;
     private RenderTexture tempTexture1;
     private RenderTexture tempTexture2;
 
@@ -29,41 +33,57 @@ public class CPortalCamera : CComponent
     {
         base.Awake();
 
-        mainCamera = GetComponent<Camera>();
+        mainCamera = Camera.main;
+
         tempTexture1 = new RenderTexture(Screen.width, Screen.height, 24, RenderTextureFormat.ARGB32);
         tempTexture2 = new RenderTexture(Screen.width, Screen.height, 24, RenderTextureFormat.ARGB32);
-        
+
+        defaultTexture1 = new Texture2D(1, 1);
+        defaultTexture1.SetPixel(0, 0, colorBlue);
+        defaultTexture1.Apply();
+
+        defaultTexture2 = new Texture2D(1, 1);
+        defaultTexture2.SetPixel(0, 0, colorOrange);
+        defaultTexture2.Apply();
     }
 
     public override void Start()
     {
         base.Start();
 
-        ttPortals[0].SetTexture(tempTexture1);
-        ttPortals[1].SetTexture(tempTexture2);
+        portalPair.portals[0].SetTexture(defaultTexture1);
+        portalPair.portals[1].SetTexture(defaultTexture2);
     }
 
     private void OnPreRender()
     {
-        if (!ttPortals[0].IsPlaced() || !ttPortals[1].IsPlaced())
+        if (!portalPair.portals[0].IsPlaced() || !portalPair.portals[1].IsPlaced())
         {
+            portalPair.portals[0].SetTexture(defaultTexture1);
+            portalPair.portals[1].SetTexture(defaultTexture2);
             return;
         }
+        else
+        {
+            portalPair.portals[0].SetTexture(tempTexture1);
+            portalPair.portals[1].SetTexture(tempTexture2);
+        }
 
-        if (ttPortals[0].IsRendererVisible())
+        if (portalPair.portals[0].isVisibleFromMainCamera(mainCamera))
         {
             portalCamera.targetTexture = tempTexture1;
             for(int i = iterations - 1; i >= 0; --i)
             {
-                RenderCamera(ttPortals[0], ttPortals[1], i);
+                RenderCamera(portalPair.portals[0], portalPair.portals[1], i);
             }
         }
-        if (ttPortals[1].IsRendererVisible())
+
+        if (portalPair.portals[1].isVisibleFromMainCamera(mainCamera))
         {
             portalCamera.targetTexture = tempTexture2;
             for (int i = iterations - 1; i >= 0; --i)
             {
-                RenderCamera(ttPortals[1], ttPortals[0], i);
+                RenderCamera(portalPair.portals[1], portalPair.portals[0], i);
             }
         }
 
@@ -142,6 +162,4 @@ public class CPortalCamera : CComponent
 
         portalCamera.Render();
     }
-
-
 }

@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq.Expressions;
-using TreeEditor;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -16,14 +15,13 @@ public class CPortal : CComponent
     [SerializeField] private LayerMask placementMask;
     [SerializeField] private GameObject TestWall;
 
-    private bool isPlaced = true;
+    private bool isPlaced = false;
 
     public List<CTeleportObject> teleportObjects = new List<CTeleportObject>();
 
     private Material material;
-    private new Renderer renderer;
+    private Renderer portalRenderer;
 
-    private bool isPlacing;
     #endregion
     #region public
     public Collider wallCollider;
@@ -38,9 +36,9 @@ public class CPortal : CComponent
     {
         base.Awake();
 
-        renderer = GetComponent<Renderer>();
+        portalRenderer = GetComponent<Renderer>();
         audioSource = GetComponent<AudioSource>();
-        material = renderer.material;
+        material = portalRenderer.material;
     }
 
     public override void Start()
@@ -56,6 +54,9 @@ public class CPortal : CComponent
         base.Update();
 
         CSoundLoader.Instance.PlaySound3D(transform.position, 0.25f);
+
+        if (!isPlaced || !otherPortal.isPlaced)
+            return;
 
         for (int i = 0; i < teleportObjects.Count; ++i)
         {
@@ -105,22 +106,26 @@ public class CPortal : CComponent
     }
     private void OnTriggerEnter(Collider other)
     {
+        if (!isPlaced || !otherPortal.isPlaced)
+            return;
+
         var tpObject = other.GetComponent<CTeleportObject> ();
         if(tpObject != null)
         {
             teleportObjects.Add(tpObject);
-            //Debug.Log("Enter : " + transform.name);
             tpObject.EnterPortal(this, otherPortal, wallCollider);
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
+        if (!isPlaced || !otherPortal.isPlaced)
+            return;
+
         var tpObject = other.GetComponent<CTeleportObject> ();
         if(teleportObjects.Contains(tpObject))
         {
             teleportObjects.Remove(tpObject);
-            //Debug.Log("Exit : " + transform.name);
             tpObject.ExitPortal(wallCollider);
         }
     }
@@ -132,10 +137,10 @@ public class CPortal : CComponent
 
     public bool IsRendererVisible()
     {
-        return renderer.isVisible;
+        return portalRenderer.isVisible;
     }
     
-    public void SetTexture(RenderTexture texture)
+    public void SetTexture(Texture texture)
     {
         material.mainTexture = texture;
     }
@@ -147,7 +152,6 @@ public class CPortal : CComponent
         transform.rotation = rot;
         transform.position += transform.forward * 0.001f;
         transform.localScale = Vector3.zero;
-        isPlacing = true;
 
         gameObject.SetActive(true);
         StartCoroutine(LerpPortal(0.8f));
@@ -174,7 +178,6 @@ public class CPortal : CComponent
         }
 
         transform.localScale = Vector3.one;
-        isPlacing = false;
         isPlaced = true;
     }
 
@@ -186,5 +189,12 @@ public class CPortal : CComponent
     public void SetColor(Color color)
     {
         outlineRenderer.material.SetColor("_OutlineColor", color);
+    }
+
+    public bool isVisibleFromMainCamera(Camera camera)
+    {
+        Plane[] planes = GeometryUtility.CalculateFrustumPlanes(camera);
+
+        return GeometryUtility.TestPlanesAABB(planes, portalRenderer.bounds);
     }
 }

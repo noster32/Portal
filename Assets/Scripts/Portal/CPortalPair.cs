@@ -10,7 +10,7 @@ public class CPortalPair : CComponent
     {
         portals = GetComponentsInChildren<CPortal>();
 
-        if(portals.Length != 2 )
+        if(portals.Length != 2)
         {
             Debug.LogError("Portals are not completely contain");
         }
