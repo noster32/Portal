@@ -1,76 +1,79 @@
 using System.Collections;
-using System.Collections.Generic;
-using TreeEditor;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UIElements;
+using UnityEngine.Events;
 
 public class CCubeButton : CComponent
 {
-    [SerializeField] private GameObject target;
+    [Header("Sound")]
+    [SerializeField] private AudioClip enterSound;
+    [SerializeField] private AudioClip exitSound;
 
+    [Header("Event")]
+    [SerializeField] private UnityEvent triggerEnterEvent;
+    [SerializeField] private UnityEvent triggerExitEvent;
 
+    private Coroutine moveCoroutine;
     private Transform buttonTop;
-
+    private AudioSource audioSource;
 
     public override void Awake()
     {
         base.Awake();
 
         buttonTop = transform.GetChild(0);
-        target.GetComponent<GameObject>();
+        audioSource = GetComponent<AudioSource>();
     }
 
 
     private void OnTriggerEnter(Collider other)
     {
-        string objectTag = other.gameObject.tag;
-        string targetTag = target.gameObject.tag;
-        Vector3 movePosition = buttonTop.localPosition - Vector3.down * -0.8f;
-        if (objectTag == "Cube")
+        if (moveCoroutine != null)
         {
-            StartCoroutine(moveButton(buttonTop.localPosition, movePosition, 0.3f));
-            if(targetTag == "Door")
-            {
-                target.GetComponent<CDoor1>().interaction = true;
-            }
+            StopCoroutine(moveCoroutine);
+            moveCoroutine = null;
         }
 
-       
+        Vector3 movePosition = new Vector3(0f, -0.25f, 0f);
+        moveCoroutine = StartCoroutine(moveButton(0.3f, buttonTop.localPosition, movePosition));
+        audioSource.PlayOneShot(enterSound, 0.1f);
+
+        triggerEnterEvent.Invoke();
     }
 
     private void OnTriggerStay(Collider other)
     {
-        //Red light On
+        //Red light slowly off
     }
 
     private void OnTriggerExit(Collider other)
     {
-        string objectTag = other.gameObject.tag;
-        string targetTag = target.gameObject.tag;
-        Vector3 movePosition = buttonTop.localPosition - Vector3.down * 0.8f;
-        if (objectTag == "Cube")
+        if (moveCoroutine != null)
         {
-            StartCoroutine(moveButton(buttonTop.localPosition, movePosition, 0.3f));
-            if (targetTag == "Door")
-            {
-                target.GetComponent<CDoor1>().interaction = false;
-            }
+            StopCoroutine(moveCoroutine);
+            moveCoroutine = null;
         }
 
-        //Bool false
+        Vector3 movePosition = Vector3.zero;
+        moveCoroutine = StartCoroutine(moveButton(0.3f, buttonTop.localPosition, movePosition));
+        audioSource.PlayOneShot(exitSound, 0.1f);
+
+        triggerExitEvent.Invoke();
     }
 
-    IEnumerator moveButton(Vector3 startPos, Vector3 targetPos, float duration)
+    IEnumerator moveButton(float duration, Vector3 startPos, Vector3 endPos)
     {
         float elapsedTime = 0f;
         while (elapsedTime < duration)
         {
+            buttonTop.localPosition = Vector3.Lerp(startPos, endPos, elapsedTime / duration);
             elapsedTime += Time.deltaTime;
-            buttonTop.localPosition = Vector3.Lerp(startPos, targetPos, elapsedTime / duration);
+
             yield return null;
         }
 
+        buttonTop.localPosition = endPos;
+
+        moveCoroutine = null;
         yield return null;
     }
 }

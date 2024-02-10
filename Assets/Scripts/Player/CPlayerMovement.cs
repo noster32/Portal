@@ -47,6 +47,8 @@ public class CPlayerMovement : CTeleportObject
     private AudioSource audioSource;
     #endregion
 
+    [SerializeField] private CPortalPair portalPair;
+
     public enum PlayerState
     {
         IDLE,
@@ -96,6 +98,7 @@ public class CPlayerMovement : CTeleportObject
         Jump();
         Crouch();
         StepCycle();
+        PlayerMove();
 
         PlayerStateChange();
     }
@@ -108,7 +111,7 @@ public class CPlayerMovement : CTeleportObject
             return;
 
         GroundCheck();
-        PlayerMove();
+        
     }
 
     private void GetInput()
@@ -285,6 +288,9 @@ public class CPlayerMovement : CTeleportObject
 
         if (Physics.BoxCast(playerCenter, groundCheckBox, Vector3.down, out hit, Quaternion.identity, maxDis, excludedLayers))
         {
+            if (hit.collider.isTrigger)
+                return;
+
             FloatingPlayer(hit, height, playerCenter, maxDis);
 
             if (hit.collider.tag == "Concret")
@@ -327,9 +333,14 @@ public class CPlayerMovement : CTeleportObject
         RaycastHit hit;
         int portalLayer = LayerMask.GetMask("Portal");
 
+        if (!portalPair.PlacedBothPortal())
+        {
+            return false;
+        }
+
         if(Physics.Raycast(center,Vector3.down, out hit, maxDistacne, portalLayer))
         {
-            if(System.Math.Sign(Vector3.Dot(hit.normal, Vector3.down)) < 0f)
+            if (System.Math.Sign(Vector3.Dot(hit.normal, Vector3.down)) < 0f)
             {
                 isOnGround = false;
                 return true;

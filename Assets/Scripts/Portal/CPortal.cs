@@ -1,10 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq.Expressions;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
-using UnityEngine.EventSystems;
-using UnityEngine.Rendering;
 
 public class CPortal : CComponent
 {
@@ -16,6 +12,9 @@ public class CPortal : CComponent
     [SerializeField] private GameObject TestWall;
 
     private bool isPlaced = false;
+    private bool isLevelPlaced = false;
+
+    private Coroutine lerpCoroutine;
 
     public List<CTeleportObject> teleportObjects = new List<CTeleportObject>();
 
@@ -53,7 +52,7 @@ public class CPortal : CComponent
     {
         base.Update();
 
-        CSoundLoader.Instance.PlaySound3D(transform.position, 0.25f);
+        //CSoundLoader.Instance.PlaySound3D(transform.position, 0.25f);
 
         if (!isPlaced || !otherPortal.isPlaced)
             return;
@@ -147,6 +146,11 @@ public class CPortal : CComponent
 
     public void PlacePortal(Collider collide, Vector3 pos, Quaternion rot)
     {
+        if(lerpCoroutine != null)
+        {
+            StopCoroutine(lerpCoroutine);
+            lerpCoroutine = null;
+        }
         this.wallCollider = collide;
         transform.position = pos;
         transform.rotation = rot;
@@ -154,7 +158,7 @@ public class CPortal : CComponent
         transform.localScale = Vector3.zero;
 
         gameObject.SetActive(true);
-        StartCoroutine(LerpPortal(0.8f));
+        lerpCoroutine = StartCoroutine(LerpPortal(0.8f, Vector3.zero, Vector3.one, true));
 
         audioSource.PlayOneShot(portalOpenClip, 0.1f);
     }
@@ -164,26 +168,51 @@ public class CPortal : CComponent
         isPlaced = false;
         gameObject.SetActive(false);
     }
-    private IEnumerator LerpPortal(float duration)
+
+    public void CleanPortal()
     {
+        if (lerpCoroutine != null)
+        {
+            StopCoroutine(lerpCoroutine);
+            lerpCoroutine = null;
+        }
+        isPlaced = false;
+        lerpCoroutine = StartCoroutine(LerpPortal(0.1f, transform.localScale, Vector3.zero, false));
+    }
+
+    
+    private IEnumerator LerpPortal(float duration, Vector3 start, Vector3 end, bool place)
+    {
+        //placed : 포탈을 설치하려는 경우 true 그렇지 않은 경우 false
         float timeElapsed = 0f;
 
         while (timeElapsed < duration)
         {
             float t = timeElapsed / duration;
-            transform.localScale = Vector3.Lerp(Vector3.zero, Vector3.one, t);
+            transform.localScale = Vector3.Lerp(start, end, t);
             timeElapsed += Time.fixedDeltaTime;
 
             yield return null;
         }
 
-        transform.localScale = Vector3.one;
-        isPlaced = true;
+        transform.localScale = end;
+
+        if(place)
+            isPlaced = true;
+        else
+            gameObject.SetActive(false);
+
+        lerpCoroutine = null;
     }
 
     public bool IsPlaced()
     {
         return isPlaced;
+    }
+
+    public bool IsLevelPlaced()
+    {
+        return isLevelPlaced;
     }
 
     public void SetColor(Color color)

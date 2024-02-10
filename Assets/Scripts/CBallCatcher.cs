@@ -29,7 +29,6 @@ public class CBallCatcher : CComponent
             animation.Play("close");
             if (targetTag == "Door")
             {
-                target.GetComponent<CDoor1>().interaction = true;
             }
         }
     }

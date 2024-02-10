@@ -2,64 +2,67 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
+using UnityEngine.UIElements;
 
 public class CDoor1 : CComponent
 {
-    public bool interaction;
+    private Coroutine moveCoroutine;
 
     private Transform doorR;
     private Transform doorL;
+
+    private AudioSource audioSource;
+    [SerializeField] private AudioClip doorSound;
 
     public override void Awake()
     {
         base.Awake();
 
-        interaction = false;
-
         doorR = transform.GetChild(0);
         doorL = transform.GetChild(1);
+        audioSource = GetComponent<AudioSource>();
     }
 
-    public override void Update()
+    public void DoorOpen()
     {
-        base.Update();
-
-        if(interaction)
+        if(moveCoroutine != null)
         {
-            DoorOpen();
-        }
-        else
-        {
-            DoorClose();
+            StopCoroutine(moveCoroutine);
+            moveCoroutine = null;
         }
 
+        moveCoroutine = StartCoroutine(moveDoor(1.85f, 0.4f));
+        audioSource.PlayOneShot(doorSound, 0.1f);
     }
 
-    void DoorOpen()
+    public void DoorClose()
     {
-        doorR.localPosition = Vector3.Lerp(doorR.localPosition, new Vector3(4.5f, 0f, 0f), Time.deltaTime * 4.0f);
-        doorL.localPosition = Vector3.Lerp(doorL.localPosition, new Vector3(-4.5f, 0f, 0f), Time.deltaTime * 4.0f);
-    }
-
-    void DoorClose()
-    {
-        doorR.localPosition = Vector3.Lerp(doorR.localPosition, new Vector3(0f, 0f, 0f), Time.deltaTime * 3.0f);
-        doorL.localPosition = Vector3.Lerp(doorL.localPosition, new Vector3(0f, 0f, 0f), Time.deltaTime * 3.0f);
-    }
-
-    IEnumerator moveDoor(Vector3 startPos, Vector3 targetPos, float duration)
-    {
-        float elapsedTimeR = 0f;
-        float elapsedTimeL = 0f;
-        while (elapsedTimeR < duration)
+        if (moveCoroutine != null)
         {
-            elapsedTimeR += Time.deltaTime;
-            elapsedTimeL += Time.deltaTime;
-            doorR.localPosition = Vector3.Lerp(startPos, targetPos, elapsedTimeR / duration);
-            doorL.localPosition = Vector3.Lerp(startPos, new Vector3(-targetPos.x, targetPos.y, targetPos.z), elapsedTimeL / duration);
+            StopCoroutine(moveCoroutine);
+            moveCoroutine = null;
+        }
+
+        moveCoroutine = StartCoroutine(moveDoor(0f, 0.4f));
+        audioSource.PlayOneShot(doorSound, 0.1f);
+    }
+
+    IEnumerator moveDoor(float gap, float duration)
+    {
+        float elapsedTime = 0f;
+        while (elapsedTime < duration)
+        {
+            doorR.localPosition = Vector3.Lerp(doorR.localPosition, new Vector3(gap, 0f, 0f), elapsedTime / duration);
+            doorL.localPosition = Vector3.Lerp(doorL.localPosition, new Vector3(-gap, 0f, 0f), elapsedTime / duration);
+            elapsedTime += Time.deltaTime;
+
             yield return null;
         }
 
+        doorR.localPosition = new Vector3(gap, 0f, 0f);
+        doorL.localPosition = new Vector3(-gap, 0f, 0f);
+
+        moveCoroutine = null;
         yield return null;
     }
 }

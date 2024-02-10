@@ -18,6 +18,8 @@ public class CPlayerInteraction : CComponent
     [SerializeField] private AudioClip portalShootBlueClip;
     [SerializeField] private AudioClip portalShootOrangeClip;
 
+    [Header("PortalGun Animation")]
+    [SerializeField] private CPortalGunAnim portalGun;
     private CPortalPlacement portalPlacement;
     private CPlayerGrab playerGrab;
     private CPlayerData playerData;
@@ -47,7 +49,6 @@ public class CPlayerInteraction : CComponent
     {
         base.Update();
 
-        //사운드는 여기서 내는듯 모든 오브젝트 적용인거보니까
         ray = new Ray { origin = mainCamera.transform.position, direction = mainCamera.transform.forward };
 
         if (Input.GetKeyDown(KeyCode.Mouse0))
@@ -55,10 +56,12 @@ public class CPlayerInteraction : CComponent
             if (playerData.isGrab && playerData.grabObject)
             {
                 playerGrab.ReleaseGrab();
+                portalGun.PortalGunRelease();
             }
             else
             {
                 portalPlacement.FirePortal(0);
+                portalGun.PortalGunShoot();
                 audioSource.PlayOneShot(portalShootBlueClip);
             }
         }
@@ -68,10 +71,12 @@ public class CPlayerInteraction : CComponent
             if (playerData.isGrab && playerData.grabObject)
             {
                 playerGrab.ReleaseGrab();
+                portalGun.PortalGunRelease();
             }
             else
             {
                 portalPlacement.FirePortal(1);
+                portalGun.PortalGunShoot();
                 audioSource.PlayOneShot(portalShootOrangeClip);
             }
         }
@@ -85,6 +90,7 @@ public class CPlayerInteraction : CComponent
             if(playerData.isGrab && playerData.grabObject)
             {
                 playerGrab.ReleaseGrab();
+                portalGun.PortalGunRelease();
             }
             else if(!CPlayerData.GetInstance().isGrab && !CPlayerData.GetInstance().grabObject)
             {
@@ -118,6 +124,7 @@ public class CPlayerInteraction : CComponent
                 Debug.Log("not worked");
                 break;
             default:
+                portalGun.PortalGunGrab();
                 playerGrab.GrabObject(h); 
                 break;
         }

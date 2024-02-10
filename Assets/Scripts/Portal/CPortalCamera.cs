@@ -57,7 +57,7 @@ public class CPortalCamera : CComponent
 
     private void OnPreRender()
     {
-        if (!portalPair.portals[0].IsPlaced() || !portalPair.portals[1].IsPlaced())
+        if (!portalPair.PlacedBothPortal())
         {
             portalPair.portals[0].SetTexture(defaultTexture1);
             portalPair.portals[1].SetTexture(defaultTexture2);

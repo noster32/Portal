@@ -16,4 +16,9 @@ public class CPortalPair : CComponent
         }
     }
 
+    public bool PlacedBothPortal()
+    {
+        return portals[0].IsPlaced() && portals[1].IsPlaced();
+    }
+
 }

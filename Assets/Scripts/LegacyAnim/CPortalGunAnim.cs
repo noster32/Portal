@@ -6,7 +6,7 @@ public class CPortalGunAnim : CComponent
 {
     Animation portalGunAnim;
 
-    private float portalgunDrawTime = 1.6f;
+    [SerializeField] private float portalgunDrawTime = 1.0f;
 
     public override void Awake()
     {
@@ -26,18 +26,7 @@ public class CPortalGunAnim : CComponent
         }
     }
 
-    public override void Update()
-    {
-        base.Update();
-
-        if (Input.GetKeyDown(KeyCode.Mouse0) || Input.GetKeyDown(KeyCode.Mouse1))
-        {
-            PortalGunShoot();
-        }
-        
-    }
-
-    private void PortalGunShoot()
+    public void PortalGunShoot()
     {
         portalGunAnim.Play("portalgun_fire1");
     }
