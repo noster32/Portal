@@ -20,7 +20,6 @@ public class CTurretFire : CComponent
 
     [Header("Fire Setting")]
     [SerializeField] private float fireRate = 0.1f;
-    [SerializeField] private float spreadAngle = 3f;
     #endregion
 
     public override void Start()
@@ -35,23 +34,30 @@ public class CTurretFire : CComponent
         StartCoroutine(AutoFire(fireRate));
     }
 
+    public override void Update()
+    {
+        base.Update();
+    }
+
     IEnumerator AutoFire(float rate)
     {
         while (true)
         {
             if (turret.GetState == CTurret.TurretState.ATTACK)
             {
-                bulletSpawn.FireBullet();
+                bulletSpawn.FIreBulletRay();
                 turretParticle.PlayMuzzleEffect();
-                //turretSound.GunSoundTest(turretGunR);
+                turretSound.PlayTurretGunSound();
             }
             else if(turret.GetState == CTurret.TurretState.FALLDOWN)
             {
-                bulletSpawn.FallDownFireBullet();
+                bulletSpawn.FallDownFireBulletRay();
                 turretParticle.PlayMuzzleEffect();
+                turretSound.PlayTurretGunSound();
             }
 
             yield return new WaitForSeconds(rate);
         }
     }
+
 }

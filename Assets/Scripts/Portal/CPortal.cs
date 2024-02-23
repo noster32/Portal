@@ -5,7 +5,7 @@ using UnityEngine;
 public class CPortal : CComponent
 {
     #region private
-    [SerializeField] public CPortal otherPortal;
+    public CPortal otherPortal;
     [SerializeField] private Renderer outlineRenderer;
     [SerializeField] private Color portalColor;
     [SerializeField] private LayerMask placementMask;
@@ -107,8 +107,13 @@ public class CPortal : CComponent
     {
         if (!isPlaced || !otherPortal.isPlaced)
             return;
+        Debug.Log(other.gameObject);
+        CTeleportObject tpObject;
+        if(other.tag == "Turret")
+            tpObject = other.GetComponentInParent<CTeleportObject>();
+        else
+            tpObject = other.GetComponent<CTeleportObject> ();
 
-        var tpObject = other.GetComponent<CTeleportObject> ();
         if(tpObject != null)
         {
             teleportObjects.Add(tpObject);
@@ -121,7 +126,13 @@ public class CPortal : CComponent
         if (!isPlaced || !otherPortal.isPlaced)
             return;
 
-        var tpObject = other.GetComponent<CTeleportObject> ();
+        CTeleportObject tpObject;
+
+        if (other.tag == "Turret")
+            tpObject = other.GetComponentInParent<CTeleportObject>();
+        else
+            tpObject = other.GetComponent<CTeleportObject> ();
+
         if(teleportObjects.Contains(tpObject))
         {
             teleportObjects.Remove(tpObject);

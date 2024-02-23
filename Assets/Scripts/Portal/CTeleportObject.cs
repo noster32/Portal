@@ -1,9 +1,4 @@
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq.Expressions;
-using TreeEditor;
-using Unity.VisualScripting;
-using UnityEditor;
 using UnityEngine;
 
 public class CTeleportObject : CComponent
@@ -41,6 +36,8 @@ public class CTeleportObject : CComponent
     [HideInInspector] public bool isInPortal;
     [HideInInspector] public bool portalPlacedFloor;
     private bool isPlayer;
+    private bool isTurret;
+    private bool isBullet;
 
     private CPlayerData playerData;
 
@@ -49,8 +46,10 @@ public class CTeleportObject : CComponent
         base.Awake();
 
         isPlayer = transform.tag == "Player";
+        isTurret = transform.tag == "Turret";
+        isBullet = transform.tag == "Bullet";
 
-        if (!isPlayer)
+        if (!isPlayer && !isTurret && !isBullet)
         {
             grapicsClone = new GameObject();
             grapicsClone.SetActive(false);
@@ -68,10 +67,14 @@ public class CTeleportObject : CComponent
             mouseLook = GetComponent<CPlayerMouseLook>();
         }
 
-        collider = GetComponent<Collider>();
+        if(isTurret)
+            collider = GetComponentInChildren<Collider>();
+        else
+            collider = GetComponent<Collider>();
+
         objRigidbody = GetComponent<Rigidbody>();
 
-        if (!objRigidbody)
+        if (!objRigidbody && !isBullet)
             objRigidbody = grapicsClone.GetComponent<Rigidbody>();
     }
 
@@ -79,7 +82,8 @@ public class CTeleportObject : CComponent
     {
         base.Start();
 
-        playerData = CPlayerData.GetInstance();
+        if(isPlayer)
+            playerData = CPlayerData.GetInstance();
     }
 
     public override void Update()
@@ -99,7 +103,7 @@ public class CTeleportObject : CComponent
             return;
         }
 
-        if(grapicsClone.activeSelf)
+        if(grapicsClone != null && grapicsClone.activeSelf)
         {
             Transform enterPortalTransform = portal1.transform;
             Transform exitPortalTransform = portal2.transform;
@@ -139,9 +143,12 @@ public class CTeleportObject : CComponent
             transform.rotation = exitPortalTransform.rotation * relativeObjRot;
         }
 
-        Vector3 relativeObjVel = enterPortalTransform.InverseTransformDirection(objRigidbody.velocity);
-        relativeObjVel = reverse * relativeObjVel;
-        objRigidbody.velocity = exitPortalTransform.TransformDirection(relativeObjVel);
+        if(objRigidbody)
+        {
+            Vector3 relativeObjVel = enterPortalTransform.InverseTransformDirection(objRigidbody.velocity);
+            relativeObjVel = reverse * relativeObjVel;
+            objRigidbody.velocity = exitPortalTransform.TransformDirection(relativeObjVel);
+        }
 
         if (isPlayer && playerData.grabObject)
         {
@@ -226,13 +233,30 @@ public class CTeleportObject : CComponent
                 GetAnimator(grapicsObject, grapicsClone);
             }
         }
-        else
+        else if(isTurret && grapicsClone == null)
         {
-            grapicsClone.SetActive(true);
+            Debug.Log("test");
+            grapicsClone = Instantiate(grapicsObject);
+            Destroy(grapicsClone.transform.GetChild(1).gameObject);
+            grapicsClone.transform.parent = grapicsObject.transform;
+            grapicsClone.transform.GetChild(2).gameObject.layer = LayerMask.NameToLayer("PlayerClone");
+            //grapicsObject.transform.local
+
+            originalMaterials = GetMaterials(grapicsObject);
+            cloneMaterials = GetMaterials(grapicsClone);
+            if(grapicsObject.tag == "Turret")
+            {
+                GetAnimator(grapicsObject, grapicsClone);
+            }
         }
+        else
+            grapicsClone.SetActive(true);
 
         if(wallCollider)
+        {
+            Debug.Log(collider.gameObject);
             Physics.IgnoreCollision(collider, wallCollider, true);
+        }
     }
 
     public void ExitPortal(Collider wallCollider)
@@ -240,8 +264,9 @@ public class CTeleportObject : CComponent
         if(wallCollider)
             Physics.IgnoreCollision(collider, wallCollider, false);
         isInPortal = false;
-        grapicsClone.SetActive(false);
-        
+        if(!isBullet)
+            grapicsClone.SetActive(false);
+        Debug.Log("exit");
     }
 
     Material[] GetMaterials(GameObject g)

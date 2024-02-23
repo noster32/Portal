@@ -10,12 +10,17 @@ public class CBallLauncher : CComponent
     #endregion
 
     [SerializeField] private GameObject BallObj;
+    [SerializeField] private CBall comBall;
+    [SerializeField] CBallCatcher comBallCatcher;
 
     Animation aLauncher;
     AnimationEvent launcherOpenEvent;
     AnimationEvent launcherCloseEvent;
 
     MeshCollider launcherCollider;
+
+    private GameObject replicateBall;
+    private Rigidbody replicateBallRigidbody;
 
     public override void Awake()
     {
@@ -29,10 +34,10 @@ public class CBallLauncher : CComponent
         launcherOpenEvent.time = aLauncher.GetClip("open").length;
         aLauncher.GetClip("open").AddEvent(launcherOpenEvent);
 
-        launcherCloseEvent = new AnimationEvent();
-        launcherCloseEvent.functionName = "BallClose";
-        launcherCloseEvent.time = aLauncher.GetClip("close").length;
-        aLauncher.GetClip("close").AddEvent(launcherCloseEvent);
+        //launcherCloseEvent = new AnimationEvent();
+        //launcherCloseEvent.functionName = "BallClose";
+        //launcherCloseEvent.time = aLauncher.GetClip("close").length;
+        //aLauncher.GetClip("close").AddEvent(launcherCloseEvent);
 
         launcherCollider = GetComponent<MeshCollider>();
     }
@@ -40,38 +45,40 @@ public class CBallLauncher : CComponent
     {
         base.Update();
 
-        if (!ballConnect)
+        if (!comBallCatcher.GetcomBallConnected() && !comBall.isActiveAndEnabled)
         {
-            GameObject obj = GameObject.Find("Ball(Clone)");
-
-            if (obj == null)
-            {
-                launcherCollider.enabled = false;
-                aLauncher.Play("open");
-            }
+            aLauncher.Play("open");
         }
 
+        if(Input.GetKeyDown(KeyCode.O))
+        {
+            aLauncher.Play("open");
+        }
     }
 
-    void BallLaunch()
+    private void BallLaunch()
     {
-        GameObject Ball = Instantiate(BallObj, transform.position + transform.forward * 0.7f, transform.rotation);
-        
+        comBall.transform.position = transform.position + transform.forward * 0.7f;
+        comBall.SetForward(transform.forward);
+        comBall.gameObject.SetActive(true);
+        comBall.SetIsSpawnedTrue();
+        comBall.StartSound();
+
         float BallSpeed = 500.0f;
+
+        Vector3 BallLaunch = comBall.transform.TransformDirection(Vector3.forward);
+
+        comBall.ballRigidbody.AddForce(BallSpeed * BallLaunch);
         
-        Vector3 BallLaunch = Ball.transform.TransformDirection(Vector3.forward);
-        
-        Ball.GetComponent<Rigidbody>().AddForce(BallSpeed * BallLaunch);
+        Physics.IgnoreCollision(comBall.colider, launcherCollider, true);
 
         aLauncher.Play("close");
-        
-        Destroy(Ball, 15f);
+
+        comBall.StartAlphaCoroutine(3f);
     }
 
     void BallClose()
     {
-        launcherCollider.enabled = true;
-
         aLauncher.Play("idle_closed");
     }
 }

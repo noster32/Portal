@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class CEnemyFieldOfView : CComponent
@@ -7,19 +6,29 @@ public class CEnemyFieldOfView : CComponent
     #region public
 
     public float radius;
-    [Range(0, 360)]
-    public float angle;
+
+    [Range(0, 360)] public float angle;
 
     public GameObject playerRef;
 
-    public LayerMask targetMask;
+    public LayerMask playerMask;
+    public LayerMask portalMask;
     public LayerMask obstructionMask;
 
     public bool canSeePlayer;
 
-    public float AngleToTarget;
+    public bool seeThroughPortal;
+
+    public float angleToTarget;
+
+    [SerializeField] CPortalPair portalPair;
     #endregion
 
+
+    private Vector3 relativeTurretPosition;
+    private Vector3 relativeTurretDirection;
+
+    private CPortal nearPortal;
     public override void Start()
     {
         base.Start();
@@ -34,13 +43,33 @@ public class CEnemyFieldOfView : CComponent
 
         if(canSeePlayer)
         {
-            Vector3 directionToTarget = (transform.position - playerRef.transform.position).normalized;
-            Vector3 targetDirection = transform.InverseTransformDirection(playerRef.transform.position - transform.position);
-
-            AngleToTarget = Vector3.Angle(-transform.forward, directionToTarget);
-            if (targetDirection.x < 0)
+            if(seeThroughPortal)
             {
-                AngleToTarget = -AngleToTarget;
+                Vector3 relativePos = nearPortal.otherPortal.transform.InverseTransformPoint(playerRef.transform.position);
+                relativePos = Quaternion.Euler(0f, 180f, 0f) * relativePos;
+                Vector3 relativePlayerPos = nearPortal.transform.TransformPoint(relativePos);
+
+                Vector3 directionToTarget = (transform.position - relativePlayerPos).normalized;
+                Vector3 targetDirection = transform.InverseTransformDirection(relativePlayerPos - transform.position);
+
+                Debug.DrawLine(transform.position, relativePlayerPos, Color.blue, 2f);
+
+                angleToTarget = Vector3.Angle(-transform.forward, directionToTarget);
+                if (targetDirection.x < 0)
+                {
+                    angleToTarget = -angleToTarget;
+                }
+            }
+            else
+            {
+                Vector3 directionToTarget = (transform.position - playerRef.transform.position).normalized;
+                Vector3 targetDirection = transform.InverseTransformDirection(playerRef.transform.position - transform.position);
+
+                angleToTarget = Vector3.Angle(-transform.forward, directionToTarget);
+                if (targetDirection.x < 0)
+                {
+                    angleToTarget = -angleToTarget;
+                }
             }
         }
     }
@@ -59,30 +88,102 @@ public class CEnemyFieldOfView : CComponent
     
     private void FieldOfViewCheck()
     {
-        Collider[] rangeChecks = Physics.OverlapSphere(transform.position, radius, targetMask);
+        Collider[] playerCheck = Physics.OverlapSphere(transform.position, radius, playerMask);
 
-        if (rangeChecks.Length != 0)
+        if (playerCheck.Length != 0)
         {
-            Transform target = rangeChecks[0].transform;
+            Transform target = playerCheck[0].transform;
             Vector3 directionToTarget = (target.position - transform.position).normalized;
-
             
             if (Vector3.Angle(transform.forward, directionToTarget) < angle / 2)
             { 
                 float distanceToTarget = Vector3.Distance(transform.position, target.position);
-
-                if (!Physics.Raycast(transform.position, directionToTarget, distanceToTarget, obstructionMask))
+                if (Physics.Raycast(transform.position + new Vector3(0f, 1f, 0f), directionToTarget, distanceToTarget, obstructionMask))
                 {
-                    canSeePlayer = true;
+                    seeThroughPortal = false;
+                    canSeePlayer = false;
                 }
                 else
-                    canSeePlayer = false;
+                {
+                    seeThroughPortal = false;
+                    canSeePlayer = true;
+                }
             }
             else
-                canSeePlayer = false;
+            {
+                if (!portalPair.PlacedBothPortal())
+                {
+                    seeThroughPortal = false;
+                    canSeePlayer = false;
+                    return;
+                }
+                PlayerCheckThroughPortal();
+            }
 
         }
-        else if (canSeePlayer)
+        else
+        {
+            if (canSeePlayer)
+                canSeePlayer = false;
+
+            if (!portalPair.PlacedBothPortal())
+                return;
+
+            PlayerCheckThroughPortal();
+        }
+    }
+
+    private void PlayerCheckThroughPortal()
+    {
+        Collider[] portalCheck = Physics.OverlapSphere(transform.position, radius, portalMask);
+
+        if (portalCheck.Length != 0)
+        {
+            float distance0 = Vector3.Distance(transform.position, portalPair.portals[0].transform.position);
+            float distance1 = Vector3.Distance(transform.position, portalPair.portals[1].transform.position);
+
+            nearPortal = distance0 < distance1 ? portalPair.portals[0] : portalPair.portals[1];
+
+            Vector3 relativePos = nearPortal.transform.InverseTransformPoint(transform.position);
+            relativePos = Quaternion.Euler(0f, 180f, 0f) * relativePos;
+            relativeTurretPosition = nearPortal.otherPortal.transform.TransformPoint(relativePos);
+
+            Collider[] playerCheckOtherPortal = Physics.OverlapSphere(relativeTurretPosition, radius, playerMask);
+
+            if (playerCheckOtherPortal.Length != 0)
+            {
+                Transform target = playerCheckOtherPortal[0].transform;
+                Vector3 directionToTarget = (target.position - relativeTurretPosition).normalized;
+
+                Vector3 relativeDir = nearPortal.transform.InverseTransformDirection(transform.forward);
+                relativeDir = Quaternion.Euler(0f, 180f, 0f) * relativeDir;
+                relativeTurretDirection = nearPortal.otherPortal.transform.TransformDirection(relativeDir);
+
+                if (Vector3.Angle(relativeTurretDirection, directionToTarget) < angle / 2)
+                {
+                    float distanceToTarget = Vector3.Distance(relativeTurretPosition, target.position);
+                    if (Physics.Raycast(relativeTurretPosition + new Vector3(0f, 1f, 0f), directionToTarget, distanceToTarget, portalMask))
+                    {
+                        seeThroughPortal = true;
+                        canSeePlayer = true;
+                    }
+                    else
+                    {
+                        seeThroughPortal = false;
+                        canSeePlayer = false;
+                    }
+                }
+                else
+                {
+                    seeThroughPortal = false;
+                    canSeePlayer = false;
+                }
+            }
+        }
+        else
+        {
+            seeThroughPortal = false;
             canSeePlayer = false;
+        }
     }
 }

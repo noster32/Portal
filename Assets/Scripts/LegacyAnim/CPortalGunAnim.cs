@@ -7,11 +7,14 @@ public class CPortalGunAnim : CComponent
     Animation portalGunAnim;
 
     [SerializeField] private float portalgunDrawTime = 1.0f;
-
+    [SerializeField] private AudioClip fizzleSound;
+    [SerializeField] private AudioClip grabSound;
+    private AudioSource audioSource;
     public override void Awake()
     {
         base.Awake();
 
+        audioSource = GetComponent<AudioSource>();
         portalGunAnim = GetComponent<Animation>();
         portalGunAnim["portalgun_draw"].speed = portalgunDrawTime;
     }
@@ -20,6 +23,9 @@ public class CPortalGunAnim : CComponent
     {
         base.Start();
 
+        audioSource.clip = grabSound;
+        audioSource.loop = true;
+        
         if(portalGunAnim) 
         {
             PortalGunDrawUp();
@@ -39,15 +45,18 @@ public class CPortalGunAnim : CComponent
     public void PortalGunFizzle()
     {
         portalGunAnim.Play("portalgun_fizzle");
+        audioSource.PlayOneShot(fizzleSound, 0.1f);
     }
 
     public void PortalGunGrab()
     {
         portalGunAnim.Play("portalgun_pickup");
+        audioSource.Play();
     }
 
     public void PortalGunRelease()
     {
         portalGunAnim.Play("portalgun_release");
+        audioSource.Stop();
     }
 }

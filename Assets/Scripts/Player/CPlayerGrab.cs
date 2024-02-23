@@ -1,7 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class CPlayerGrab : CComponent
@@ -12,7 +8,6 @@ public class CPlayerGrab : CComponent
     private CPlayerData playerData;
 
     private Transform mainCameraTransform;
-    private Vector3 originalRot;
 
     public override void Awake()
     {
@@ -44,8 +39,10 @@ public class CPlayerGrab : CComponent
         playerData.grabObject.objRigidbody.useGravity = false;
         playerData.grabObject.playerTransform = transform;
 
-        if (playerData.grabObject.tag == "Cube")
-            originalRot = transform.InverseTransformDirection(playerData.grabObject.transform.forward);
+        if (playerData.grabObject.tag == "Cube" || playerData.grabObject.tag == "Turret")
+            playerData.grabObject.originalRotation = transform.InverseTransformDirection(playerData.grabObject.transform.forward);
+        else
+            playerData.grabObject.GrabObjectRotationLerp();
     }
 
     public void ReleaseGrab()
@@ -63,14 +60,26 @@ public class CPlayerGrab : CComponent
     {
         GameObject hitObject = hit.collider.gameObject;
 
-        if(hit.collider.gameObject.layer == LayerMask.GetMask("Portal"))
+        if(hitObject.layer == LayerMask.NameToLayer("Portal"))
         {
             portal = hitObject.GetComponent<CPortal>();
 
             TryGrabObjectThroughPortal(hit.point, hit.distance);
         }
+        else if(hitObject.layer == LayerMask.NameToLayer("Turret"))
+        {
+            playerData.grabObject = hitObject.GetComponentInParent<CGrabableObject>();
+
+            if (playerData.grabObject)
+            {
+                GrabObjectInit();
+            }
+            else
+                Debug.Log("Turret grab fail");
+        }
         else
         {
+            Debug.Log(hitObject);
             playerData.grabObject = hitObject.GetComponent<CGrabableObject>();
 
             if (playerData.grabObject)
@@ -109,11 +118,5 @@ public class CPlayerGrab : CComponent
         Vector3 grabPos = mainCameraTransform.TransformPoint(0f, 0f, 2f);
 
         playerData.grabObject.grabPosition = grabPos;
-
-        if(!playerData.grabObject.isCollide)
-        {
-            if (playerData.grabObject.tag == "Cube")
-                playerData.grabObject.transform.forward = transform.TransformDirection(originalRot);
-        } 
     }
 }

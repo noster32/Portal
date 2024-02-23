@@ -12,6 +12,7 @@ public class CPlayerInteraction : CComponent
 
     [Header("Interaction Sound")]
     [SerializeField] private AudioClip interactionSound;
+    [SerializeField] private AudioClip grabSound;
     [SerializeField] private AudioClip interactionFailSound;
 
     [Header("Portal Shoot Sound")]
@@ -43,6 +44,9 @@ public class CPlayerInteraction : CComponent
         base.Start();
 
         playerData = CPlayerData.GetInstance();
+
+        //audioSource.clip = grabSound;
+        //audioSource.loop = true;
     }
 
     public override void Update()
@@ -83,7 +87,7 @@ public class CPlayerInteraction : CComponent
 
         if (Input.GetKeyDown(KeyCode.E))
         {
-            int includedLayer = LayerMask.GetMask("InteractionObject", "Portal");
+            int includedLayer = LayerMask.GetMask("InteractionObject", "Portal", "Turret");
 
             RaycastHit hit;
 
@@ -91,6 +95,7 @@ public class CPlayerInteraction : CComponent
             {
                 playerGrab.ReleaseGrab();
                 portalGun.PortalGunRelease();
+                audioSource.Stop();
             }
             else if(!CPlayerData.GetInstance().isGrab && !CPlayerData.GetInstance().grabObject)
             {
@@ -125,7 +130,8 @@ public class CPlayerInteraction : CComponent
                 break;
             default:
                 portalGun.PortalGunGrab();
-                playerGrab.GrabObject(h); 
+                playerGrab.GrabObject(h);
+                audioSource.Play();
                 break;
         }
     }

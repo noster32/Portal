@@ -151,7 +151,7 @@ public class CPlayerMovement : CTeleportObject
         if (isOnGround)
             objRigidbody.velocity = new Vector3(moveVector.x, objRigidbody.velocity.y, moveVector.z);
         else if (!isOnGround)
-            objRigidbody.AddForce(airMoveVector * 100f);
+            objRigidbody.AddForce(airMoveVector * 10f);
     }
 
     private void PlayerRotation()
@@ -352,7 +352,6 @@ public class CPlayerMovement : CTeleportObject
 
     private void OnDrawGizmos()
     {
-        
         RaycastHit hit2;
         if(playerCollider != null)
         {
@@ -370,7 +369,6 @@ public class CPlayerMovement : CTeleportObject
                 Gizmos.DrawWireCube(playerCenter + Vector3.down * hit2.distance, groundCheckBox);
             }
         }
-        
     }
 
     private void PlayerStateChange()

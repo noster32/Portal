@@ -5,15 +5,9 @@ using UnityEngine;
 public class CSoundManager : CComponent
 {
 
-    public override void Start()
+    public override void Awake()
     {
-        base.Start();
-    }
-
-
-    public override void Update()
-    {
-        base.Update();
+        base.Awake();
 
     }
 }

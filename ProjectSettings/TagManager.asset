@@ -14,6 +14,9 @@ TagManager:
   - PortalO
   - Metal
   - Toilet
+  - ComBall
+  - Bullet
+  - Glass
   layers:
   - Default
   - TransparentFX
@@ -28,8 +31,8 @@ TagManager:
   - Ground
   - PlayerHand
   - InteractionObject
-  - 
-  - 
+  - Bullet
+  - Turret
   - 
   - 
   - 

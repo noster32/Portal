@@ -1,13 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
+using System;
 using UnityEngine;
 
 public class CBulletSpawn : CPoolingManager<CBullet>
 {
     #region component
 
-    CTurret turret;
     CEnemyFieldOfView enemyFOV;
 
     #endregion
@@ -20,35 +17,135 @@ public class CBulletSpawn : CPoolingManager<CBullet>
     [SerializeField] private Transform turretGunR;
 
     [SerializeField] private int spreadAngle = 30;
+    [SerializeField] private float maxLifeTime = 5f;
+    [SerializeField] private float maxRayLength = 50f;
+
     #endregion
 
+    Ray rayL;
+    Ray rayR;
+
+    public override void Awake()
+    {
+        base.Awake();
+
+        enemyFOV = GetComponent<CEnemyFieldOfView>();
+    }
     public override void Start()
     {
         base.Start();
 
-        turret = GetComponent<CTurret>();
-        enemyFOV = GetComponent<CEnemyFieldOfView>();
-
         InitPool(bulletPrefab, 50, 100, false);
+    }
+
+    public void CreateBullet(CBullet bullet, Vector3 pos, Vector3 vel, Vector3 rot, Vector3 endPos)
+    {
+        bullet.transform.parent = parent;
+        bullet.transform.position = pos;
+        bullet.transform.rotation = Quaternion.Euler(rot);
+        bullet.initialPosition = pos;
+        bullet.initialVelocity = vel;
+        bullet.endPosition = endPos;
+        bullet.time = 0f;
+        bullet.maxLifeTime = this.maxLifeTime;
+        
+        bullet.DeleteBullet(KillBullet);
+    }
+
+    public void FIreBulletRay()
+    {
+        Vector3 bulletRotationLeft;
+        Vector3 bulletRotationRight;
+
+        Vector3 destinationLeft;
+        Vector3 destinationRight;
+
+        bulletRotationLeft = RandomSpreadCalVector3();
+        bulletRotationRight = RandomSpreadCalVector3();
+
+        rayL.origin = turretGunL.position;
+        rayL.direction = bulletRotationLeft;
+        rayR.origin = turretGunR.position;
+        rayR.direction = bulletRotationRight;
+
+        destinationLeft = rayL.origin + rayL.direction * maxRayLength;
+        //Debug.DrawLine(rayL.origin, destinationLeft, Color.yellow, 2f);
+
+        destinationRight = rayR.origin + rayR.direction * maxRayLength;
+        //Debug.DrawLine(rayR.origin, destinationRight, Color.yellow, 2f);
+        
+        Func<Vector3, Vector3, float, Vector3> velocityCal = (start, end, speed) => (end - start).normalized * speed;
+
+        var bulletLeft = Get();
+        var bulletRight = Get();
+
+        Vector3 velocityL = velocityCal(rayL.origin, destinationLeft, 50f);
+        Vector3 velocityR = velocityCal(rayL.origin, destinationRight, 50f);
+
+        CreateBullet(bulletLeft, rayL.origin, velocityL, bulletRotationLeft, destinationLeft);
+        CreateBullet(bulletRight, rayR.origin, velocityR, bulletRotationRight, destinationRight);
+    }
+
+    public void FallDownFireBulletRay()
+    {
+        Vector3 bulletRotationLeft;
+        Vector3 bulletRotationRight;
+
+        Vector3 destinationLeft;
+        Vector3 destinationRight;
+
+        float randomRotationX = UnityEngine.Random.Range(-10f, 10f);
+        float randomRotationY = UnityEngine.Random.Range(-10f, 10f);
+
+        Quaternion randomSpread = Quaternion.Euler(randomRotationX, randomRotationY, 0f);
+
+        bulletRotationLeft = randomSpread * transform.forward;
+        bulletRotationRight = randomSpread * transform.forward;
+
+        rayL.origin = turretGunL.position;
+        rayL.direction = bulletRotationLeft;
+        rayR.origin = turretGunR.position;
+        rayR.direction = bulletRotationRight;
+
+        destinationLeft = rayL.origin + rayL.direction * maxRayLength;
+        destinationRight = rayR.origin + rayR.direction * maxRayLength;
+
+        Func<Vector3, Vector3, float, Vector3> velocityCal = (start, end, speed) => (end - start).normalized * speed;
+
+        var bulletLeft = Get();
+        var bulletRight = Get();
+
+        Vector3 velocityL = velocityCal(rayL.origin, destinationLeft, 50f);
+        Vector3 velocityR = velocityCal(rayL.origin, destinationRight, 50f);
+
+        CreateBullet(bulletLeft, rayL.origin, velocityL, bulletRotationLeft, destinationLeft);
+        CreateBullet(bulletRight, rayR.origin, velocityR, bulletRotationRight, destinationRight);
     }
 
     public void FireBullet()
     {
+        Quaternion bulletRotationLeft = Quaternion.identity;
+        Quaternion bulletRotationRight = Quaternion.identity;
+
         var bulletLeft = Get();
         var bulletRight = Get();
-        Quaternion bulletRotation = Quaternion.identity;
+
         bulletLeft.distance = 500f;
         bulletRight.distance = 500f;
         
         bulletLeft.transform.parent = parent;
         bulletRight.transform.parent = parent;
         
+        bulletLeft.transform.localScale = new Vector3(2f, 2f, 2f);
+        bulletRight.transform.localScale = new Vector3(2f, 2f, 2f);
+
         bulletLeft.transform.position = turretGunL.position;
         bulletRight.transform.position = turretGunR.position;
         
-        bulletRotation = RandomSpreadCal();
-        bulletLeft.transform.rotation = bulletRotation;
-        bulletRight.transform.rotation = bulletRotation;
+        bulletRotationLeft = RandomSpreadCal();
+        bulletRotationRight = RandomSpreadCal();
+        bulletLeft.transform.rotation = bulletRotationLeft;
+        bulletRight.transform.rotation = bulletRotationRight;
         
         bulletLeft.DeleteBullet(KillBullet);
         bulletRight.DeleteBullet(KillBullet);
@@ -59,8 +156,8 @@ public class CBulletSpawn : CPoolingManager<CBullet>
         var bulletLeft = Get();
         var bulletRight = Get();
 
-        float randomRotationX = Random.Range(-10f, 10f);
-        float randomRotationY = Random.Range(-10f, 10f);
+        float randomRotationX = UnityEngine.Random.Range(-10f, 10f);
+        float randomRotationY = UnityEngine.Random.Range(-10f, 10f);
 
         Quaternion randomSpread = Quaternion.Euler(randomRotationX, randomRotationY, 0f);
 
@@ -85,18 +182,37 @@ public class CBulletSpawn : CPoolingManager<CBullet>
         Quaternion bulletSpread = Quaternion.identity;
         Quaternion enemyDirection = Quaternion.identity;
 
-        float randomAngle = Random.Range(0, Mathf.PI * 2f);
+        float randomAngle = UnityEngine.Random.Range(0, Mathf.PI * 2f);
 
         Vector3 rotateVector = new Vector3(Mathf.Cos(randomAngle), Mathf.Sin(randomAngle), 0f);
 
-        Quaternion spreadRotate = Quaternion.AngleAxis(Random.Range(0, spreadAngle), rotateVector);
+        Quaternion spreadRotate = Quaternion.AngleAxis(UnityEngine.Random.Range(0, spreadAngle), rotateVector);
 
-        enemyDirection = Quaternion.Euler(0f, enemyFOV.AngleToTarget, 0f);
+        enemyDirection = Quaternion.Euler(0f, enemyFOV.angleToTarget + transform.rotation.eulerAngles.y, 0f);
 
         bulletSpread = enemyDirection * spreadRotate;
 
         return bulletSpread;
     }
+
+    private Vector3 RandomSpreadCalVector3()
+    {
+        Vector3 bulletSpread = Vector3.zero;
+        Quaternion enemyDirection = Quaternion.identity;
+        
+        float randomAngle = UnityEngine.Random.Range(0, Mathf.PI * 2f);
+
+        Vector3 rotateVector = new Vector3(Mathf.Cos(randomAngle), Mathf.Sin(randomAngle), 0f);
+
+        Quaternion spreadRotate = Quaternion.AngleAxis(UnityEngine.Random.Range(0, spreadAngle), rotateVector);
+
+        enemyDirection = Quaternion.Euler(0f, enemyFOV.angleToTarget + transform.eulerAngles.y, 0f);
+
+        bulletSpread = enemyDirection * spreadRotate * Vector3.forward;
+
+        return bulletSpread;
+    }
+
     private void KillBullet(CBullet bullet)
     {
         PoolRelease(bullet);

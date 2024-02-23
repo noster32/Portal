@@ -2,34 +2,52 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class CBallCatcher : CComponent
 {
-    #region public
-    public GameObject connectLauncher;
-    [SerializeField] private GameObject target;
-    #endregion
-    private new Animation animation;
+    private Animation catcherAnimaton;
 
+    [SerializeField] private UnityEvent catchEvent;
+    [SerializeField] private AudioClip ballCatchClip;
+    private AudioSource audioSource;
+    private bool comBallConnected;
     public override void Awake()
     {
         base.Awake();
 
-        animation = GetComponent<Animation>();
+        catcherAnimaton = GetComponent<Animation>();
+        audioSource = GetComponent<AudioSource>();
+    }
+
+    public override void Start()
+    {
+        base.Start();
+
+        audioSource.clip = ballCatchClip;
     }
 
     private void OnTriggerEnter(Collider other)
     {
         string objectTag = other.gameObject.tag;
-        string targetTag = target.gameObject.tag;
-        if (objectTag == "Ball")
+        if (objectTag == "ComBall")
         {
-            Destroy(other.gameObject);
-            connectLauncher.GetComponent<CBallLauncher>().ballConnect = true;
-            animation.Play("close");
-            if (targetTag == "Door")
+            CBall comBall = other.GetComponent<CBall>();
+            if(comBall)
             {
+                comBallConnected = true;
+                audioSource.Play();
+                comBall.StopAlphaCoroutine();
+                catcherAnimaton.Play("close");
+
+                if (catchEvent != null)
+                    catchEvent.Invoke();
             }
         }
+    }
+
+    public bool GetcomBallConnected()
+    {
+        return comBallConnected;
     }
 }

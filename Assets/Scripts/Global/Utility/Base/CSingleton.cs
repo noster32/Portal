@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public abstract class CSingleton<T> : CComponent where T : CComponent
@@ -17,6 +18,7 @@ public abstract class CSingleton<T> : CComponent where T : CComponent
 
                 //씬이 전환될 때 남기고 싶은 애들을 남긴다
                 DontDestroyOnLoad(oGameObject);
+                
             }
 
             return m_oInstance;

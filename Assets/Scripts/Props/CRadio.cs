@@ -41,16 +41,7 @@ public class CRadio : CGrabableObject
         if (collision.transform.tag == "Player")
             return;
 
-        Debug.Log(CalculateCollisionVolume());
-        audioSource.PlayOneShot(collisionSoundClips[0], CalculateCollisionVolume());
+        audioSource.PlayOneShot(collisionSoundClips[0], SoundUtility.CalculateCollisionVolume(objRigidbody));
     }
 
-    private float CalculateCollisionVolume()
-    {
-        float vel = objRigidbody.velocity.magnitude;
-        float volume;
-        volume = 0.4f * ((vel = vel / 5f - 1) * vel * vel + 1) + 0f;
-
-        return volume;
-    }
 }

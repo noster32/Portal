@@ -1,48 +1,52 @@
 using System.Collections;
-using System.Collections.Generic;
-using TMPro.EditorUtilities;
+using System.Runtime.CompilerServices;
+using TreeEditor;
+using UnityEditor.AddressableAssets.Build;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class CGrabableObject : CTeleportObject
 {
     [HideInInspector] public bool isCollide;
-    [HideInInspector] public Vector3 collidePosition;
+    [HideInInspector] public Vector3 originalRotation;
+
+    [SerializeField] private Vector3 objectGrabCenter;
 
     protected Vector3 defaultRotation = new Vector3(0f, 0f, 0f);
 
-    public Transform playerTransform;
+    [HideInInspector] public Transform playerTransform;
+    private Coroutine rotationCoroutine;
+
+    private Vector3 testVec;
 
     public override void Update()
     {
         base.Update();
 
-        if (tag != "Cube" && isGrabbed)
-        {
-            GrabRotation();
-        }
+        //Debug.Log(rotationCoroutine != null);
     }
-
     public override void FixedUpdate()
     {
         base.FixedUpdate();
 
-
         if (isGrabbed && !isGrabbedTeleport)
         {
             GrabPositon(grabPosition);
+            GrabRotation();
         }
         else if (isGrabbed && isGrabbedTeleport)
         {
             Vector3 relativePos = portal2.transform.InverseTransformPoint(grabPosition);
             relativePos = reverse * relativePos;
-            GrabPositon(portal1.transform.TransformPoint(relativePos));
+            Vector3 result = portal1.transform.TransformPoint(relativePos);
+            GrabPositon(result);
+            GrabRotationInPortal(result);
         }
     }
 
     private void OnCollisionEnter(Collision collision)
     {
         isCollide = true;
-        collidePosition = transform.position;
     }
 
     private void OnCollisionExit(Collision collision)
@@ -52,7 +56,7 @@ public class CGrabableObject : CTeleportObject
 
     private void GrabPositon(Vector3 pos)
     {
-        Vector3 spd = (pos - transform.position) / Time.deltaTime;
+        Vector3 spd = ((pos - objectGrabCenter) - transform.position) / Time.deltaTime;
 
         objRigidbody.velocity = spd;
     }
@@ -65,13 +69,72 @@ public class CGrabableObject : CTeleportObject
 
     private void GrabRotation()
     {
-        Quaternion lookRotation = Quaternion.LookRotation(playerTransform.position - transform.position);
-        Quaternion yOnlyRot = Quaternion.Euler(0f, lookRotation.eulerAngles.y, 0f);
-        Debug.Log(yOnlyRot.eulerAngles);
-        float lerpFactor = 20f * Time.deltaTime;
-        transform.rotation = Quaternion.Lerp(transform.rotation, yOnlyRot, lerpFactor);
+        if(tag == "Cube" || tag == "Turret")
+        {
+            if(!isCollide)
+            {
+                transform.forward = playerTransform.TransformDirection(originalRotation);
+            }
+        }
+        else
+        {
+            if(rotationCoroutine == null)
+            {
+                Quaternion lookRotation = Quaternion.LookRotation(playerTransform.GetChild(1).position - grabPosition);
+                transform.rotation = lookRotation;
+            }
+        }
+    }
 
-        //if (transform.rotation.eulerAngles.x > 0f || transform.rotation.eulerAngles.z > 0f) 
-        //    transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(0f, transform.rotation.eulerAngles.y, 0f), lerpFactor);
+    private void GrabRotationInPortal(Vector3 pos)
+    {
+        if (tag == "Cube" || tag == "Turret")
+        {
+            if (!isCollide)
+            {
+                Quaternion relativeRot = Quaternion.Inverse(portal2.transform.rotation) * portal1.transform.rotation;
+                relativeRot = reverse * relativeRot;
+                Vector3 result = relativeRot * originalRotation;
+                transform.forward = playerTransform.TransformDirection(result);
+            }
+        }
+        else
+        {
+            if(rotationCoroutine == null)
+            {
+                //포탈 카메라 기준으로 돌리기
+                Quaternion lookRotation = Quaternion.LookRotation(playerTransform.GetChild(1).GetChild(3).position - pos);
+                transform.rotation = lookRotation;
+            }
+        }
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.DrawSphere(testVec, 0.2f);
+    }
+
+    public void GrabObjectRotationLerp()
+    {
+        Quaternion lookRotation = Quaternion.LookRotation(playerTransform.GetChild(1).position - grabPosition);
+        rotationCoroutine = StartCoroutine(LerpCoroutine(0.3f, transform.rotation, lookRotation));
+    }
+    
+    private IEnumerator LerpCoroutine(float duration, Quaternion start, Quaternion end)
+    {
+        float timeElapsed = 0f;
+
+        while(timeElapsed < duration)
+        {
+            float t = timeElapsed / duration;
+            transform.rotation = Quaternion.Lerp(start, end, t);
+            timeElapsed += Time.deltaTime;
+
+            yield return null;
+        }
+
+        transform.rotation = end;
+
+        rotationCoroutine = null;
     }
 }

@@ -1,11 +1,10 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Rendering;
-using UnityEngine.UIElements;
 
 public class CDoor1 : CComponent
 {
+    [SerializeField] private float doorGap = 1.19f;
+    [SerializeField] private float openDuration = 0.5f;
     private Coroutine moveCoroutine;
 
     private Transform doorR;
@@ -21,6 +20,7 @@ public class CDoor1 : CComponent
         doorR = transform.GetChild(0);
         doorL = transform.GetChild(1);
         audioSource = GetComponent<AudioSource>();
+        audioSource.clip = doorSound;
     }
 
     public void DoorOpen()
@@ -31,8 +31,8 @@ public class CDoor1 : CComponent
             moveCoroutine = null;
         }
 
-        moveCoroutine = StartCoroutine(moveDoor(1.85f, 0.4f));
-        audioSource.PlayOneShot(doorSound, 0.1f);
+        moveCoroutine = StartCoroutine(moveDoor(doorGap, openDuration));
+        audioSource.PlayOneShot(doorSound);
     }
 
     public void DoorClose()
@@ -43,8 +43,8 @@ public class CDoor1 : CComponent
             moveCoroutine = null;
         }
 
-        moveCoroutine = StartCoroutine(moveDoor(0f, 0.4f));
-        audioSource.PlayOneShot(doorSound, 0.1f);
+        moveCoroutine = StartCoroutine(moveDoor(0f, openDuration));
+        audioSource.PlayOneShot(doorSound);
     }
 
     IEnumerator moveDoor(float gap, float duration)

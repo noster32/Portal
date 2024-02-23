@@ -1,43 +1,101 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class CTurretSound : CComponent
 {
-    #region sound Path
-    #endregion
-    #region private
-    [SerializeField]
-    private AudioClip turretGunSoundClip;
-    private AudioSource turretGunSoundSource;
+    [Header("Turret Voice")]
+    [SerializeField] private AudioClip[] turretActiveClip;
+    [SerializeField] private AudioClip[] turretDisableClip;
+    [SerializeField] private AudioClip[] turretSearchClip;
+    [SerializeField] private AudioClip[] turretSearchRetireClip;
+    [SerializeField] private AudioClip[] turretShootAtClip;
+    [SerializeField] private AudioClip[] turretFallClip;
+    [SerializeField] private AudioClip[] turretPickUpClip;
+    [SerializeField] private AudioClip turretFizzleClip;
 
-    [SerializeField]
-    private Transform targetObj;
-    #endregion
+    [Header("Turre Sound")]
+    [SerializeField] private AudioClip[] turretGunSoundClip;
+    [SerializeField] private AudioClip turretGunRotateClip;
+    [SerializeField] private AudioClip turretDeployClip;
+    [SerializeField] private AudioClip turretPingClip;
+    [SerializeField] private AudioClip turretRetractClip;
+    [SerializeField] private AudioClip turretDieClip;
 
 
-    public override void Start()
+    private System.Random rand;
+    private AudioSource audioSource;
+
+    public override void Awake()
     {
         base.Awake();
-
-        turretGunSoundSource = GetComponent<AudioSource>();
-        CSoundLoader.Instance.AudioInit(turretGunSoundSource, turretGunSoundClip, 1f, false, 1f, 10f);
+        rand = new System.Random();
+        audioSource = GetComponent<AudioSource>();
     }
 
-    public override void Update()
+    public void PlayTurretActiveVoiceSound()
     {
-        base.Update(); 
+        PlayRandomSound(turretActiveClip);
     }
 
-    public void GunSoundTest(Transform turretPos)
+    public void PlayTurretDIsableVoiceSound()
     {
-        CSoundLoader.Instance.PlaySoundOneShot3D(turretPos.position, 0.2f);
+        PlayRandomSound(turretDisableClip);
     }
 
-    public void ActiveSoundTest(Transform turretPos)
+    public void PlayTurretSearchingVoiceSound()
     {
-        CSoundLoader.Instance.PlaySoundOneShot3D(turretPos.position, 0.2f);
+        PlayRandomSound(turretSearchClip);
     }
 
+    public void PlayTurretSearchingRetireVoiceSound()
+    {
+        PlayRandomSound(turretSearchRetireClip);
+    }
+
+    public void PlayTurretPickUpVoiceSound()
+    {
+        PlayRandomSound(turretPickUpClip);
+    }
+
+    public void PlayTurretFallDownVoiceSound()
+    {
+        PlayRandomSound(turretFallClip);
+    }
+
+    public void PlayTurretGunSound()
+    {
+        PlayRandomSound(turretGunSoundClip);
+    }
+
+    public void PlayTurretGunRotationSound()
+    {
+        audioSource.PlayOneShot(turretGunRotateClip);
+    }
+
+    public void PlayTurretPingSound()
+    {
+        audioSource.PlayOneShot(turretPingClip);
+    }
+    public void PlayTurretDeploySound()
+    {
+        audioSource.PlayOneShot(turretDeployClip);
+    }
+    public void PlayTurretRetractSound()
+    {
+        audioSource.PlayOneShot(turretRetractClip);
+    }
+
+    public void PlayTurretDieSound()
+    {
+        audioSource.PlayOneShot(turretDieClip);
+    }
+
+    private void PlayRandomSound(AudioClip[] clips)
+    {
+        int num = rand.Next(clips.Length);
+        audioSource.PlayOneShot(clips[num]);
+    }
 
 }
