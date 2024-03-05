@@ -19,6 +19,6 @@ public class CCube : CGrabableObject
             return;
 
         int num = Random.Range(0, collisionSoundClips.Length);
-        audioSource.PlayOneShot(collisionSoundClips[num], SoundUtility.CalculateCollisionVolume(objRigidbody));
+        audioSource.PlayOneShot(collisionSoundClips[num], CSoundLoader.Instance.GetEffectVolume(0.03f));
     }
 }

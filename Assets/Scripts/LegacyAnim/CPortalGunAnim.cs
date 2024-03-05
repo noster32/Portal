@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CPortalGunAnim : CComponent
 {
-    Animation portalGunAnim;
+    private Animation portalGunAnim;
 
     [SerializeField] private float portalgunDrawTime = 1.0f;
     [SerializeField] private AudioClip fizzleSound;

@@ -5,7 +5,8 @@ using UnityEngine;
 public class CPlayerAnimation : CComponent
 {
     #region component
-    CPlayerMovement tPlayerMove;
+    CPlayerMovement playerMovement;
+    CPlayerData playerData;
     Animator chellAnimator;
     #endregion
 
@@ -13,7 +14,8 @@ public class CPlayerAnimation : CComponent
     {
         base.Start();
 
-        tPlayerMove = GetComponent<CPlayerMovement>();
+        playerData = CPlayerData.GetInstance();
+        playerMovement = GetComponent<CPlayerMovement>();
         chellAnimator = transform.GetChild(0).GetComponent<Animator>();
     }
 
@@ -21,62 +23,120 @@ public class CPlayerAnimation : CComponent
     {
         base.Update();
 
-        chellAnimator.SetFloat("DirectionN", tPlayerMove.moveVector.z, 0.5f, Time.deltaTime);
-        chellAnimator.SetFloat("DirectionE", tPlayerMove.moveVector.x, 0.5f, Time.deltaTime);
+        chellAnimator.SetFloat("DirectionN", playerMovement.moveVector.z, 0.5f, Time.deltaTime);
+        chellAnimator.SetFloat("DirectionE", playerMovement.moveVector.x, 0.5f, Time.deltaTime);
 
-        AnimationChange();
-        if(tPlayerMove.grapicsClone && tPlayerMove.grapicsClone.activeSelf && tPlayerMove.originalAnimator && tPlayerMove.cloneAnimator)
+        if(playerData.GetDrawPortalGun())
+            AnimationChangeDrawPortalGun();
+        else
+            AnimationChange();
+
+        if(playerMovement.grapicsClone && playerMovement.grapicsClone.activeSelf && playerMovement.originalAnimator && playerMovement.cloneAnimator)
         {
-            AnimationChange(tPlayerMove.cloneAnimator);
+            if (playerData.GetDrawPortalGun())
+                AnimationChangeDrawPortalGun(playerMovement.cloneAnimator);
+            else
+                AnimationChange(playerMovement.cloneAnimator);
         }
     }
 
     private void AnimationChange()
     {
-
-        if (tPlayerMove.pState == CPlayerMovement.PlayerState.IDLE)
+        switch (playerData.GetPlayerState())
         {
-            chellAnimator.CrossFade("IDLE", 0.03f);
-        }
-        else if (tPlayerMove.pState == CPlayerMovement.PlayerState.WALK)
-        {
-            chellAnimator.Play("WalkBT", 0);
-        }
-        else if (tPlayerMove.pState == CPlayerMovement.PlayerState.JUMP)
-        {
-            chellAnimator.Play("Jump", 0);
-        }
-        else if (tPlayerMove.pState == CPlayerMovement.PlayerState.CROUCH)
-        {
-            chellAnimator.CrossFade("Crouch IDLE", 0.03f);
-        }
-        else if (tPlayerMove.pState == CPlayerMovement.PlayerState.CROUCHWALK)
-        {
-            chellAnimator.Play("CrouchBT", 0);
+            case CPlayerData.PlayerState.IDLE:
+                chellAnimator.CrossFade("IDLE", 0.03f);
+                break;
+            case CPlayerData.PlayerState.WALK:
+                chellAnimator.Play("WalkBT", 0);
+                break;
+            case CPlayerData.PlayerState.JUMP:
+                chellAnimator.Play("Jump", 0);
+                break;
+            case CPlayerData.PlayerState.CROUCH:
+                chellAnimator.CrossFade("Crouch IDLE", 0.03f);
+                break;
+            case CPlayerData.PlayerState.CROUCHWALK:
+                chellAnimator.Play("CrouchBT", 0);
+                break;
+            default:
+                chellAnimator.CrossFade("IDLE", 0.03f);
+                break;
         }
     }
     
     public void AnimationChange(Animator animator)
     {
-        if (tPlayerMove.pState == CPlayerMovement.PlayerState.IDLE)
+        switch (playerData.GetPlayerState())
         {
-            animator.CrossFade("IDLE", 0.03f);
+            case CPlayerData.PlayerState.IDLE:
+                animator.CrossFade("IDLE", 0.03f);
+                break;
+            case CPlayerData.PlayerState.WALK:
+                animator.Play("WalkBT", 0);
+                break;
+            case CPlayerData.PlayerState.JUMP:
+                animator.Play("Jump", 0);
+                break;
+            case CPlayerData.PlayerState.CROUCH:
+                animator.CrossFade("Crouch IDLE", 0.03f);
+                break;
+            case CPlayerData.PlayerState.CROUCHWALK:
+                animator.Play("CrouchBT", 0);
+                break;
+            default:
+                animator.CrossFade("IDLE", 0.03f);
+                break;
         }
-        else if (tPlayerMove.pState == CPlayerMovement.PlayerState.WALK)
+    }
+
+    private void AnimationChangeDrawPortalGun()
+    {
+        switch (playerData.GetPlayerState())
         {
-            animator.Play("WalkBT", 0);
+            case CPlayerData.PlayerState.IDLE:
+                chellAnimator.CrossFade("Idle_PortalGun", 0.03f);
+                break;
+            case CPlayerData.PlayerState.WALK:
+                chellAnimator.Play("WalkBT_PortalGun", 0);
+                break;
+            case CPlayerData.PlayerState.JUMP:
+                chellAnimator.Play("Jump_PortalGun", 0);
+                break;
+            case CPlayerData.PlayerState.CROUCH:
+                chellAnimator.CrossFade("Crouch_Idle_PortalGun", 0.03f);
+                break;
+            case CPlayerData.PlayerState.CROUCHWALK:
+                chellAnimator.Play("CrouchBT_PortalGun", 0);
+                break;
+            default:
+                chellAnimator.CrossFade("Idle_PortalGun", 0.03f);
+                break;
         }
-        else if (tPlayerMove.pState == CPlayerMovement.PlayerState.JUMP)
+    }
+
+    private void AnimationChangeDrawPortalGun(Animator animator)
+    {
+        switch (playerData.GetPlayerState())
         {
-            animator.Play("Jump", 0);
-        }
-        else if (tPlayerMove.pState == CPlayerMovement.PlayerState.CROUCH)
-        {
-            animator.CrossFade("Crouch IDLE", 0.03f);
-        }
-        else if (tPlayerMove.pState == CPlayerMovement.PlayerState.CROUCHWALK)
-        {
-            animator.Play("CrouchBT", 0);
+            case CPlayerData.PlayerState.IDLE:
+                animator.CrossFade("Idle_PortalGun", 0.03f);
+                break;
+            case CPlayerData.PlayerState.WALK:
+                animator.Play("WalkBT_PortalGun", 0);
+                break;
+            case CPlayerData.PlayerState.JUMP:
+                animator.Play("Jump_PortalGun", 0);
+                break;
+            case CPlayerData.PlayerState.CROUCH:
+                animator.CrossFade("Crouch_Idle_PortalGun", 0.03f);
+                break;
+            case CPlayerData.PlayerState.CROUCHWALK:
+                animator.Play("CrouchBT_PortalGun", 0);
+                break;
+            default:
+                animator.CrossFade("Idle_PortalGun", 0.03f);
+                break;
         }
     }
 }

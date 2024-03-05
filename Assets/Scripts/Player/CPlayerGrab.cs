@@ -4,9 +4,7 @@ public class CPlayerGrab : CComponent
 {
     [SerializeField] private float rayDistance = 10.0f;
 
-    private CPortal portal;
     private CPlayerData playerData;
-
     private Transform mainCameraTransform;
 
     public override void Awake()
@@ -36,19 +34,22 @@ public class CPlayerGrab : CComponent
     {
         playerData.isGrab = true;
         playerData.grabObject.isGrabbed = true;
-        playerData.grabObject.objRigidbody.useGravity = false;
+        playerData.grabObject.m_oRigidBody.useGravity = false;
+        playerData.grabObject.m_oRigidBody.freezeRotation = true;
         playerData.grabObject.playerTransform = transform;
 
         if (playerData.grabObject.tag == "Cube" || playerData.grabObject.tag == "Turret")
+        {
             playerData.grabObject.originalRotation = transform.InverseTransformDirection(playerData.grabObject.transform.forward);
+        }
         else
             playerData.grabObject.GrabObjectRotationLerp();
     }
 
     public void ReleaseGrab()
     {
-        playerData.grabObject.objRigidbody.useGravity = true;
-        playerData.grabObject.objRigidbody.drag = 1;
+        playerData.grabObject.m_oRigidBody.useGravity = true;
+        playerData.grabObject.m_oRigidBody.freezeRotation = false;
         playerData.grabObject.isGrabbed = false;
         playerData.grabObject.isGrabbedTeleport = false;
 
@@ -62,9 +63,10 @@ public class CPlayerGrab : CComponent
 
         if(hitObject.layer == LayerMask.NameToLayer("Portal"))
         {
-            portal = hitObject.GetComponent<CPortal>();
-
-            TryGrabObjectThroughPortal(hit.point, hit.distance);
+            if(hitObject.TryGetComponent<CPortal>(out CPortal portalComp))
+            {
+                TryGrabObjectThroughPortal(hit.point, portalComp, hit.distance);
+            }
         }
         else if(hitObject.layer == LayerMask.NameToLayer("Turret"))
         {
@@ -79,19 +81,17 @@ public class CPlayerGrab : CComponent
         }
         else
         {
-            Debug.Log(hitObject);
-            playerData.grabObject = hitObject.GetComponent<CGrabableObject>();
-
-            if (playerData.grabObject)
+            if (hitObject.TryGetComponent<CGrabableObject>(out CGrabableObject obj))
             {
+                playerData.grabObject = obj;
                 GrabObjectInit();
             }
             else
-                Debug.Log("Object grab fail");
+                Debug.Log("Object Grab Fail");
         }
         
     }
-    private void TryGrabObjectThroughPortal(Vector3 hitPoint, float distance)
+    private void TryGrabObjectThroughPortal(Vector3 hitPoint, CPortal portal,float distance)
     {
         var relativePos = portal.transform.InverseTransformPoint(hitPoint - new Vector3(0.5f, 0f, 0f));
         relativePos = Quaternion.Euler(0f, 180f, 0f) * relativePos;
@@ -115,7 +115,7 @@ public class CPlayerGrab : CComponent
     }
     public void ObjectGrabTransform()
     {
-        Vector3 grabPos = mainCameraTransform.TransformPoint(0f, 0f, 2f);
+        Vector3 grabPos = mainCameraTransform.TransformPoint(0f, 0f, 1.5f);
 
         playerData.grabObject.grabPosition = grabPos;
     }

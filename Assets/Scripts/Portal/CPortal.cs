@@ -4,39 +4,34 @@ using UnityEngine;
 
 public class CPortal : CComponent
 {
-    #region private
+    [Header("Setting")]
     public CPortal otherPortal;
     [SerializeField] private Renderer outlineRenderer;
     [SerializeField] private Color portalColor;
-    [SerializeField] private LayerMask placementMask;
-    [SerializeField] private GameObject TestWall;
 
-    private bool isPlaced = false;
-    private bool isLevelPlaced = false;
+    [HideInInspector] public List<CTeleportObject> teleportObjects = new List<CTeleportObject>();
+    [HideInInspector] public Collider wallCollider;
 
-    private Coroutine lerpCoroutine;
-
-    public List<CTeleportObject> teleportObjects = new List<CTeleportObject>();
+    [Header("Sound")]
+    [SerializeField] private CPortalSound portalSoundPrefab;
+    [SerializeField] private Transform portalSoundParent;
+    [SerializeField] private AudioClip portalOpenClip;
+    [SerializeField] private AudioClip portalCloseClip;
 
     private Material material;
     private Renderer portalRenderer;
 
-    #endregion
-    #region public
-    public Collider wallCollider;
-    #endregion
+    private Coroutine lerpCoroutine;
 
-    private AudioSource audioSource;
-    [SerializeField] private AudioClip portalOpenClip;
-    [SerializeField] private AudioClip[] portalTeleportClip;
-    [SerializeField] private AudioClip portalSoundClip;
+    private bool isPlaced = false;
+    private bool isLevelPlaced = false;
+
 
     public override void Awake()
     {
         base.Awake();
 
         portalRenderer = GetComponent<Renderer>();
-        audioSource = GetComponent<AudioSource>();
         material = portalRenderer.material;
     }
 
@@ -44,15 +39,12 @@ public class CPortal : CComponent
     {
         base.Start();
         SetColor(portalColor);
-        CSoundLoader.Instance.AudioInit(audioSource, portalSoundClip, 0.05f, true, 1f, 10f);
-        CSoundLoader.Instance.SetListener();
+
     }
 
     public override void Update()
     {
         base.Update();
-
-        //CSoundLoader.Instance.PlaySound3D(transform.position, 0.25f);
 
         if (!isPlaced || !otherPortal.isPlaced)
             return;
@@ -74,20 +66,7 @@ public class CPortal : CComponent
 
             if (dotValue <= 0f)
             {
-                
-                if (teleportObjects[i].isGrabbed)
-                {
-                    teleportObjects[i].GrabTeleport();
-                }
-                else
-                {
-                    teleportObjects[i].Teleport();
-                    
-                    //플레이어한테 사운드 나게하기
-                    audioSource.PlayOneShot(portalTeleportClip[0], 0.2f);
-                }
-
-                teleportObjects[i].isInPortal = false;
+                teleportObjects[i].Teleport();
                 teleportObjects[i].ExitPortal(wallCollider);
                 teleportObjects.RemoveAt(i);
                 i--;
@@ -95,26 +74,18 @@ public class CPortal : CComponent
         }
     }
 
-    public void TeleportObjectEnterPortal(CTeleportObject teleportObject)
-    {
-        if(!teleportObjects.Contains(teleportObject))
-        {
-            teleportObjects.Add(teleportObject);
-            teleportObject.EnterPortal(this, otherPortal, wallCollider);
-        }
-    }
     private void OnTriggerEnter(Collider other)
     {
         if (!isPlaced || !otherPortal.isPlaced)
             return;
-        Debug.Log(other.gameObject);
+
         CTeleportObject tpObject;
         if(other.tag == "Turret")
             tpObject = other.GetComponentInParent<CTeleportObject>();
         else
             tpObject = other.GetComponent<CTeleportObject> ();
 
-        if(tpObject != null)
+        if (tpObject != null)
         {
             teleportObjects.Add(tpObject);
             tpObject.EnterPortal(this, otherPortal, wallCollider);
@@ -125,9 +96,8 @@ public class CPortal : CComponent
     {
         if (!isPlaced || !otherPortal.isPlaced)
             return;
-
         CTeleportObject tpObject;
-
+        
         if (other.tag == "Turret")
             tpObject = other.GetComponentInParent<CTeleportObject>();
         else
@@ -140,24 +110,17 @@ public class CPortal : CComponent
         }
     }
 
-    public void Warp(Transform warpObj)
-    {
-        warpObj.transform.position = otherPortal.transform.position;
-    }
-
-    public bool IsRendererVisible()
-    {
-        return portalRenderer.isVisible;
-    }
-    
-    public void SetTexture(Texture texture)
-    {
-        material.mainTexture = texture;
-    }
-
     public void PlacePortal(Collider collide, Vector3 pos, Quaternion rot)
     {
-        if(lerpCoroutine != null)
+        if(isPlaced)
+        {
+            var portalCloseSoundInstance = Instantiate(portalSoundPrefab, transform.position, Quaternion.identity, portalSoundParent);
+            portalCloseSoundInstance.PlayPortalSound(portalCloseClip, 1f);
+
+            isPlaced = false;
+        }
+
+        if (lerpCoroutine != null)
         {
             StopCoroutine(lerpCoroutine);
             lerpCoroutine = null;
@@ -171,13 +134,8 @@ public class CPortal : CComponent
         gameObject.SetActive(true);
         lerpCoroutine = StartCoroutine(LerpPortal(0.8f, Vector3.zero, Vector3.one, true));
 
-        audioSource.PlayOneShot(portalOpenClip, 0.1f);
-    }
-
-    public void RemovePortal()
-    {
-        isPlaced = false;
-        gameObject.SetActive(false);
+        var portalOpenSoundInstance = Instantiate(portalSoundPrefab, pos, Quaternion.identity, portalSoundParent);
+        portalOpenSoundInstance.PlayPortalSound(portalOpenClip, 1f);
     }
 
     public void CleanPortal()
@@ -187,6 +145,10 @@ public class CPortal : CComponent
             StopCoroutine(lerpCoroutine);
             lerpCoroutine = null;
         }
+
+        var portalCloseSoundInstance = Instantiate(portalSoundPrefab, transform.position, Quaternion.identity, portalSoundParent);
+        portalCloseSoundInstance.PlayPortalSound(portalCloseClip, 1f);
+
         isPlaced = false;
         lerpCoroutine = StartCoroutine(LerpPortal(0.1f, transform.localScale, Vector3.zero, false));
     }
@@ -214,6 +176,15 @@ public class CPortal : CComponent
             gameObject.SetActive(false);
 
         lerpCoroutine = null;
+    }
+    public bool IsRendererVisible()
+    {
+        return portalRenderer.isVisible;
+    }
+
+    public void SetTexture(Texture texture)
+    {
+        material.mainTexture = texture;
     }
 
     public bool IsPlaced()

@@ -7,36 +7,47 @@ public class CToilet : CComponent
     [SerializeField] private AudioClip useToiletFlushClip;
     [SerializeField] private AudioClip useToiletThanksClip;
 
-    private AudioSource audioSource;
-    private bool isPlaying;
+    [SerializeField] private CInteractObject useToiletInteraction;
 
-    public override void Start()
+    private AudioSource audioSource;
+    private Coroutine playCoroutine;
+
+    public override void Awake()
     {
-        base.Start();
+        base.Awake();
 
         audioSource = GetComponent<AudioSource>();
-
     }
 
-    public void PlayToiletSound()
+    private void OnEnable()
     {
-        if (isPlaying)
-            return;
+        if(useToiletInteraction)
+            useToiletInteraction.GetInteractEvent.HasInteracted += PlayToiletSound;
+    }
 
-        StartCoroutine(PlayClips());
+    private void OnDisable()
+    {
+        if(useToiletInteraction)
+            useToiletInteraction.GetInteractEvent.HasInteracted -= PlayToiletSound;
+    }
+
+    private void PlayToiletSound()
+    {
+        if (playCoroutine == null)
+            playCoroutine = StartCoroutine(PlayClips());
     }
 
     private IEnumerator PlayClips()
     {
-        isPlaying = true;
-        audioSource.PlayOneShot(useToiletFlushClip, 0.1f);
+        audioSource.PlayOneShot(useToiletFlushClip, CSoundLoader.Instance.GetEffectVolume(0.6f));
 
         yield return new WaitForSeconds(4f);
 
-        audioSource.PlayOneShot(useToiletThanksClip, 0.1f);
+        audioSource.PlayOneShot(useToiletThanksClip, CSoundLoader.Instance.GetEffectVolume(0.6f));
 
         yield return new WaitForSeconds(useToiletThanksClip.length);
-        isPlaying = false;
+
+        playCoroutine = null;
     }
 
 

@@ -1,31 +1,44 @@
+using JetBrains.Annotations;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class CPortalCleanser : CComponent
 {
-    [SerializeField] private CPortalPair portalPair;
+    [SerializeField] private CPortal[] cleanPortal;
+    [SerializeField] private UnityEvent deleteEvent;
     [SerializeField] private CPortalGunAnim portalGun;
-
-    private int count;
 
     private void OnTriggerEnter(Collider other)
     {
-
-        for (int i = 0; i < portalPair.portals.Length; i++)
+        if(other.tag == "Player")
         {
-            if (!portalPair.portals[i].IsLevelPlaced() && portalPair.portals[i].IsPlaced())
+            if (cleanPortal.Length != 0)
             {
-                portalPair.portals[i].CleanPortal();
-                count++;
-            }
-        }
+                int count = 0;
 
-        if(count > 0)
-        {
-            portalGun.PortalGunFizzle();
-            count = 0;
+                for (int i = 0; i < cleanPortal.Length; i++)
+                {
+                    if (cleanPortal[i] == null)
+                    {
+                        Debug.LogError("cleanPortal not allocated");
+                        break;
+                    }
+
+                    if (cleanPortal[i].IsPlaced())
+                    {
+                        cleanPortal[i].CleanPortal();
+                        count++;
+                    }
+                }
+
+                if (count != 0)
+                {
+                    portalGun.PortalGunFizzle();
+                }
+            }
         }
     }
 }

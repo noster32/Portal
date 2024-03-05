@@ -1,20 +1,30 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class CSoundLoader : CSingleton<CSoundLoader>
 {
+    [Range(0f, 1f)] public float effectSoundVolume = 1f;
+    [Range(0f, 1f)] public float musicSoundVolume = 1f;
+
     private AudioSource m_audioSource;
     private Transform m_ListenerTransform;
 
-    public void AudioInit(AudioSource audioSource, AudioClip audioClip, float volume = 1f, bool loop = false, float minDis = 1f, float maxDis = 500f)
+    public override void Awake()
     {
-        m_audioSource = audioSource;
-        m_audioSource.clip = audioClip;
-        m_audioSource.volume = volume;
-        m_audioSource.loop = loop;
-        m_audioSource.minDistance = minDis;
-        m_audioSource.maxDistance = maxDis;
+        base.Awake();
+
+        m_oInstance = this;
+        m_audioSource = GetComponent<AudioSource>();
+    }
+
+    public override void Start()
+    {
+        base.Start();
+
+        if (m_audioSource == null)
+            m_oInstance = this;
     }
 
     public void SetListener()
@@ -36,10 +46,21 @@ public class CSoundLoader : CSingleton<CSoundLoader>
         m_audioSource.volume = value;
     }
 
-    public void PlaySound(AudioClip audioClip = null)
+    public float GetEffectVolume(float volume)
     {
-        if (audioClip != null)
-            m_audioSource.clip = audioClip;
+        float result = volume / effectSoundVolume;
+        return result * effectSoundVolume;
+    }
+
+    public float GetMusicVolume(float volume)
+    {
+        return volume * musicSoundVolume;
+    }
+
+    public void PlaySound(AudioClip audioClip, float volume)
+    {
+        m_audioSource.clip = audioClip;
+        m_audioSource.volume = volume * effectSoundVolume;
 
         if (!m_audioSource.isPlaying)
         {
@@ -47,12 +68,9 @@ public class CSoundLoader : CSingleton<CSoundLoader>
         }
     }
 
-    public void PlaySoundOneShot(AudioClip audioClip = null)
+    public void PlaySoundOneShot(AudioClip audioClip, float volumeScale = 1f)
     {
-        if (audioClip != null)
-            m_audioSource.PlayOneShot(audioClip);
-        else
-            m_audioSource.PlayOneShot(m_audioSource.clip);
+        m_audioSource.PlayOneShot(audioClip, GetEffectVolume(volumeScale));
     }
 
 

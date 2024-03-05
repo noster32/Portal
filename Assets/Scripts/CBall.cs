@@ -4,7 +4,6 @@ using UnityEngine;
 public class CBall : CComponent
 {
     private bool isSpawned;
-    public Rigidbody ballRigidbody;
     public Collider colider;
     float speed = 10f;
 
@@ -23,8 +22,7 @@ public class CBall : CComponent
     {
         base.Awake();
 
-        ballRigidbody = GetComponent<Rigidbody>();
-        ballRigidbody.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
+        m_oRigidBody.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
         colider = GetComponent<Collider>();
         ballRenderer = GetComponent<Renderer>();
         audioSource = GetComponent<AudioSource>();
@@ -41,7 +39,7 @@ public class CBall : CComponent
         base.FixedUpdate();
 
         if (isSpawned)
-            ballRigidbody.velocity = transform.forward * speed;
+            m_oRigidBody.velocity = transform.forward * speed;
     }
 
     public void SetForward(Vector3 direction)
@@ -89,7 +87,7 @@ public class CBall : CComponent
             yield return null;
         }
         
-        ballRigidbody.velocity = Vector3.zero;
+        m_oRigidBody.velocity = Vector3.zero;
 
         audioSource.Stop();
         audioSource.PlayOneShot(ballBreakSound);

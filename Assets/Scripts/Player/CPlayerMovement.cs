@@ -1,8 +1,4 @@
-using Palmmedia.ReportGenerator.Core.CodeAnalysis;
 using System.Collections;
-using System.Collections.Generic;
-using System.Diagnostics.Contracts;
-using UnityEditor.Timeline;
 using UnityEngine;
 
 public class CPlayerMovement : CTeleportObject
@@ -28,6 +24,7 @@ public class CPlayerMovement : CTeleportObject
     private bool isOnGround = false;
     private bool isJump = false;
     private bool isCrouch = false;
+    private CPlayerData playerData;
 
     [SerializeField] private float playerHeight = 1.6f;
     [SerializeField] private float playerCrouchHeight = 1f;
@@ -43,22 +40,12 @@ public class CPlayerMovement : CTeleportObject
     [SerializeField] AudioClip[] footStepSound_metal;
     [SerializeField] AudioClip jumpSound_concret;
     [SerializeField] AudioClip jumpSound_metal;
+    [SerializeField] AudioClip[] playerTeleportSound;
 
     private AudioSource audioSource;
     #endregion
 
     [SerializeField] private CPortalPair portalPair;
-
-    public enum PlayerState
-    {
-        IDLE,
-        WALK,
-        JUMP,
-        CROUCH,
-        CROUCHWALK,
-        FALL,
-        DIE
-    }
 
     private enum FloorMaterial
     { 
@@ -68,20 +55,21 @@ public class CPlayerMovement : CTeleportObject
 
     private FloorMaterial floorMat;
 
-    [HideInInspector] public PlayerState pState;
-
     public override void Awake()
     {
         base.Awake();
 
+        audioSource = GetComponent<AudioSource>();
+        playerCollider = GetComponent<CapsuleCollider>();
+
+        cameraTransform = Camera.main.transform;
+        mouseLook = GetComponent<CPlayerMouseLook>();
     }
     public override void Start()
     {
         base.Start();
 
-        audioSource = GetComponent<AudioSource>();
-        playerCollider = GetComponent<CapsuleCollider>();
-
+        playerData = CPlayerData.GetInstance();
         mouseLook.Init(transform, cameraTransform);
         SetColliderHeightAndCenter(1.8f);
     }
@@ -90,7 +78,7 @@ public class CPlayerMovement : CTeleportObject
     {
         base.Update();
 
-        if (pState == PlayerState.DIE)
+        if (playerData.GetPlayerState() == CPlayerData.PlayerState.DIE)
             return;
 
         GetInput();
@@ -107,7 +95,7 @@ public class CPlayerMovement : CTeleportObject
     {
         base.FixedUpdate();
 
-        if (pState == PlayerState.DIE)
+        if (playerData.GetPlayerState() == CPlayerData.PlayerState.DIE)
             return;
 
         GroundCheck();
@@ -149,9 +137,9 @@ public class CPlayerMovement : CTeleportObject
         }
 
         if (isOnGround)
-            objRigidbody.velocity = new Vector3(moveVector.x, objRigidbody.velocity.y, moveVector.z);
+            m_oRigidBody.velocity = new Vector3(moveVector.x, m_oRigidBody.velocity.y, moveVector.z);
         else if (!isOnGround)
-            objRigidbody.AddForce(airMoveVector * 10f);
+            m_oRigidBody.AddForce(airMoveVector * 10f);
     }
 
     private void PlayerRotation()
@@ -172,7 +160,7 @@ public class CPlayerMovement : CTeleportObject
             {
                 isJump = true;
                 PlayJumpAudio();
-                objRigidbody.AddForce(Vector3.up * jumpPower, ForceMode.Impulse);
+                m_oRigidBody.AddForce(Vector3.up * jumpPower, ForceMode.Impulse);
             }
         }
 
@@ -323,9 +311,9 @@ public class CPlayerMovement : CTeleportObject
         }
 
         //이거 50f로 바꿨더니 왜 되는거임??
-        float forceValue = distance * 50f - objRigidbody.velocity.y;
+        float forceValue = distance * 50f - m_oRigidBody.velocity.y;
         Vector3 floatingForce = new Vector3(0f, forceValue, 0f);
-        objRigidbody.AddForce(floatingForce, ForceMode.VelocityChange);
+        m_oRigidBody.AddForce(floatingForce, ForceMode.VelocityChange);
     }
 
     private bool PortalOnFloorCheck(Vector3 center, float maxDistacne)
@@ -375,23 +363,24 @@ public class CPlayerMovement : CTeleportObject
     {
         if (moveVectorMagnitude != 0 && !isJump && !isCrouch)
         {
-            pState = PlayerState.WALK;
+            CPlayerData.GetInstance().SetPlayerState(CPlayerData.PlayerState.WALK);
+            //pState = PlayerState.WALK;
         }
         else if (isJump)
         {
-            pState = PlayerState.JUMP;
+            CPlayerData.GetInstance().SetPlayerState(CPlayerData.PlayerState.JUMP);
         }
         else if (isCrouch && !isJump && moveVectorMagnitude == 0)
         {
-            pState = PlayerState.CROUCH;
+            CPlayerData.GetInstance().SetPlayerState(CPlayerData.PlayerState.CROUCH);
         }
         else if (isCrouch && !isJump && moveVectorMagnitude != 0)
         {
-            pState = PlayerState.CROUCHWALK;
+            CPlayerData.GetInstance().SetPlayerState(CPlayerData.PlayerState.CROUCHWALK);
         }
         else
         {
-            pState = PlayerState.IDLE;
+            CPlayerData.GetInstance().SetPlayerState(CPlayerData.PlayerState.IDLE);
         }
     }
 
@@ -413,4 +402,22 @@ public class CPlayerMovement : CTeleportObject
         playerCollider.center = new Vector3(0f, (standHeight / 2) + (diffHeight / 2) + (diffHeightStandCrouch / 2), 0f);
     }
 
+    public override void Teleport()
+    {
+        base.Teleport();
+
+        if (playerData.isGrab && playerData.grabObject)
+        {
+            if (playerData.grabObject.isGrabbedTeleport)
+            {
+                playerData.grabObject.isGrabbedTeleport = false;
+            }
+            else if (!playerData.grabObject.isGrabbedTeleport && playerData.grabObject.isGrabbed)
+            {
+                playerData.grabObject.isGrabbedTeleport = true;
+            }
+        }
+
+        SoundUtility.PlayRandomSound(audioSource, playerTeleportSound);
+    }
 }

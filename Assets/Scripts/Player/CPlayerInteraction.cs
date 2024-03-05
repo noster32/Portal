@@ -1,15 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
-using UnityEngine.Events;
 
 public class CPlayerInteraction : CComponent
 {
-    [Header("Event")]
-    public UnityEvent toiletEvent;
-
     [Header("Interaction Sound")]
     [SerializeField] private AudioClip interactionSound;
     [SerializeField] private AudioClip grabSound;
@@ -19,8 +11,10 @@ public class CPlayerInteraction : CComponent
     [SerializeField] private AudioClip portalShootBlueClip;
     [SerializeField] private AudioClip portalShootOrangeClip;
 
-    [Header("PortalGun Animation")]
-    [SerializeField] private CPortalGunAnim portalGun;
+    [Header("PortalGun")]
+    [SerializeField] private GameObject portalGunObject;
+    [SerializeField] private GameObject portalGunFirstPerson;
+    [SerializeField] private CPortalGunAnim portalGunAnim;
     private CPortalPlacement portalPlacement;
     private CPlayerGrab playerGrab;
     private CPlayerData playerData;
@@ -45,6 +39,11 @@ public class CPlayerInteraction : CComponent
 
         playerData = CPlayerData.GetInstance();
 
+        if (playerData.GetDrawPortalGun())
+        {
+            portalGunObject.SetActive(true);
+            portalGunFirstPerson.SetActive(true);
+        }
         //audioSource.clip = grabSound;
         //audioSource.loop = true;
     }
@@ -53,6 +52,15 @@ public class CPlayerInteraction : CComponent
     {
         base.Update();
 
+        if(!portalGunObject.activeSelf)
+        {
+            if(playerData.GetDrawPortalGun())
+            {
+                portalGunObject.SetActive(true);
+                portalGunFirstPerson.SetActive(true);
+            }
+        }
+
         ray = new Ray { origin = mainCamera.transform.position, direction = mainCamera.transform.forward };
 
         if (Input.GetKeyDown(KeyCode.Mouse0))
@@ -60,13 +68,14 @@ public class CPlayerInteraction : CComponent
             if (playerData.isGrab && playerData.grabObject)
             {
                 playerGrab.ReleaseGrab();
-                portalGun.PortalGunRelease();
+                if (playerData.GetDrawPortalGun())
+                    portalGunAnim.PortalGunRelease();
             }
-            else
+            else if(playerData.GetIsDrawBluePortalGun())
             {
                 portalPlacement.FirePortal(0);
-                portalGun.PortalGunShoot();
-                audioSource.PlayOneShot(portalShootBlueClip);
+                portalGunAnim.PortalGunShoot();
+                audioSource.PlayOneShot(portalShootBlueClip, CSoundLoader.Instance.GetEffectVolume(0.8f));
             }
         }
 
@@ -75,13 +84,14 @@ public class CPlayerInteraction : CComponent
             if (playerData.isGrab && playerData.grabObject)
             {
                 playerGrab.ReleaseGrab();
-                portalGun.PortalGunRelease();
+                if (playerData.GetDrawPortalGun())
+                    portalGunAnim.PortalGunRelease();
             }
-            else
+            else if(playerData.GetIsDrawOrangePortalGun())
             {
                 portalPlacement.FirePortal(1);
-                portalGun.PortalGunShoot();
-                audioSource.PlayOneShot(portalShootOrangeClip);
+                portalGunAnim.PortalGunShoot();
+                audioSource.PlayOneShot(portalShootOrangeClip, CSoundLoader.Instance.GetEffectVolume(0.8f));
             }
         }
 
@@ -94,7 +104,9 @@ public class CPlayerInteraction : CComponent
             if(playerData.isGrab && playerData.grabObject)
             {
                 playerGrab.ReleaseGrab();
-                portalGun.PortalGunRelease();
+                if (playerData.GetDrawPortalGun())
+                    portalGunAnim.PortalGunRelease();
+
                 audioSource.Stop();
             }
             else if(!CPlayerData.GetInstance().isGrab && !CPlayerData.GetInstance().grabObject)
@@ -119,20 +131,16 @@ public class CPlayerInteraction : CComponent
 
     public void InteractionObject(RaycastHit h)
     {
-        //각 오브젝트에 대한 접속시간이 같기 때문에 switch사용
-        switch (h.collider.tag)
+        if(h.collider.gameObject.TryGetComponent<CInteractObject>(out CInteractObject interactScript))
         {
-            case "Toilet":
-                toiletEvent.Invoke();
-                break;
-            case "Button":
-                Debug.Log("not worked");
-                break;
-            default:
-                portalGun.PortalGunGrab();
-                playerGrab.GrabObject(h);
-                audioSource.Play();
-                break;
+            interactScript.CallInteract(this);
+        }
+        else
+        {
+            if (playerData.GetDrawPortalGun())
+                portalGunAnim.PortalGunGrab();
+            playerGrab.GrabObject(h);
+            audioSource.Play();
         }
     }
 }

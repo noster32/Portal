@@ -141,6 +141,9 @@ ModelImporter:
   - first:
       74: -842208012217789628
     second: standing_jump
+  - first:
+      74: 2121270168064704179
+    second: chell_idle
   externalObjects:
   - first:
       type: UnityEngine:Material
@@ -593,7 +596,7 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: idle
+      name: chell_idle
       takeName: chell.qc_skeleton|a_idle
       internalID: 0
       firstFrame: 0

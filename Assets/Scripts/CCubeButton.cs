@@ -35,7 +35,7 @@ public class CCubeButton : CComponent
 
         Vector3 movePosition = new Vector3(0f, -0.25f, 0f);
         moveCoroutine = StartCoroutine(moveButton(0.3f, buttonTop.localPosition, movePosition));
-        audioSource.PlayOneShot(enterSound, 0.1f);
+        audioSource.PlayOneShot(enterSound, CSoundLoader.Instance.GetEffectVolume(0.4f));
 
         triggerEnterEvent.Invoke();
     }
@@ -55,7 +55,7 @@ public class CCubeButton : CComponent
 
         Vector3 movePosition = Vector3.zero;
         moveCoroutine = StartCoroutine(moveButton(0.3f, buttonTop.localPosition, movePosition));
-        audioSource.PlayOneShot(exitSound, 0.1f);
+        audioSource.PlayOneShot(exitSound, CSoundLoader.Instance.GetEffectVolume(0.4f));
 
         triggerExitEvent.Invoke();
     }

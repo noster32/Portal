@@ -6,7 +6,7 @@ public class CRadio : CGrabableObject
 {
     #region public
     [Header("Sound Setting")]
-    public AudioClip audioClip;
+    public AudioClip radioSongClip;
     public float maxvolume = 1f;
     public float minDistance = 1f;
     public float maxDistance = 10f;
@@ -17,23 +17,29 @@ public class CRadio : CGrabableObject
     private AudioSource audioSource;
 
     [SerializeField] private AudioClip[] collisionSoundClips;
-    [SerializeField] private Transform[] testCube;
+
+    public override void Awake()
+    {
+        base.Awake();
+
+        audioSource = GetComponent<AudioSource>();
+        audioSource.clip = radioSongClip;
+        audioSource.loop = true;
+    }
 
     public override void Start()
     {
         base.Start();
 
-        audioSource = GetComponent<AudioSource>();
-        CSoundLoader.Instance.AudioInit(audioSource, audioClip, maxvolume, true, minDistance, maxDistance);
-        CSoundLoader.Instance.SetListener();
+        audioSource.volume = 0.3f * CSoundLoader.Instance.musicSoundVolume;
+        audioSource.Play();
     }
-
 
     public override void Update()
     {
         base.Update();
 
-        CSoundLoader.Instance.PlaySound3D(transform.position, volumeMultipiler);
+        audioSource.volume = 0.3f * CSoundLoader.Instance.musicSoundVolume;
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -41,7 +47,7 @@ public class CRadio : CGrabableObject
         if (collision.transform.tag == "Player")
             return;
 
-        audioSource.PlayOneShot(collisionSoundClips[0], SoundUtility.CalculateCollisionVolume(objRigidbody));
+        audioSource.PlayOneShot(collisionSoundClips[0], 0.5f * CSoundLoader.Instance.effectSoundVolume);
     }
 
 }

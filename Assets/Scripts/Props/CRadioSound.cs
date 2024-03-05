@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class CRadioSound : CComponent
 {
-    #region public
     [Header("Sound Setting")]
     public AudioClip audioClip;
     public float maxvolume = 1f;
@@ -12,21 +11,25 @@ public class CRadioSound : CComponent
     public float maxDistance = 10f;
     public Transform targetObj;
     public float volumeMultipiler = 1f;
-    #endregion
 
     private AudioSource audioSource;
-    private Rigidbody rb;
 
     [SerializeField] private AudioClip[] collisionSoundClips;
     [SerializeField] private Transform[] testCube;
+
+    public override void Awake()
+    {
+        base.Awake();
+
+        audioSource = GetComponent<AudioSource>();
+    }
 
     public override void Start()
     {
         base.Start();
 
-        audioSource = GetComponent<AudioSource>();
-        rb = GetComponent<Rigidbody>();
-        CSoundLoader.Instance.AudioInit(audioSource, audioClip, maxvolume, true, minDistance, maxDistance);
+        audioSource.clip = audioClip;
+        //audioSource.volume = CSceneLoader.Instance.mu
     }
 
 
@@ -50,7 +53,7 @@ public class CRadioSound : CComponent
 
     private float CalculateCollisionVolume()
     {
-        float vel = rb.velocity.magnitude;
+        float vel = m_oRigidBody.velocity.magnitude;
         float volume;
         volume = 0.4f * ((vel = vel / 5f - 1) * vel * vel + 1) + 0f;
 

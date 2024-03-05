@@ -1,9 +1,5 @@
 using System.Collections;
-using System.Runtime.CompilerServices;
-using TreeEditor;
-using UnityEditor.AddressableAssets.Build;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class CGrabableObject : CTeleportObject
 {
@@ -17,12 +13,19 @@ public class CGrabableObject : CTeleportObject
     [HideInInspector] public Transform playerTransform;
     private Coroutine rotationCoroutine;
 
-    private Vector3 testVec;
+    #region Grab
+    [HideInInspector] public Vector3 grabPosition;                    //그랩 위치
+    [HideInInspector] public bool isGrabbed;                          //현재 그랩되어 있음
+    [HideInInspector] public bool isGrabbedTeleport;                  //그랩된 상태에서 텔레포트 여부
+    #endregion
 
     public override void Update()
     {
         base.Update();
-
+        //Debug.Log("isGrab : " + isGrabbed);
+        //Debug.Log("isBrabT : " + isGrabbedTeleport);
+        //Debug.Log(portal1);
+        //Debug.Log(portal2);
         //Debug.Log(rotationCoroutine != null);
     }
     public override void FixedUpdate()
@@ -44,7 +47,13 @@ public class CGrabableObject : CTeleportObject
         }
     }
 
+
     private void OnCollisionEnter(Collision collision)
+    {
+        isCollide = true;
+    }
+
+    private void OnCollisionStay(Collision collision)
     {
         isCollide = true;
     }
@@ -58,7 +67,7 @@ public class CGrabableObject : CTeleportObject
     {
         Vector3 spd = ((pos - objectGrabCenter) - transform.position) / Time.deltaTime;
 
-        objRigidbody.velocity = spd;
+        m_oRigidBody.velocity = spd;
     }
 
     public Vector3 GetDefaultGrabRotation()
@@ -109,10 +118,6 @@ public class CGrabableObject : CTeleportObject
         }
     }
 
-    private void OnDrawGizmos()
-    {
-        Gizmos.DrawSphere(testVec, 0.2f);
-    }
 
     public void GrabObjectRotationLerp()
     {
@@ -136,5 +141,15 @@ public class CGrabableObject : CTeleportObject
         transform.rotation = end;
 
         rotationCoroutine = null;
+    }
+
+    public override void Teleport()
+    {
+        base.Teleport();
+
+        if (!isGrabbedTeleport)
+            isGrabbedTeleport = true;
+        else
+            isGrabbedTeleport = false;
     }
 }

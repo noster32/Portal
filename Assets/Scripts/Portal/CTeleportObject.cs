@@ -15,36 +15,24 @@ public class CTeleportObject : CComponent
     [HideInInspector] public Material[] cloneMaterials;
     [HideInInspector] public Animator originalAnimator;
     [HideInInspector] public Animator cloneAnimator;
-    [HideInInspector] public Rigidbody objRigidbody;
     #endregion
 
     #region player
     [HideInInspector] public CPlayerMouseLook mouseLook;
     #endregion
 
-    #region Grab
-    [HideInInspector] public Vector3 grabPosition;                    //그랩 위치
-    [HideInInspector] public bool isGrabbed;                          //현재 그랩되어 있음
-    [HideInInspector] public bool isGrabbedTeleport;                  //그랩된 상태에서 텔레포트 여부
-    #endregion
-
     protected Quaternion reverse = Quaternion.Euler(0f, 180f, 0f);
+    private Collider objectCollider;
 
-    protected new Collider collider;
-
-    [HideInInspector] public Transform cameraTransform;
-    [HideInInspector] public bool isInPortal;
-    [HideInInspector] public bool portalPlacedFloor;
+    protected Transform cameraTransform;
     private bool isPlayer;
     private bool isTurret;
     private bool isBullet;
 
-    private CPlayerData playerData;
-
     public override void Awake()
     {
         base.Awake();
-
+        
         isPlayer = transform.tag == "Player";
         isTurret = transform.tag == "Turret";
         isBullet = transform.tag == "Bullet";
@@ -61,29 +49,19 @@ public class CTeleportObject : CComponent
             grapicsClone.transform.parent = transform;
             grapicsClone.transform.localScale = new Vector3(1f, 1f, 1f);
         }
-        else if(isPlayer)
-        {
-            cameraTransform = Camera.main.transform;
-            mouseLook = GetComponent<CPlayerMouseLook>();
-        }
 
         if(isTurret)
-            collider = GetComponentInChildren<Collider>();
+            objectCollider = GetComponentInChildren<Collider>();
         else
-            collider = GetComponent<Collider>();
+            objectCollider = GetComponent<Collider>();
 
-        objRigidbody = GetComponent<Rigidbody>();
-
-        if (!objRigidbody && !isBullet)
-            objRigidbody = grapicsClone.GetComponent<Rigidbody>();
+        if (!m_oRigidBody && !isBullet)
+            m_oRigidBody = grapicsObject.GetComponent<Rigidbody>();
     }
 
     public override void Start()
     {
         base.Start();
-
-        if(isPlayer)
-            playerData = CPlayerData.GetInstance();
     }
 
     public override void Update()
@@ -120,7 +98,6 @@ public class CTeleportObject : CComponent
 
     public virtual void Teleport()
     {
-        Debug.Log("Tel");
         Transform enterPortalTransform = portal1.transform;
         Transform exitPortalTransform = portal2.transform;
 
@@ -143,70 +120,12 @@ public class CTeleportObject : CComponent
             transform.rotation = exitPortalTransform.rotation * relativeObjRot;
         }
 
-        if(objRigidbody)
+        if(m_oRigidBody)
         {
-            Vector3 relativeObjVel = enterPortalTransform.InverseTransformDirection(objRigidbody.velocity);
+            Vector3 relativeObjVel = enterPortalTransform.InverseTransformDirection(m_oRigidBody.velocity);
             relativeObjVel = reverse * relativeObjVel;
-            objRigidbody.velocity = exitPortalTransform.TransformDirection(relativeObjVel);
+            m_oRigidBody.velocity = exitPortalTransform.TransformDirection(relativeObjVel);
         }
-
-        if (isPlayer && playerData.grabObject)
-        {
-            if (playerData.grabObject.isGrabbedTeleport)
-                playerData.grabObject.isGrabbedTeleport = false;
-            else if(!playerData.grabObject.isGrabbedTeleport && playerData.grabObject.isGrabbed)
-                playerData.grabObject.isGrabbedTeleport = true;
-        }
-
-        var tmp = portal1;
-        portal1 = portal2;
-        portal2 = tmp;
-    }
-
-    public virtual void Teleport(Vector3 pos)
-    {
-        Debug.Log("tel2");
-        Transform enterPortalTransform = portal1.transform;
-        Transform exitPortalTransform = portal2.transform;
-
-        Vector3 relativeObjPos = enterPortalTransform.InverseTransformPoint(pos);
-        relativeObjPos = reverse * relativeObjPos;
-        transform.position = exitPortalTransform.TransformPoint(relativeObjPos);
-
-        Quaternion relativeObjRot = Quaternion.Inverse(enterPortalTransform.rotation) * transform.rotation;
-        relativeObjRot = reverse * relativeObjRot;
-        transform.rotation = exitPortalTransform.rotation * relativeObjRot;
-
-        Vector3 relativeObjVel = enterPortalTransform.InverseTransformDirection(objRigidbody.velocity);
-        relativeObjVel = reverse * relativeObjVel;
-        objRigidbody.velocity = exitPortalTransform.TransformDirection(relativeObjVel);
-
-        var tmp = portal1;
-        portal1 = portal2;
-        portal2 = tmp;
-    }
-
-    public virtual void GrabTeleport()
-    {
-        Transform enterPortalTransform = portal1.transform;
-        Transform exitPortalTransform = portal2.transform;
-        //여기를 수정해야됨
-        Vector3 relativeObjPos = enterPortalTransform.InverseTransformPoint(transform.position);
-        relativeObjPos = reverse * relativeObjPos;
-        transform.position = exitPortalTransform.TransformPoint(relativeObjPos);
-
-        Quaternion relativeObjRot = Quaternion.Inverse(enterPortalTransform.rotation) * transform.rotation;
-        relativeObjRot = reverse * relativeObjRot;
-        transform.rotation = exitPortalTransform.rotation * relativeObjRot;
-
-        Vector3 relativeObjVel = enterPortalTransform.InverseTransformDirection(objRigidbody.velocity);
-        relativeObjVel = reverse * relativeObjVel;
-        objRigidbody.velocity = exitPortalTransform.TransformDirection(relativeObjVel);
-
-        if (!isGrabbedTeleport)
-            isGrabbedTeleport = true;
-        else
-            isGrabbedTeleport = false;
 
         var tmp = portal1;
         portal1 = portal2;
@@ -217,7 +136,6 @@ public class CTeleportObject : CComponent
     {
         this.portal1 = enterPortal;
         this.portal2 = exitPortal;
-        isInPortal = true;
 
         if(isPlayer && grapicsClone == null)
         {
@@ -251,22 +169,28 @@ public class CTeleportObject : CComponent
         }
         else
             grapicsClone.SetActive(true);
-
-        if(wallCollider)
-        {
-            Debug.Log(collider.gameObject);
-            Physics.IgnoreCollision(collider, wallCollider, true);
-        }
     }
 
     public void ExitPortal(Collider wallCollider)
     {
-        if(wallCollider)
-            Physics.IgnoreCollision(collider, wallCollider, false);
-        isInPortal = false;
-        if(!isBullet)
+        if(grapicsClone)
             grapicsClone.SetActive(false);
-        Debug.Log("exit");
+    }
+
+    public void EnterPortalIgnoreCollision(Collider wallCollider)
+    {
+        if (wallCollider)
+        {
+            Physics.IgnoreCollision(objectCollider, wallCollider, true);
+        }
+    }
+
+    public void ExitPortalIgnoreCollision(Collider wallCollider)
+    {
+        if(wallCollider)
+        {
+            Physics.IgnoreCollision(objectCollider, wallCollider, false);
+        }
     }
 
     Material[] GetMaterials(GameObject g)

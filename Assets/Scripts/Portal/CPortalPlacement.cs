@@ -1,10 +1,4 @@
-using JetBrains.Annotations;
-using OpenCover.Framework.Model;
-using Palmmedia.ReportGenerator.Core.CodeAnalysis;
-using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class CPortalPlacement : CComponent  
@@ -51,9 +45,8 @@ public class CPortalPlacement : CComponent
         }
 
         RaycastHit hit;
-        int excludeLayer = ~(1 << LayerMask.NameToLayer("Player"));
 
-        if (Physics.Raycast(cameraTransform.position, cameraTransform.forward, out hit, 250.0f, excludeLayer))
+        if (Physics.Raycast(cameraTransform.position, cameraTransform.forward, out hit, 250.0f, LayerMask.GetMask("PortalPlaceable", "Portal")))
         {
             aimPoint = hit.point;
         }
@@ -100,8 +93,6 @@ public class CPortalPlacement : CComponent
 
     private void PortalPlace(RaycastHit h, int num, Vector3 offsetPos = default(Vector3))
     {
-        portalPair.portals[num].RemovePortal();
-
         float yRotation;
         Quaternion wallRotation = h.transform.rotation;
         portalRotation = wallRotation;
@@ -123,8 +114,6 @@ public class CPortalPlacement : CComponent
 
     private void PortalPlace(Vector3 pos, Quaternion rot, Collider collider, int num)
     {
-        portalPair.portals[num].RemovePortal();
-
         float yRotation;
         Quaternion wallRotation = rot;
         portalRotation = wallRotation;
@@ -170,12 +159,23 @@ public class CPortalPlacement : CComponent
             //positionTestCube[i].transform.position = raycastPos;
             //positionTestCube[i].transform.rotation = rotation;
 
-            if (!Physics.CheckSphere(raycastPos, 0.05f, placementMask))
+            Collider[] wallColliders = Physics.OverlapSphere(raycastPos, 0.05f, placementMask);
+
+
+            wallColliders[i].transform.forward = 
+            if(wallColliders.Length == 0)
             {
                 Debug.Log(i + "번째 충돌 실패");
                 var point = new PointData { point = raycastPos, pointNum = i };
                 nonCollisionPoint.Add(point);
             }
+
+            //if (!Physics.CheckSphere(raycastPos, 0.05f, placementMask))
+            //{
+            //    Debug.Log(i + "번째 충돌 실패");
+            //    var point = new PointData { point = raycastPos, pointNum = i };
+            //    nonCollisionPoint.Add(point);
+            //}
         }
 
         return PointCorrection(originPos, nonCollisionPoint, pointsDirections);

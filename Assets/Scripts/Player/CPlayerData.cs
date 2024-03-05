@@ -1,10 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Build.Pipeline;
+using UnityEditor.Search;
 using UnityEngine;
 
 public class CPlayerData : CComponent
 {
-    public bool isDrawPortalGun = false;
+    [SerializeField] private bool isDrawBluePortalGun = false;
+    [SerializeField] private bool isDrawOrangePortalGun = false;
     public bool isGrab = false;
     public CGrabableObject grabObject = null;
 
@@ -19,7 +22,7 @@ public class CPlayerData : CComponent
         DIE
     }
 
-    public PlayerState pState;
+    private PlayerState pState;
 
     private static CPlayerData instance;
 
@@ -37,8 +40,19 @@ public class CPlayerData : CComponent
         }
     }
 
-    public static CPlayerData GetInstance()
-    {
-        return instance;
-    }
+    public static CPlayerData GetInstance() => instance;
+
+    public bool GetIsDrawBluePortalGun() => isDrawBluePortalGun;
+
+    public bool GetIsDrawOrangePortalGun() => isDrawOrangePortalGun;
+
+    public void SetDrawBluePortalGun() => isDrawBluePortalGun = true;
+
+    public void SetDrawOrangePortlaGun() => isDrawOrangePortalGun = true;
+
+    public bool GetDrawPortalGun() => (isDrawBluePortalGun || isDrawOrangePortalGun);
+
+    public PlayerState GetPlayerState() => pState;
+
+    public void SetPlayerState(PlayerState state) => pState = state;
 }

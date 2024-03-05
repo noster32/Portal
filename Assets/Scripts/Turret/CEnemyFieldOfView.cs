@@ -52,7 +52,7 @@ public class CEnemyFieldOfView : CComponent
                 Vector3 directionToTarget = (transform.position - relativePlayerPos).normalized;
                 Vector3 targetDirection = transform.InverseTransformDirection(relativePlayerPos - transform.position);
 
-                Debug.DrawLine(transform.position, relativePlayerPos, Color.blue, 2f);
+                //Debug.DrawLine(transform.position, relativePlayerPos, Color.blue, 2f);
 
                 angleToTarget = Vector3.Angle(-transform.forward, directionToTarget);
                 if (targetDirection.x < 0)

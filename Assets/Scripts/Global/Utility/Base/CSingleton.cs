@@ -1,11 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public abstract class CSingleton<T> : CComponent where T : CComponent
 {
-    private static T m_oInstance = null;
+    protected static T m_oInstance = null;
 
     public static T Instance
     {
@@ -18,12 +15,12 @@ public abstract class CSingleton<T> : CComponent where T : CComponent
 
                 //씬이 전환될 때 남기고 싶은 애들을 남긴다
                 DontDestroyOnLoad(oGameObject);
-                
             }
 
             return m_oInstance;
         }
     }
+
     public static T Create()
     {
         return CSingleton<T>.Instance;

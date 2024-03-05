@@ -19,9 +19,6 @@ public class CBallLauncher : CComponent
 
     MeshCollider launcherCollider;
 
-    private GameObject replicateBall;
-    private Rigidbody replicateBallRigidbody;
-
     public override void Awake()
     {
         base.Awake();
@@ -68,7 +65,7 @@ public class CBallLauncher : CComponent
 
         Vector3 BallLaunch = comBall.transform.TransformDirection(Vector3.forward);
 
-        comBall.ballRigidbody.AddForce(BallSpeed * BallLaunch);
+        comBall.m_oRigidBody.AddForce(BallSpeed * BallLaunch);
         
         Physics.IgnoreCollision(comBall.colider, launcherCollider, true);
 

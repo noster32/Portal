@@ -4,10 +4,4 @@ using UnityEngine;
 
 public class CSoundManager : CComponent
 {
-
-    public override void Awake()
-    {
-        base.Awake();
-
-    }
 }

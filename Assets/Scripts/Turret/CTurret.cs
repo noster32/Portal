@@ -1,8 +1,5 @@
 using System.Collections;
 using UnityEngine;
-
-
-
 public class CTurret : CGrabableObject
 {
     [SerializeField] [Range(0.5f, 1f)] float aimLeftRight;
@@ -44,6 +41,7 @@ public class CTurret : CGrabableObject
         turretSound = GetComponent<CTurretSound>();
         turretDetect = GetComponent<CEnemyFieldOfView>();
         turretAnimator = GetComponentInChildren<Animator>();
+
     }
 
     public override void Update()

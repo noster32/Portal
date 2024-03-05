@@ -3,13 +3,15 @@ using UnityEngine;
 
 public class CDoor1 : CComponent
 {
+    [SerializeField] private bool startDoorOpen = false;
     [SerializeField] private float doorGap = 1.19f;
     [SerializeField] private float openDuration = 0.5f;
     private Coroutine moveCoroutine;
 
-    private Transform doorR;
-    private Transform doorL;
-
+    [SerializeField] private Transform doorR;
+    [SerializeField] private Transform doorL;
+    [SerializeField] private Collider wallForward;
+    [SerializeField] private Collider wallBackward;
     private AudioSource audioSource;
     [SerializeField] private AudioClip doorSound;
 
@@ -17,10 +19,19 @@ public class CDoor1 : CComponent
     {
         base.Awake();
 
-        doorR = transform.GetChild(0);
-        doorL = transform.GetChild(1);
         audioSource = GetComponent<AudioSource>();
         audioSource.clip = doorSound;
+    }
+
+    public override void Start()
+    {
+        base.Start();
+
+        if(startDoorOpen)
+        {
+            doorR.localPosition = new Vector3(doorGap, 0f, 0f);
+            doorL.localPosition = new Vector3(-doorGap, 0f, 0f);
+        }
     }
 
     public void DoorOpen()
@@ -64,5 +75,17 @@ public class CDoor1 : CComponent
 
         moveCoroutine = null;
         yield return null;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        Physics.IgnoreCollision(other, wallForward, true);
+        Physics.IgnoreCollision(other, wallBackward, true);
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        Physics.IgnoreCollision(other, wallForward, false);
+        Physics.IgnoreCollision(other, wallBackward, false);
     }
 }
