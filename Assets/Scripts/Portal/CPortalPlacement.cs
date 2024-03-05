@@ -162,7 +162,7 @@ public class CPortalPlacement : CComponent
             Collider[] wallColliders = Physics.OverlapSphere(raycastPos, 0.05f, placementMask);
 
 
-            wallColliders[i].transform.forward = 
+            //wallColliders[i].transform.forward  
             if(wallColliders.Length == 0)
             {
                 Debug.Log(i + "번째 충돌 실패");
