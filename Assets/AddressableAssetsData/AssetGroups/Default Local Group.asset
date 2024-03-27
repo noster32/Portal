@@ -16,7 +16,23 @@ MonoBehaviour:
   m_Data:
     m_SerializedData: []
   m_GUID: e1f2b037cb3600d4e8eda38432a05e84
-  m_SerializeEntries: []
+  m_SerializeEntries:
+  - m_GUID: 85a0f704ac07f41468fa41dfacdf4365
+    m_Address: Assets/Material/Metal/Floor/Texture/metal_modular_floor001_height-ssbump.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 276afad813d6e404bbe537a49518bb1e
+    m_Address: Assets/Material/concret/Wall/Texture/concrete_modular_wall001a_normal.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: aacfc31d58ca35e49bc4122fa4f0bdcd
+    m_Address: Assets/Material/Props/Door/metal_door.mat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 4ab76510fb6bb8a48969be33a283ac43
+    m_Address: Assets/Subtitle/portal_subtitles.txt
+    m_ReadOnly: 0
+    m_SerializedLabels: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 5e9be9a0f4b88d64ea347c1f1a6503fe, type: 2}
   m_SchemaSet:

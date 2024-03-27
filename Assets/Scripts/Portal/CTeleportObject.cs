@@ -21,6 +21,7 @@ public class CTeleportObject : CComponent
     [HideInInspector] public CPlayerMouseLook mouseLook;
     #endregion
 
+    public Vector3 objectCenter = Vector3.zero;
     protected Quaternion reverse = Quaternion.Euler(0f, 180f, 0f);
     private Collider objectCollider;
 
@@ -59,18 +60,8 @@ public class CTeleportObject : CComponent
             m_oRigidBody = grapicsObject.GetComponent<Rigidbody>();
     }
 
-    public override void Start()
-    {
-        base.Start();
-    }
-
-    public override void Update()
-    {
-        base.Update();
-
-        //rigidbodyÀÇ velocity´Â ¿ÀºêÁ§Æ®°¡ ¿ùµå °ø°£À» ±âÁØÀ¸·Î ¸îÀ¯´ÖÀ» ÀÌµ¿ÇÏ°í ÀÖ´ÂÁö ³ªÅ¸³¿
-        // ex) ÇÃ·¹ÀÌ¾î°¡ ¿ùµåÀÇ z¹æÇâÀ¸·Î ÀÌµ¿ÇÒ ¶§¿£ veloÀÇ z°ªÀÌ ³ô°Ô ³ª¿È
-    }
+    //rigidbodyì˜ velocityëŠ” ì˜¤ë¸Œì íŠ¸ê°€ ì›”ë“œ ê³µê°„ì„ ê¸°ì¤€ìœ¼ë¡œ ëª‡ìœ ë‹›ì„ ì´ë™í•˜ê³  ìˆëŠ”ì§€ ë‚˜íƒ€ëƒ„
+    // ex) í”Œë ˆì´ì–´ê°€ ì›”ë“œì˜ zë°©í–¥ìœ¼ë¡œ ì´ë™í•  ë•Œì—” veloì˜ zê°’ì´ ë†’ê²Œ ë‚˜ì˜´
 
     public override void LateUpdate()
     {
@@ -101,9 +92,11 @@ public class CTeleportObject : CComponent
         Transform enterPortalTransform = portal1.transform;
         Transform exitPortalTransform = portal2.transform;
 
-        Vector3 relativeObjPos = enterPortalTransform.InverseTransformPoint(transform.position);
+        
+        Vector3 relativeObjPos = enterPortalTransform.InverseTransformPoint(transform.position + objectCenter);
         relativeObjPos = reverse * relativeObjPos;
-        transform.position = exitPortalTransform.TransformPoint(relativeObjPos);
+        Vector3 temp = exitPortalTransform.TransformPoint(relativeObjPos);
+        transform.position = temp - objectCenter;
 
         if(isPlayer && cameraTransform)
         {
@@ -132,7 +125,7 @@ public class CTeleportObject : CComponent
         portal2 = tmp;
     }
 
-    public void EnterPortal(CPortal enterPortal, CPortal exitPortal, Collider wallCollider)
+    public void EnterPortal(CPortal enterPortal, CPortal exitPortal)
     {
         this.portal1 = enterPortal;
         this.portal2 = exitPortal;
@@ -141,6 +134,11 @@ public class CTeleportObject : CComponent
         {
             grapicsClone = Instantiate(grapicsObject);
             grapicsClone.transform.parent = grapicsObject.transform;
+
+            grapicsClone.transform.GetChild(0).
+                Find("root/spine_base/spine_mid/chest/clavicle_R/bicep_R/elbow_R/wrist_R/weapon_bone/weapon_bone_end/w_portalgun_p3/default").gameObject.layer
+                = LayerMask.NameToLayer("PlayerClone");
+
             grapicsClone.transform.GetChild(1).gameObject.layer = LayerMask.NameToLayer("PlayerClone"); 
             grapicsClone.transform.localScale = new Vector3(1f, 1f, 1f);
 
@@ -171,25 +169,31 @@ public class CTeleportObject : CComponent
             grapicsClone.SetActive(true);
     }
 
-    public void ExitPortal(Collider wallCollider)
+    public void ExitPortal()
     {
         if(grapicsClone)
             grapicsClone.SetActive(false);
     }
 
-    public void EnterPortalIgnoreCollision(Collider wallCollider)
+    public void EnterPortalIgnoreCollision(List<Collider> wallCollider)
     {
-        if (wallCollider)
+        if (wallCollider != null)
         {
-            Physics.IgnoreCollision(objectCollider, wallCollider, true);
+            foreach (Collider c in wallCollider)
+            {
+                Physics.IgnoreCollision(objectCollider, c, true);
+            }
         }
     }
 
-    public void ExitPortalIgnoreCollision(Collider wallCollider)
+    public void ExitPortalIgnoreCollision(List<Collider> wallCollider)
     {
-        if(wallCollider)
+        if (wallCollider != null)
         {
-            Physics.IgnoreCollision(objectCollider, wallCollider, false);
+            foreach (Collider c in wallCollider)
+            {
+                Physics.IgnoreCollision(objectCollider, c, false);
+            }
         }
     }
 
@@ -237,5 +241,4 @@ public class CTeleportObject : CComponent
             ChangeLayerChild(child.gameObject, layer);
         }
     }
-
 }

@@ -1,7 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditor.Build.Pipeline;
-using UnityEditor.Search;
 using UnityEngine;
 
 public class CPlayerData : CComponent
@@ -51,6 +47,8 @@ public class CPlayerData : CComponent
     public void SetDrawOrangePortlaGun() => isDrawOrangePortalGun = true;
 
     public bool GetDrawPortalGun() => (isDrawBluePortalGun || isDrawOrangePortalGun);
+
+    public bool GetDrawBothPortalGun() => (isDrawBluePortalGun && isDrawOrangePortalGun);
 
     public PlayerState GetPlayerState() => pState;
 

@@ -1,18 +1,18 @@
 using System.Collections;
-using System.Runtime.InteropServices;
 using UnityEngine;
 
 public class CCameraFade : CComponent
 {
     [SerializeField] CanvasGroup canvasGroup;
     private bool isFadeIn = false;
+    private Coroutine fadeCoroutine;
 
     public void StartFadeIn(float duration, bool destroy = false)
     {
         if (!isFadeIn)
         {
             isFadeIn = true;
-            StartCoroutine(FadeIn(duration, destroy));
+            StartCoroutine(FadeInCoroutine(duration, destroy));
         }
     }
 
@@ -21,7 +21,30 @@ public class CCameraFade : CComponent
         StartCoroutine(Flicking(duration, destroy));
     }
 
-    private IEnumerator FadeIn(float duration, bool destroy)
+    public void SetAlpha(float alphaValue)
+    {
+        canvasGroup.alpha = alphaValue;
+    }
+
+    public void FadeIn(float duration, float alphaValue = 1f, bool destroy = false)
+    {
+        canvasGroup.alpha = alphaValue;
+
+        if (fadeCoroutine != null)
+            StopCoroutine(fadeCoroutine);
+
+        fadeCoroutine = StartCoroutine(FadeInCoroutine(duration, destroy));
+    }
+
+    public void FadeOut(float duration, float alphaValue = 1f, bool destroy = false)
+    {
+        if (fadeCoroutine != null)
+            StopCoroutine(fadeCoroutine);
+
+        fadeCoroutine = StartCoroutine(FadeOutCoroutine(duration, alphaValue, destroy));
+    }
+
+    private IEnumerator FadeInCoroutine(float duration, bool destroy)
     {
         while(canvasGroup.alpha > 0)
         {
@@ -29,14 +52,89 @@ public class CCameraFade : CComponent
             yield return null;
         }
 
+        canvasGroup.alpha = 0f;
+
+        if (fadeCoroutine != null)
+            fadeCoroutine = null;
+
+        if (destroy)
+            Destroy(canvasGroup.gameObject);
+    }
+
+    private IEnumerator FadeOutCoroutine(float duration, float alphaValue, bool destroy)
+    {
+        while (canvasGroup.alpha < alphaValue)
+        {
+            canvasGroup.alpha += Time.deltaTime / duration;
+            yield return null;
+        }
+
+        canvasGroup.alpha = alphaValue;
+
+        if (fadeCoroutine != null)
+            fadeCoroutine = null;
+
+        if (destroy)
+            Destroy(canvasGroup.gameObject);
+    }
+
+
+    public void FadeInUnscaledTime(float duration, float alphaValue = 1f, bool destroy = false)
+    {
+        canvasGroup.alpha = alphaValue;
+
+        if (fadeCoroutine != null)
+            StopCoroutine(fadeCoroutine);
+
+        fadeCoroutine = StartCoroutine(FadeInUnscaledTimeCoroutine(duration, destroy));
+    }
+
+    public void FadeOutUnscaledTime(float duration, float alphaValue = 1f, bool destroy = false)
+    {
+        if (fadeCoroutine != null)
+            StopCoroutine(fadeCoroutine);
+
+        fadeCoroutine = StartCoroutine(FadeOutUnscaledTimeCoroutine(duration, alphaValue, destroy));
+    }
+
+    private IEnumerator FadeInUnscaledTimeCoroutine(float duration, bool destroy)
+    {
+        while (canvasGroup.alpha > 0)
+        {
+            canvasGroup.alpha -= Time.unscaledDeltaTime / duration;
+            yield return null;
+        }
+
+        canvasGroup.alpha = 0f;
+
+        if (fadeCoroutine != null)
+            fadeCoroutine = null;
+
+        if (destroy)
+            Destroy(canvasGroup.gameObject);
+    }
+
+    private IEnumerator FadeOutUnscaledTimeCoroutine(float duration, float alphaValue, bool destroy)
+    {
+        while (canvasGroup.alpha < alphaValue)
+        {
+            canvasGroup.alpha += Time.unscaledDeltaTime / duration;
+            yield return null;
+        }
+
+        canvasGroup.alpha = alphaValue;
+
+        if (fadeCoroutine != null)
+            fadeCoroutine = null;
+
         if (destroy)
             Destroy(canvasGroup.gameObject);
     }
 
     private IEnumerator Flicking(float duration, bool destroy)
     {
-        float flickTImeScale = 0.5f;                //alpha°¡ 0.5°¡ º¯ÇÏ´Âµ¥ 0.5ÃÊ°¡ °É¸®´Âµ¥ ÀÌ 0.5ÃÊ¿¡ ´ëÇÑ ¹èÀ²
-                                                    //¸¸¾à ÀÌ °ªÀÌ 0.5¶ó¸é alpha°¡ º¯ÇÏ´Âµ¥ °É¸®´Â ½Ã°£Àº 0.25ÃÊ
+        float flickTImeScale = 0.5f;                //alphaê°€ 0.5ê°€ ë³€í•˜ëŠ”ë° 0.5ì´ˆê°€ ê±¸ë¦¬ëŠ”ë° ì´ 0.5ì´ˆì— ëŒ€í•œ ë°°ìœ¨
+                                                    //ë§Œì•½ ì´ ê°’ì´ 0.5ë¼ë©´ alphaê°€ ë³€í•˜ëŠ”ë° ê±¸ë¦¬ëŠ” ì‹œê°„ì€ 0.25ì´ˆ
         float waitTime = duration - flickTImeScale;
 
         if (duration <= 1f)

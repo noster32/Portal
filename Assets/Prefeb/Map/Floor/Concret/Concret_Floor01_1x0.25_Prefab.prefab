@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1170295518638243209}
   - component: {fileID: 1170295518638243208}
   - component: {fileID: 1170295518638243211}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Concret_Floor01_1x0.25_Prefab
   m_TagString: Concret
   m_Icon: {fileID: 0}

@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class CSoundLoader : CSingleton<CSoundLoader>
@@ -48,6 +45,10 @@ public class CSoundLoader : CSingleton<CSoundLoader>
 
     public float GetEffectVolume(float volume)
     {
+        float temp = 1f / musicSoundVolume;
+        temp *= musicSoundVolume;
+
+
         float result = volume / effectSoundVolume;
         return result * effectSoundVolume;
     }
@@ -67,13 +68,6 @@ public class CSoundLoader : CSingleton<CSoundLoader>
             m_audioSource.Play();
         }
     }
-
-    public void PlaySoundOneShot(AudioClip audioClip, float volumeScale = 1f)
-    {
-        m_audioSource.PlayOneShot(audioClip, GetEffectVolume(volumeScale));
-    }
-
-
     public void PlaySound3D(Vector3 mainPos, float volumeMultipiler)
     {
         //Debug.Log(m_ListenerTransform);

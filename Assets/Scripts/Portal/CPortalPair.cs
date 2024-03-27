@@ -16,9 +16,36 @@ public class CPortalPair : CComponent
         }
     }
 
-    public bool PlacedBothPortal()
+    public bool PlacedBothPortal() => portals[0].IsPlaced() && portals[1].IsPlaced();
+
+    public bool PlacedOncePortal() => portals[0].IsPlaced() || portals[1].IsPlaced();
+
+    public void CleanBothPortal()
     {
-        return portals[0].IsPlaced() && portals[1].IsPlaced();
+        portals[0].CleanPortal();
+        portals[1].CleanPortal();
+    }
+
+    public CPortal CheckPortalTag(string tag)
+    {
+        if (tag == portals[0].tag)
+            return portals[0];
+        else
+            return portals[1];
+    }
+
+    public CPortal CheckPortalTag(string tag, out CPortal otherPortal)
+    {
+        if(tag == portals[0].tag)
+        {
+            otherPortal = portals[1];
+            return portals[0];
+        }
+        else
+        {
+            otherPortal = portals[0];
+            return portals[1];
+        }
     }
 
 }

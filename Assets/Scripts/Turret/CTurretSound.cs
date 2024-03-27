@@ -5,97 +5,69 @@ using UnityEngine;
 
 public class CTurretSound : CComponent
 {
-    [Header("Turret Voice")]
-    [SerializeField] private AudioClip[] turretActiveClip;
-    [SerializeField] private AudioClip[] turretDisableClip;
-    [SerializeField] private AudioClip[] turretSearchClip;
-    [SerializeField] private AudioClip[] turretSearchRetireClip;
-    [SerializeField] private AudioClip[] turretShootAtClip;
-    [SerializeField] private AudioClip[] turretFallClip;
-    [SerializeField] private AudioClip[] turretPickUpClip;
-    [SerializeField] private AudioClip turretFizzleClip;
-
-    [Header("Turre Sound")]
-    [SerializeField] private AudioClip[] turretGunSoundClip;
-    [SerializeField] private AudioClip turretGunRotateClip;
-    [SerializeField] private AudioClip turretDeployClip;
-    [SerializeField] private AudioClip turretPingClip;
-    [SerializeField] private AudioClip turretRetractClip;
-    [SerializeField] private AudioClip turretDieClip;
-
-
     private System.Random rand;
-    private AudioSource audioSource;
 
     public override void Awake()
     {
         base.Awake();
         rand = new System.Random();
-        audioSource = GetComponent<AudioSource>();
     }
 
     public void PlayTurretActiveVoiceSound()
     {
-        PlayRandomSound(turretActiveClip);
+        CAudioManager.Instance.PlayOneShot(CFMODEventsTurret.Instance.turretActive, this.transform.position);
     }
 
     public void PlayTurretDIsableVoiceSound()
     {
-        PlayRandomSound(turretDisableClip);
+        CAudioManager.Instance.PlayOneShot(CFMODEventsTurret.Instance.turretDisabled, this.transform.position);
     }
 
     public void PlayTurretSearchingVoiceSound()
     {
-        PlayRandomSound(turretSearchClip);
+        CAudioManager.Instance.PlayOneShot(CFMODEventsTurret.Instance.turretSearch, this.transform.position);
     }
 
     public void PlayTurretSearchingRetireVoiceSound()
     {
-        PlayRandomSound(turretSearchRetireClip);
+        CAudioManager.Instance.PlayOneShot(CFMODEventsTurret.Instance.turretRetire, this.transform.position);
     }
 
     public void PlayTurretPickUpVoiceSound()
     {
-        PlayRandomSound(turretPickUpClip);
+        CAudioManager.Instance.PlayOneShot(CFMODEventsTurret.Instance.turretPickup, this.transform.position);
     }
 
     public void PlayTurretFallDownVoiceSound()
     {
-        PlayRandomSound(turretFallClip);
+        CAudioManager.Instance.PlayOneShot(CFMODEventsTurret.Instance.turretTipped, this.transform.position);
     }
 
     public void PlayTurretGunSound()
     {
-        PlayRandomSound(turretGunSoundClip);
+        CAudioManager.Instance.PlayOneShot(CFMODEventsTurret.Instance.shoot, this.transform.position);
     }
 
     public void PlayTurretGunRotationSound()
     {
-        audioSource.PlayOneShot(turretGunRotateClip);
+        CAudioManager.Instance.PlayOneShot(CFMODEventsTurret.Instance.active, this.transform.position);
     }
 
     public void PlayTurretPingSound()
     {
-        audioSource.PlayOneShot(turretPingClip);
+        CAudioManager.Instance.PlayOneShot(CFMODEventsTurret.Instance.ping, this.transform.position);
     }
     public void PlayTurretDeploySound()
     {
-        audioSource.PlayOneShot(turretDeployClip);
+        CAudioManager.Instance.PlayOneShot(CFMODEventsTurret.Instance.deploy, this.transform.position);
     }
     public void PlayTurretRetractSound()
     {
-        audioSource.PlayOneShot(turretRetractClip);
+        CAudioManager.Instance.PlayOneShot(CFMODEventsTurret.Instance.retract, this.transform.position);
     }
 
     public void PlayTurretDieSound()
     {
-        audioSource.PlayOneShot(turretDieClip);
+        CAudioManager.Instance.PlayOneShot(CFMODEventsTurret.Instance.die, this.transform.position);
     }
-
-    private void PlayRandomSound(AudioClip[] clips)
-    {
-        int num = rand.Next(clips.Length);
-        audioSource.PlayOneShot(clips[num]);
-    }
-
 }

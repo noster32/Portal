@@ -1,15 +1,16 @@
 using System.Collections;
 using UnityEngine;
+using FMODUnity;
 
 public class CPlayerMovement : CTeleportObject
 {
-    #region Move
     [Header("Player Move Setting")]
     [SerializeField] private float moveSpeed;
     [SerializeField] private float crouchSpeed;
     [SerializeField] private float jumpPower;
-    [SerializeField] private float groundDrag;
     [SerializeField] private float stepInterval;
+    [SerializeField] private float playerHeight = 1.6f;
+    [SerializeField] private float playerCrouchHeight = 1f;
 
     [HideInInspector] public Vector3 moveVector;
 
@@ -17,40 +18,18 @@ public class CPlayerMovement : CTeleportObject
     private Vector2 moveInput;
     private float moveVectorMagnitude;
     private float stepCycle;
-    private int stepNum;
-    #endregion
-
-    #region State
     private bool isOnGround = false;
     private bool isJump = false;
     private bool isCrouch = false;
-    private CPlayerData playerData;
-
-    [SerializeField] private float playerHeight = 1.6f;
-    [SerializeField] private float playerCrouchHeight = 1f;
-    #endregion
-
-    #region Collider
+    private CPlayerState playerState;
     private CapsuleCollider playerCollider;
-    #endregion
-
-    #region Sound
-    [Header("Sound")]
-    [SerializeField] AudioClip[] footStepSound_concret;
-    [SerializeField] AudioClip[] footStepSound_metal;
-    [SerializeField] AudioClip jumpSound_concret;
-    [SerializeField] AudioClip jumpSound_metal;
-    [SerializeField] AudioClip[] playerTeleportSound;
-
-    private AudioSource audioSource;
-    #endregion
-
-    [SerializeField] private CPortalPair portalPair;
+    private Coroutine lineToPortalCoroutine;
 
     private enum FloorMaterial
     { 
         CONCRET,
-        METAL
+        METAL,
+        METALGRATE
     }
 
     private FloorMaterial floorMat;
@@ -58,35 +37,38 @@ public class CPlayerMovement : CTeleportObject
     public override void Awake()
     {
         base.Awake();
-
-        audioSource = GetComponent<AudioSource>();
         playerCollider = GetComponent<CapsuleCollider>();
 
         cameraTransform = Camera.main.transform;
         mouseLook = GetComponent<CPlayerMouseLook>();
+
+        playerState = GetComponent<CPlayerState>();
     }
+
     public override void Start()
     {
         base.Start();
 
-        playerData = CPlayerData.GetInstance();
-        mouseLook.Init(transform, cameraTransform);
-        SetColliderHeightAndCenter(1.8f);
+        mouseLook.Init(cameraTransform, this.transform);
+
+        SetColliderHeightAndCenter(playerHeight);
     }
 
     public override void Update()
     {
         base.Update();
 
-        if (playerData.GetPlayerState() == CPlayerData.PlayerState.DIE)
+        if (CGameManager.Instance.GetIsPaused())
             return;
 
-        GetInput();
         PlayerRotation();
+
+        GetInput();
         Jump();
         Crouch();
         StepCycle();
         PlayerMove();
+
 
         PlayerStateChange();
     }
@@ -95,11 +77,10 @@ public class CPlayerMovement : CTeleportObject
     {
         base.FixedUpdate();
 
-        if (playerData.GetPlayerState() == CPlayerData.PlayerState.DIE)
+        if (playerState.GetIsPlayerDie())
             return;
 
         GroundCheck();
-        
     }
 
     private void GetInput()
@@ -109,14 +90,13 @@ public class CPlayerMovement : CTeleportObject
 
         moveVector.x = moveInput.x;
         moveVector.z = moveInput.y;
-
     }
     private void PlayerMove()
     {
         moveVectorMagnitude = moveVector.sqrMagnitude;
-
-        moveVector = transform.TransformDirection(moveVector);
-        airMoveVector = transform.forward * (moveInput.y <= 0 ? moveInput.y : 0f) + transform.right * moveInput.x;
+ 
+        moveVector = Quaternion.Euler(0f, transform.rotation.eulerAngles.y, 0f) * moveVector;
+        airMoveVector = transform.right * moveInput.x;
 
         if (moveVectorMagnitude <= 1)
         {
@@ -135,17 +115,58 @@ public class CPlayerMovement : CTeleportObject
         {
             airMoveVector = airMoveVector.normalized * (isCrouch ? crouchSpeed : moveSpeed);
         }
-
+        
         if (isOnGround)
+        {
             m_oRigidBody.velocity = new Vector3(moveVector.x, m_oRigidBody.velocity.y, moveVector.z);
+        }
         else if (!isOnGround)
-            m_oRigidBody.AddForce(airMoveVector * 10f);
+            m_oRigidBody.AddForce(airMoveVector * 5f);
+
     }
 
     private void PlayerRotation()
     {
-        mouseLook.MouseRotation(transform, cameraTransform);
+        mouseLook.MouseRotation(cameraTransform, this.transform);
+        mouseLook.RecoilRotation();
     }
+
+    public void LineToPortal(Vector3 position)
+    {
+        if(!isOnGround)
+        {
+            lineToPortalCoroutine = StartCoroutine(LineToPortalCoroutine(position));
+        }
+    }
+
+    public void StopLineToPortal()
+    {
+        if (lineToPortalCoroutine != null)
+            StopCoroutine(lineToPortalCoroutine);
+    }
+
+    private IEnumerator LineToPortalCoroutine(Vector3 position)
+    {
+        float elapsedTime = 0f;
+        Vector3 start = new Vector3(transform.position.x, 0f, transform.position.z);
+        Vector3 end = new Vector3(position.x, 0f, position.z);
+        m_oRigidBody.velocity = new Vector3(0f, m_oRigidBody.velocity.y, 0f);
+        while(elapsedTime < 0.5f)
+        {
+            float t = elapsedTime / 0.3f;
+            Vector3 temp = Vector3.Lerp(start, end, t);
+            transform.position = new Vector3(temp.x, transform.position.y, temp.z);
+            elapsedTime += Time.deltaTime;
+
+            yield return null;
+        }
+
+        transform.position = new Vector3(end.x, transform.position.y, end.z);
+
+        lineToPortalCoroutine = null;
+        yield return null;
+    }
+
 
     private void Jump()
     {
@@ -163,7 +184,6 @@ public class CPlayerMovement : CTeleportObject
                 m_oRigidBody.AddForce(Vector3.up * jumpPower, ForceMode.Impulse);
             }
         }
-
     }
 
     private void Crouch()
@@ -180,32 +200,15 @@ public class CPlayerMovement : CTeleportObject
         }
     }
 
-    private IEnumerator LerpCameraPostion(Vector3 startPos, Vector3 endPosition, float duration)
-    {
-        float timeElapsed = 0f;
-
-        while (timeElapsed < duration)
-        {
-            float t = timeElapsed / duration;
-            transform.localScale = Vector3.Lerp(Vector3.zero, Vector3.one, t);
-            timeElapsed += Time.fixedDeltaTime;
-
-            yield return null;
-        }
-
-        transform.localScale = Vector3.one;
-    }
-
     private void StepCycle()
     {
         if (moveVector.sqrMagnitude > 0 && (moveInput.x != 0 || moveInput.y != 0))
         {
-            stepCycle += (moveVector.magnitude + (moveSpeed * (isCrouch? 0.5f : 1f))) * Time.deltaTime;
+            stepCycle += (moveVector.magnitude + (moveSpeed * (isCrouch ? 0.5f : 1f))) * Time.deltaTime;
         }
         else if(moveVector.sqrMagnitude == 0 && moveInput.x == 0 && moveInput.y == 0)
         {
             stepCycle = stepInterval - 1;
-            stepNum = 1;
         }
 
         if (stepCycle >= stepInterval)
@@ -215,6 +218,7 @@ public class CPlayerMovement : CTeleportObject
         }
     }
 
+
     private void PlayFootstepAudio()
     {
         if (!isOnGround || isJump)
@@ -222,45 +226,35 @@ public class CPlayerMovement : CTeleportObject
             return;
         }
 
-        audioSource.volume = 0.06f;
-        audioSource.clip = GetRandomFootStepClip();
-        audioSource.PlayOneShot(audioSource.clip);
+        CAudioManager.Instance.PlayOneShot(GetMaterailFootstepsSound(), this.transform.position);
     }
 
     private void PlayJumpAudio()
     {
-        audioSource.volume = 0.15f;
-        audioSource.clip = GetRandomFootStepClip();
-        audioSource.PlayOneShot(audioSource.clip);
-        stepCycle = stepInterval - 1;
-        stepNum = 1;
+        CAudioManager.Instance.PlayOneShot(GetMaterailFootstepsSound(), this.transform.position);
     }
 
-    private AudioClip GetRandomFootStepClip()
+    private EventReference GetMaterailFootstepsSound()
     {
-        AudioClip[] footStepClip;
+        EventReference footstepsSound;
 
         switch (floorMat)
         {
             case FloorMaterial.CONCRET:
-                footStepClip = footStepSound_concret;
+                footstepsSound = CFMODEvents.Instance.stepSoundConcret;
                 break;
             case FloorMaterial.METAL:
-                footStepClip = footStepSound_metal;
+                footstepsSound = CFMODEvents.Instance.stepSoundMetal;
+                break;
+            case FloorMaterial.METALGRATE:
+                footstepsSound = CFMODEvents.Instance.stepSoundMetalGrate;
                 break;
             default:
-                footStepClip = footStepSound_concret;
+                footstepsSound = CFMODEvents.Instance.stepSoundConcret;
                 break;
         }
 
-        if (stepNum != 0)
-            stepNum = 0;
-        else
-        {
-            stepNum = Random.Range(1, footStepClip.Length - 1);
-        }
-
-        return footStepClip[stepNum];
+        return footstepsSound;
     }
 
     private void GroundCheck()
@@ -274,11 +268,8 @@ public class CPlayerMovement : CTeleportObject
 
         int excludedLayers = ~LayerMask.GetMask("Player", "InvisiblePlayer");
 
-        if (Physics.BoxCast(playerCenter, groundCheckBox, Vector3.down, out hit, Quaternion.identity, maxDis, excludedLayers))
+        if (Physics.BoxCast(playerCenter, groundCheckBox, Vector3.down, out hit, Quaternion.identity, maxDis, excludedLayers, QueryTriggerInteraction.Ignore))
         {
-            if (hit.collider.isTrigger)
-                return;
-
             FloatingPlayer(hit, height, playerCenter, maxDis);
 
             if (hit.collider.tag == "Concret")
@@ -288,6 +279,10 @@ public class CPlayerMovement : CTeleportObject
             else if (hit.collider.tag == "Metal")
             {
                 floorMat = FloorMaterial.METAL;
+            }
+            else if (hit.collider.tag == "MetalGrate")
+            {
+                floorMat = FloorMaterial.METALGRATE;
             }
             else
                 floorMat = FloorMaterial.CONCRET;
@@ -310,7 +305,7 @@ public class CPlayerMovement : CTeleportObject
             isOnGround = true;
         }
 
-        //¿Ã∞≈ 50f∑Œ πŸ≤Â¥ı¥œ ø÷ µ«¥¬∞≈¿”??
+        //Ïù¥Í±∞ 50fÎ°ú Î∞îÍø®ÎçîÎãà Ïôú ÎêòÎäîÍ±∞ÏûÑ??
         float forceValue = distance * 50f - m_oRigidBody.velocity.y;
         Vector3 floatingForce = new Vector3(0f, forceValue, 0f);
         m_oRigidBody.AddForce(floatingForce, ForceMode.VelocityChange);
@@ -319,9 +314,9 @@ public class CPlayerMovement : CTeleportObject
     private bool PortalOnFloorCheck(Vector3 center, float maxDistacne)
     {
         RaycastHit hit;
-        int portalLayer = LayerMask.GetMask("Portal");
+        int portalLayer = LayerMask.GetMask("PortalCollider");
 
-        if (!portalPair.PlacedBothPortal())
+        if (!CSceneManager.Instance.portalPair.PlacedBothPortal())
         {
             return false;
         }
@@ -363,34 +358,34 @@ public class CPlayerMovement : CTeleportObject
     {
         if (moveVectorMagnitude != 0 && !isJump && !isCrouch)
         {
-            CPlayerData.GetInstance().SetPlayerState(CPlayerData.PlayerState.WALK);
-            //pState = PlayerState.WALK;
+            playerState.SetPlayerState(CPlayerState.PlayerState.WALK);
         }
         else if (isJump)
         {
-            CPlayerData.GetInstance().SetPlayerState(CPlayerData.PlayerState.JUMP);
+            playerState.SetPlayerState(CPlayerState.PlayerState.JUMP);
         }
         else if (isCrouch && !isJump && moveVectorMagnitude == 0)
         {
-            CPlayerData.GetInstance().SetPlayerState(CPlayerData.PlayerState.CROUCH);
+            playerState.SetPlayerState(CPlayerState.PlayerState.CROUCH);
         }
         else if (isCrouch && !isJump && moveVectorMagnitude != 0)
         {
-            CPlayerData.GetInstance().SetPlayerState(CPlayerData.PlayerState.CROUCHWALK);
+            playerState.SetPlayerState(CPlayerState.PlayerState.CROUCHWALK);
         }
         else
         {
-            CPlayerData.GetInstance().SetPlayerState(CPlayerData.PlayerState.IDLE);
+            playerState.SetPlayerState(CPlayerState.PlayerState.IDLE);
         }
     }
 
     private void SetColliderHeightAndCenter(float height)
     {
-        playerCollider.height = height * 0.9f;
+        playerCollider.height = height * 0.8f;
 
         float diffHeight = height - playerCollider.height;
         playerCollider.center = new Vector3(0f, (height / 2) + (diffHeight / 2), 0f);
     }
+
     private void SetColliderHeightAndCenter(float standHeight, float crouchHeight)
     {
         float height = (isCrouch ? crouchHeight : standHeight);
@@ -406,18 +401,16 @@ public class CPlayerMovement : CTeleportObject
     {
         base.Teleport();
 
-        if (playerData.isGrab && playerData.grabObject)
+        if(lineToPortalCoroutine != null)
         {
-            if (playerData.grabObject.isGrabbedTeleport)
-            {
-                playerData.grabObject.isGrabbedTeleport = false;
-            }
-            else if (!playerData.grabObject.isGrabbedTeleport && playerData.grabObject.isGrabbed)
-            {
-                playerData.grabObject.isGrabbedTeleport = true;
-            }
+            StopLineToPortal();
         }
 
-        SoundUtility.PlayRandomSound(audioSource, playerTeleportSound);
+        CAudioManager.Instance.PlayOneShot(CFMODEvents.Instance.teleport, this.transform.position);
+    }
+    
+    public void DiePlayerMove()
+    {
+        playerCollider.height = 0.6f;
     }
 }

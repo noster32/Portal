@@ -5,9 +5,11 @@ using UnityEngine.Playables;
 
 public class CLab00 : CComponent
 {
+    [Header("Setting")]
     [SerializeField] CCameraFade cameraFade;
     [SerializeField] GameObject playerCharacter;
     [SerializeField] GameObject introCamera;
+    [SerializeField] GameObject crosshairHud;
 
     [Header("TimeLine")]
     [SerializeField] PlayableDirector playableDirector;
@@ -26,20 +28,10 @@ public class CLab00 : CComponent
     [SerializeField] UnityEvent[] autoPortalEventPart2B;
     [SerializeField] UnityEvent autoPortalClearEvent;
 
-    [Header("Aperture Sound")]
-    [SerializeField] private AudioClip blipSound;
-    [SerializeField] private AudioClip[] part1AISoundEntry;
-    [SerializeField] private AudioClip[] part1AISoundSuccess;
-    [SerializeField] private AudioClip part2AISoundEntry;
-    [SerializeField] private AudioClip part2AISoundSuccess;
-
     [Header("Ambient Sound")]
-    [SerializeField] private CAmbienceSound ambienceSound;
-    [SerializeField] private CAmbienceSound part2RoomAmbienceSound;
-    [SerializeField] private CAmbienceSound part2HallwayAmbienceSound;
-    [SerializeField] private AudioClip changeAmbient;
-    [SerializeField] private AudioClip changeAmbientPart2Success;
-    [SerializeField] private AudioClip changeAmbientPart2HallwaySuccess;
+    [SerializeField] private CAmbientSoundWithClear part1RoomAmbientSound;
+    [SerializeField] private CAmbientSoundWithClear part2RoomAmbientSound;
+    [SerializeField] private CAmbientSoundWithClear part2HallwayAmbientSound;
 
     private bool isPart1Success = false;
     private bool isPart2Entry = false;
@@ -69,7 +61,11 @@ public class CLab00 : CComponent
         if (!isPart2Entry)
         {
             isPart2Entry = true;
-            StartCoroutine(Part2EntryCoroutine());
+            autoPortalEventPart2.Invoke();
+            StartCoroutine(Part2AutoPortal());
+            CAudioManager.Instance.PlayOneShot(CFMODEventLab00.Instance.part2Entry, this.transform.position);
+            CSceneManager.Instance.subtitle.SetText(CScriptManager.Instance.GetText("lab00", "lab00_part2_entry_1"),
+                CAudioManager.Instance.GetAudioLength(CFMODEventLab00.Instance.part2Entry));
         }
     }
 
@@ -77,8 +73,13 @@ public class CLab00 : CComponent
     {
         if(!isPart2Success)
         {
-            isPart1Success = true;
-            StartCoroutine(Part2SuccessCoroutine());
+            isPart2Success = true;
+            part2RoomAmbientSound.PartClear();
+            part2HallwayAmbientSound.PartClear();
+
+            CAudioManager.Instance.PlayOneShot(CFMODEventLab00.Instance.part2Success, this.transform.position);
+            CSceneManager.Instance.subtitle.SetText(CScriptManager.Instance.GetText("lab00", "lab00_part2_success_1"),
+                CAudioManager.Instance.GetAudioLength(CFMODEventLab00.Instance.part2Success));
         }
     }
 
@@ -110,6 +111,7 @@ public class CLab00 : CComponent
 
         introCamera.SetActive(false);
         playerCharacter.SetActive(true);
+        crosshairHud.SetActive(true);
 
         yield return new WaitForSeconds(2f);
 
@@ -124,25 +126,42 @@ public class CLab00 : CComponent
 
     private IEnumerator AIvoiceCoroutine()
     {
-        CSoundLoader.Instance.PlaySoundOneShot(blipSound);
+        CAudioManager.Instance.PlayOneShot(CFMODEventLab00.Instance.part1Entry1, this.transform.position);
+        CSceneManager.Instance.subtitle.SetText(CScriptManager.Instance.GetText("lab00", "lab00_part1_entry_1"), 
+            CAudioManager.Instance.GetAudioLength(CFMODEventLab00.Instance.part1Entry1));
+        yield return new WaitForSeconds(CAudioManager.Instance.GetAudioLength(CFMODEventLab00.Instance.part1Entry1));
 
-        yield return new WaitForSeconds(blipSound.length);
+        CAudioManager.Instance.PlayOneShot(CFMODEventLab00.Instance.part1Entry2, this.transform.position);
+        CSceneManager.Instance.subtitle.SetText(CScriptManager.Instance.GetText("lab00", "lab00_part1_entry_2"),
+            CAudioManager.Instance.GetAudioLength(CFMODEventLab00.Instance.part1Entry2));
+        yield return new WaitForSeconds(CAudioManager.Instance.GetAudioLength(CFMODEventLab00.Instance.part1Entry2));
 
-        for (int i = 0; i < 5; i++)
-        {
-            CSoundLoader.Instance.PlaySoundOneShot(part1AISoundEntry[i]);
+        CAudioManager.Instance.PlayOneShot(CFMODEventLab00.Instance.part1Entry3, this.transform.position);
+        CSceneManager.Instance.subtitle.SetText(CScriptManager.Instance.GetText("lab00", "lab00_part1_entry_3"),
+            CAudioManager.Instance.GetAudioLength(CFMODEventLab00.Instance.part1Entry3));
+        yield return new WaitForSeconds(CAudioManager.Instance.GetAudioLength(CFMODEventLab00.Instance.part1Entry3));
 
-            yield return new WaitForSeconds(part1AISoundEntry[i].length);
-        }
+        CAudioManager.Instance.PlayOneShot(CFMODEventLab00.Instance.part1Entry4, this.transform.position);
+        CSceneManager.Instance.subtitle.SetText(CScriptManager.Instance.GetText("lab00", "lab00_part1_entry_4"),
+            CAudioManager.Instance.GetAudioLength(CFMODEventLab00.Instance.part1Entry4));
+        yield return new WaitForSeconds(CAudioManager.Instance.GetAudioLength(CFMODEventLab00.Instance.part1Entry4));
+
+        CAudioManager.Instance.PlayOneShot(CFMODEventLab00.Instance.part1Entry5, this.transform.position);
+        CSceneManager.Instance.subtitle.SetText(CScriptManager.Instance.GetText("lab00", "lab00_part1_entry_5"),
+            CAudioManager.Instance.GetAudioLength(CFMODEventLab00.Instance.part1Entry5));
+        yield return new WaitForSeconds(CAudioManager.Instance.GetAudioLength(CFMODEventLab00.Instance.part1Entry5));
 
         StartCoroutine(SparkCoroutine());
-        CSoundLoader.Instance.PlaySoundOneShot(part1AISoundEntry[5]);
 
-        yield return new WaitForSeconds(part1AISoundEntry[5].length);
+        CAudioManager.Instance.PlayOneShot(CFMODEventLab00.Instance.part1Entry6, this.transform.position);
+        CSceneManager.Instance.subtitle.SetText(CScriptManager.Instance.GetText("lab00", "lab00_part1_entry_6"),
+            CAudioManager.Instance.GetAudioLength(CFMODEventLab00.Instance.part1Entry6));
+        yield return new WaitForSeconds(CAudioManager.Instance.GetAudioLength(CFMODEventLab00.Instance.part1Entry6));
 
-        CSoundLoader.Instance.PlaySoundOneShot(part1AISoundEntry[6]);
-
-        yield return new WaitForSeconds(part1AISoundEntry[6].length);
+        CAudioManager.Instance.PlayOneShot(CFMODEventLab00.Instance.part1Entry7, this.transform.position);
+        CSceneManager.Instance.subtitle.SetText(CScriptManager.Instance.GetText("lab00", "lab00_part1_entry_7"),
+            CAudioManager.Instance.GetAudioLength(CFMODEventLab00.Instance.part1Entry7));
+        yield return new WaitForSeconds(CAudioManager.Instance.GetAudioLength(CFMODEventLab00.Instance.part1Entry7));
 
         autoPortalEvent.Invoke();
 
@@ -174,39 +193,22 @@ public class CLab00 : CComponent
     {
         yield return new WaitForSeconds(2f);
 
-        CSoundLoader.Instance.PlaySoundOneShot(blipSound);
-        ambienceSound.ChangeAmbient(changeAmbient);
+        part1RoomAmbientSound.PartClear();
+        
+        CAudioManager.Instance.PlayOneShot(CFMODEventLab00.Instance.part1Success1, this.transform.position);
+        CSceneManager.Instance.subtitle.SetText(CScriptManager.Instance.GetText("lab00", "lab00_part1_success_1"),
+            CAudioManager.Instance.GetAudioLength(CFMODEventLab00.Instance.part1Success1));
+        yield return new WaitForSeconds(CAudioManager.Instance.GetAudioLength(CFMODEventLab00.Instance.part1Success1));
 
-        yield return new WaitForSeconds(blipSound.length);
+        CAudioManager.Instance.PlayOneShot(CFMODEventLab00.Instance.part1Success2, this.transform.position);
+        CSceneManager.Instance.subtitle.SetText(CScriptManager.Instance.GetText("lab00", "lab00_part1_success_2"),
+            CAudioManager.Instance.GetAudioLength(CFMODEventLab00.Instance.part1Success2));
+        yield return new WaitForSeconds(CAudioManager.Instance.GetAudioLength(CFMODEventLab00.Instance.part1Success2));
 
-        foreach (AudioClip aiClip in part1AISoundSuccess)
-        {
-            CSoundLoader.Instance.PlaySoundOneShot(aiClip);
-
-            yield return new WaitForSeconds(aiClip.length);
-        }
-
-        CSoundLoader.Instance.PlaySoundOneShot(blipSound);
-
-        yield return null;
-    }
-
-    private IEnumerator Part2EntryCoroutine()
-    {
-        CSoundLoader.Instance.PlaySoundOneShot(blipSound);
-        autoPortalEventPart2.Invoke();
-        StartCoroutine(Part2AutoPortal());
-
-        yield return new WaitForSeconds(blipSound.length);
-
-        CSoundLoader.Instance.PlaySoundOneShot(part2AISoundEntry);
-
-        yield return new WaitForSeconds(part2AISoundEntry.length);
-
-        CSoundLoader.Instance.PlaySoundOneShot(blipSound);
-
-        yield return null;
-
+        CAudioManager.Instance.PlayOneShot(CFMODEventLab00.Instance.part1Success3, this.transform.position);
+        CSceneManager.Instance.subtitle.SetText(CScriptManager.Instance.GetText("lab00", "lab00_part1_success_3"),
+            CAudioManager.Instance.GetAudioLength(CFMODEventLab00.Instance.part1Success3));
+        yield return new WaitForSeconds(CAudioManager.Instance.GetAudioLength(CFMODEventLab00.Instance.part1Success3));
     }
 
     private IEnumerator Part2AutoPortal()
@@ -226,20 +228,5 @@ public class CLab00 : CComponent
             
             yield return new WaitForSeconds(5f);
         }
-    }
-
-    private IEnumerator Part2SuccessCoroutine()
-    {
-        CSoundLoader.Instance.PlaySoundOneShot(blipSound);
-        part2RoomAmbienceSound.ChangeAmbient(changeAmbientPart2Success);
-        part2HallwayAmbienceSound.ChangeAmbient(changeAmbientPart2HallwaySuccess);
-
-        yield return new WaitForSeconds(blipSound.length);
-
-        CSoundLoader.Instance.PlaySoundOneShot(part2AISoundSuccess);
-
-        yield return new WaitForSeconds(part2AISoundSuccess.length);
-
-        CSoundLoader.Instance.PlaySoundOneShot(blipSound);
     }
 }

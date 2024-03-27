@@ -4,8 +4,11 @@ using UnityEngine.UI;
 
 public class CPortalCrosshair : CComponent
 {
+    [SerializeField] private CPlayerState playerState;
     [SerializeField] private CPortalPair portalPair;
     [SerializeField] private Texture2D originalTexture;
+    [SerializeField] private Color portalGunCrosshairBlueColor;
+    [SerializeField] private Color portalGunCrosshairOrangeColor;
     private Rect m_cutRectB;
     private Rect m_cutRectO;
     private Rect m_cutRectBPlaced;
@@ -33,6 +36,12 @@ public class CPortalCrosshair : CComponent
     public override void Start()
     {
         base.Start();
+
+        if(playerState == null)
+            playerState = CSceneManager.Instance.player.transform.GetComponent<CPlayerState>();
+        if (portalPair == null)
+            portalPair = CSceneManager.Instance.portalPair;
+
         //97f, 145f, 193f, 30f
         m_cutRectB = new Rect(0f, 0f, 46f, 64f);
         m_cutRectO = new Rect(50f, 0f, 44f, 64f);
@@ -51,10 +60,7 @@ public class CPortalCrosshair : CComponent
             m_BPlacedCrosshairImage.sprite = m_spriteBPlaced;
             m_OPlacedCrosshairImage.sprite = m_spriteOPlaced;
 
-            m_BCrosshairImage.color = ChangeColorByRGB(0, 162, 255);
-            m_OCrosshairImage.color = ChangeColorByRGB(255, 154, 0);
-            m_BPlacedCrosshairImage.color = ChangeColorByRGB(0, 162, 255);
-            m_OPlacedCrosshairImage.color = ChangeColorByRGB(255, 154, 0);
+            SetPortalGunCrossharColor();
         }
         else
             Debug.LogError("portal crosshair Image component not found");
@@ -63,28 +69,92 @@ public class CPortalCrosshair : CComponent
     public override void Update()
     {
         base.Update();
-        
-        if (portalPair.portals[0].IsPlaced())
+
+        if(playerState.GetDrawBothPortalGun())
         {
-            m_BCrosshairImage.enabled = false;
-            m_BPlacedCrosshairImage.enabled = true;
+            if (portalPair.portals[0].IsPlaced())
+            {
+                m_BCrosshairImage.enabled = false;
+                m_BPlacedCrosshairImage.enabled = true;
+            }
+            else
+            {
+                m_BCrosshairImage.enabled = true;
+                m_BPlacedCrosshairImage.enabled = false;
+            }
+            if (portalPair.portals[1].IsPlaced())
+            {
+                m_OCrosshairImage.enabled = false;
+                m_OPlacedCrosshairImage.enabled = true;
+            }
+            else
+            {
+                m_OCrosshairImage.enabled = true;
+                m_OPlacedCrosshairImage.enabled = false;
+            }
         }
         else
         {
-            m_BCrosshairImage.enabled = true;
-            m_BPlacedCrosshairImage.enabled = false;
+            if (playerState.GetIsDrawBluePortalGun())
+            {
+                if (portalPair.portals[0].IsPlaced())
+                {
+                    m_BCrosshairImage.enabled = false;
+                    m_BPlacedCrosshairImage.enabled = true;
+                    m_OCrosshairImage.enabled = false;
+                    m_OPlacedCrosshairImage.enabled = true;
+                }
+                else
+                {
+                    m_BCrosshairImage.enabled = true;
+                    m_BPlacedCrosshairImage.enabled = false;
+                    m_OCrosshairImage.enabled = true;
+                    m_OPlacedCrosshairImage.enabled = false;
+                }
+            }
+            if (playerState.GetIsDrawOrangePortalGun())
+            {
+                if (portalPair.portals[1].IsPlaced())
+                {
+                    m_BCrosshairImage.enabled = false;
+                    m_BPlacedCrosshairImage.enabled = true;
+                    m_OCrosshairImage.enabled = false;
+                    m_OPlacedCrosshairImage.enabled = true;
+                }
+                else
+                {
+                    m_BCrosshairImage.enabled = true;
+                    m_BPlacedCrosshairImage.enabled = false;
+                    m_OCrosshairImage.enabled = true;
+                    m_OPlacedCrosshairImage.enabled = false;
+                }
+            }
         }
-        if (portalPair.portals[1].IsPlaced())
+    }
+
+    public void SetPortalGunCrossharColor()
+    {
+        if (playerState.GetDrawBothPortalGun())
         {
-            m_OCrosshairImage.enabled = false;
-            m_OPlacedCrosshairImage.enabled = true;
+            m_BCrosshairImage.color = portalGunCrosshairBlueColor;
+            m_OCrosshairImage.color = portalGunCrosshairOrangeColor;
+            m_BPlacedCrosshairImage.color = portalGunCrosshairBlueColor;
+            m_OPlacedCrosshairImage.color = portalGunCrosshairOrangeColor;
         }
-        else
+        else if(playerState.GetIsDrawBluePortalGun())
         {
-            m_OCrosshairImage.enabled = true;
-            m_OPlacedCrosshairImage.enabled = false;
+            m_BCrosshairImage.color = portalGunCrosshairBlueColor;
+            m_OCrosshairImage.color = portalGunCrosshairBlueColor;
+            m_BPlacedCrosshairImage.color = portalGunCrosshairBlueColor;
+            m_OPlacedCrosshairImage.color = portalGunCrosshairBlueColor;
         }
-        
+        else if(playerState.GetIsDrawOrangePortalGun())
+        {
+            m_BCrosshairImage.color = portalGunCrosshairOrangeColor;
+            m_OCrosshairImage.color = portalGunCrosshairOrangeColor;
+            m_BPlacedCrosshairImage.color = portalGunCrosshairOrangeColor;
+            m_OPlacedCrosshairImage.color = portalGunCrosshairOrangeColor;
+        }
     }
 
     private Color ChangeColorByRGB(int r, int g, int b)
@@ -97,5 +167,4 @@ public class CPortalCrosshair : CComponent
 
         return c;
     }
-
 }

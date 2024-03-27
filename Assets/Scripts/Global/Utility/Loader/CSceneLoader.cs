@@ -1,59 +1,119 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-
-
-//! ½Ì±ÛÅæ »ó¼Ó
-//¸Ş¼¼Áö ÂüÁ¶´Â 10°³ ÀÌÇÏ ±ÇÀÚ
+//! ì‹±ê¸€í†¤ ìƒì†
+//ë©”ì„¸ì§€ ì°¸ì¡°ëŠ” 10ê°œ ì´í•˜ ê¶Œì
 public class CSceneLoader : CSingleton<CSceneLoader>
 {
-    //! ¾ÀÀ» º¯°æÇÑ´Ù
+    public void RestartScene()
+    {
+        LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
+    //! ì”¬ì„ ë³€ê²½í•œë‹¤
     public void LoadScene(int a_nIndex)
     {
-        //¾À ¸®½ºÆ®ÀÇ ºôµå ÀÎµ¦½º¸¦ °¡Áø ¾ÀÀ» ÄÃ·º¼Çµé¿¡ ´ãÀ» ¼öÀÖ´Â ¸Ş¼­µå
-        //Project Setting -> ¾À Ãß°¡°¡´É
+        //ì”¬ ë¦¬ìŠ¤íŠ¸ì˜ ë¹Œë“œ ì¸ë±ìŠ¤ë¥¼ ê°€ì§„ ì”¬ì„ ì»¬ë ‰ì…˜ë“¤ì— ë‹´ì„ ìˆ˜ìˆëŠ” ë©”ì„œë“œ
+        //Project Setting -> ì”¬ ì¶”ê°€ê°€ëŠ¥
         string oScenePath = SceneUtility.GetScenePathByBuildIndex(a_nIndex);
         this.LoadScene(oScenePath);
     }
-   
 
     public void LoadScene(string o_nName)
     {
         //LoadSceneMode.Single
         //LoadSceneMode.Additivve
-        // Addtive ´Â UI¿¡¼­ »ç¿ë
+        // Addtive ëŠ” UIì—ì„œ ì‚¬ìš©
         SceneManager.LoadScene(o_nName, LoadSceneMode.Single);
     }
 
-    //! ¾ÀÀ» ·ÎµåÇÑ´Ù
+    //! ì”¬ì„ ë¡œë“œí•œë‹¤
    public void LoadSceneAsync(int a_nIndex, System.Action<AsyncOperation> a_oCallback,
        float a_Delay = 0.0f, LoadSceneMode a_eLoadSceneMode = LoadSceneMode.Single)
     {
         string oScenePath = SceneUtility.GetScenePathByBuildIndex(a_nIndex);
-        // ºñµ¿±â È£Ãâ -> oCallBack ´ë±âÀÚ°¡ È£ÃâµÇ¾î ´ë¸®ÀÚ ¸ÕÀú È£ÃâµÇ±â ¶§¹®¿¡ ´ë±âÇÑ´Ù
+        // ë¹„ë™ê¸° í˜¸ì¶œ -> oCallBack ëŒ€ê¸°ìê°€ í˜¸ì¶œë˜ì–´ ëŒ€ë¦¬ì ë¨¼ì € í˜¸ì¶œë˜ê¸° ë•Œë¬¸ì— ëŒ€ê¸°í•œë‹¤
         this.LoadSceneAsync(oScenePath, a_oCallback, a_Delay, a_eLoadSceneMode);
         
     }
 
-    //! ¾ÀÀ» ·ÎµåÇÑ´Ù
-    public void LoadSceneAsync(string a_oName, System.Action<AsyncOperation> a_oCallback,
-    float a_Delay = 0.0f, LoadSceneMode a_eLoadSceneMode = LoadSceneMode.Single)
+    //ì”¬ ë§ˆì§€ë§‰ì— í”Œë ˆì´ì–´ ìœ„ì¹˜ ë°ì´í„° í¬í•¨
+    public void LoadSceneAsync(int a_nIndex, PlayerPositionData data, System.Action<AsyncOperation> a_oCallback,
+       float a_Delay = 0.0f, LoadSceneMode a_eLoadSceneMode = LoadSceneMode.Single)
     {
-        //Äİ¹éÀÌ ¿ª±â¼­ ÂïÈù´Ù
+        string oScenePath = SceneUtility.GetScenePathByBuildIndex(a_nIndex);
+        Debug.Log(oScenePath);
+        this.LoadSceneAsync(oScenePath, data, a_oCallback, a_Delay, a_eLoadSceneMode);
+    }
+
+    //! ì”¬ì„ ë¡œë“œí•œë‹¤
+    public void LoadSceneAsync(string a_oName, System.Action<AsyncOperation> a_oCallback,
+        float a_Delay = 0.0f, LoadSceneMode a_eLoadSceneMode = LoadSceneMode.Single)
+    {
+        //ì½œë°±ì´ ì—­ê¸°ì„œ ì°íŒë‹¤
         StartCoroutine(this.DoLoadSceneAsync(a_oName, a_oCallback, a_Delay, a_eLoadSceneMode));
+    }
+
+    //ì”¬ ë§ˆì§€ë§‰ì— í”Œë ˆì´ì–´ ìœ„ì¹˜ ë°ì´í„° í¬í•¨
+    public void LoadSceneAsync(string a_oName, PlayerPositionData data, System.Action<AsyncOperation> a_oCallback,
+        float a_Delay = 0.0f, LoadSceneMode a_eLoadSceneMode = LoadSceneMode.Single)
+    {
+        StartCoroutine(this.DoLoadSceneAsync(a_oName, data, a_oCallback, a_Delay, a_eLoadSceneMode));
     }
 
     private IEnumerator DoLoadSceneAsync(string a_oName, System.Action<AsyncOperation> a_oCallback,
     float a_Delay, LoadSceneMode a_eLoadSceneMode)
     {
-        //µô·¹ÀÌ 
+        //ë”œë ˆì´ 
         yield return new WaitForSeconds(a_Delay);
-        //³ëµå Àâ¾ÆÁÖ±â
+        //ë…¸ë“œ ì¡ì•„ì£¼ê¸°
         var oAsyncOperation = SceneManager.LoadSceneAsync(a_oName, a_eLoadSceneMode);
         
         yield return Function.WaitAsyncOperation(oAsyncOperation, a_oCallback);
     }
-    //
+
+    private IEnumerator DoLoadSceneAsync(string a_oName, PlayerPositionData data, System.Action<AsyncOperation> a_oCallback,
+    float a_Delay, LoadSceneMode a_eLoadSceneMode)
+    {
+        //ë”œë ˆì´ 
+        yield return new WaitForSeconds(a_Delay);
+        //ë…¸ë“œ ì¡ì•„ì£¼ê¸°
+        var oAsyncOperation = SceneManager.LoadSceneAsync(a_oName, a_eLoadSceneMode);
+
+        yield return Function.WaitAsyncOperation(oAsyncOperation, a_oCallback);
+
+        var gameManager = GameObject.FindObjectOfType<CSceneManager>();
+
+        Vector3 playerPos = gameManager.startElevatorGameObject.transform.TransformPoint(data.position);
+        Quaternion playerRot = gameManager.startElevatorGameObject.transform.rotation * data.rotation;
+        Vector3 playerVel = gameManager.startElevatorGameObject.transform.TransformDirection(data.velocity);
+
+        gameManager.player.transform.position = playerPos;
+        gameManager.player.mouseLook.SetCameraRotation(playerRot);
+        gameManager.player.m_oRigidBody.velocity = playerVel;
+        yield return null;
+    }
+
+    public override void Awake()
+    {
+        base.Awake();
+
+        if (m_oInstance != null)
+        {
+            m_oInstance = null;
+        }
+        else
+        {
+            m_oInstance = this;
+            DontDestroyOnLoad(this.gameObject);
+        }
+    }
+}
+
+public class PlayerPositionData
+{
+    public Vector3 position = Vector3.zero;
+    public Quaternion rotation = Quaternion.identity;
+    public Vector3 velocity = Vector3.zero;
 }

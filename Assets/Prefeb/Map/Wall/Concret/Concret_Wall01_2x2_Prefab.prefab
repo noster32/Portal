@@ -12,9 +12,9 @@ GameObject:
   - component: {fileID: 4492501552206456568}
   - component: {fileID: 4492501552206456569}
   - component: {fileID: 4492501552206456570}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Concret_Wall01_2x2_Prefab
-  m_TagString: Untagged
+  m_TagString: Concret
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647

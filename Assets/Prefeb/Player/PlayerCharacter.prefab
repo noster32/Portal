@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 136316122353437097}
-  m_Layer: 11
+  m_Layer: 13
   m_Name: muzzle
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -41,9 +41,10 @@ GameObject:
   m_Component:
   - component: {fileID: 136316122616881339}
   - component: {fileID: 136316122616881342}
-  - component: {fileID: 136316122616881343}
   - component: {fileID: 136316122616881340}
   - component: {fileID: 4762759312213338645}
+  - component: {fileID: 7081143169645968483}
+  - component: {fileID: 8253808699472514430}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -100,7 +101,7 @@ Camera:
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 30711
+    m_Bits: 63487
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -112,14 +113,6 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
---- !u!81 &136316122616881343
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 136316122616881332}
-  m_Enabled: 1
 --- !u!114 &136316122616881340
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -152,6 +145,79 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_oTransform: {fileID: 0}
   m_oRigidBody: {fileID: 0}
+--- !u!114 &7081143169645968483
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 136316122616881332}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86c6556701af9e04380698b89f691b6e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attenuationObject: {fileID: 136316122616881332}
+--- !u!114 &8253808699472514430
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 136316122616881332}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 948f4100a11a5c24981795d21301da5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  volumeTrigger: {fileID: 136316122616881339}
+  volumeLayer:
+    serializedVersion: 2
+    m_Bits: 65544
+  stopNaNPropagation: 1
+  finalBlitToCameraTarget: 0
+  antialiasingMode: 1
+  temporalAntialiasing:
+    jitterSpread: 0.75
+    sharpness: 0.25
+    stationaryBlending: 0.95
+    motionBlending: 0.85
+  subpixelMorphologicalAntialiasing:
+    quality: 2
+  fastApproximateAntialiasing:
+    fastMode: 0
+    keepAlpha: 0
+  fog:
+    enabled: 1
+    excludeSkybox: 1
+  debugLayer:
+    lightMeter:
+      width: 512
+      height: 256
+      showCurves: 1
+    histogram:
+      width: 512
+      height: 256
+      channel: 3
+    waveform:
+      exposure: 0.12
+      height: 256
+    vectorscope:
+      size: 256
+      exposure: 0.12
+    overlaySettings:
+      linearDepth: 0
+      motionColorIntensity: 4
+      motionGridSize: 64
+      colorBlindnessType: 0
+      colorBlindnessStrength: 1
+  m_Resources: {fileID: 11400000, guid: d82512f9c8e5d4a4d938b575d47f88d4, type: 2}
+  m_ShowToolkit: 0
+  m_ShowCustomSorter: 0
+  breakBeforeColorGrading: 0
+  m_BeforeTransparentBundles: []
+  m_BeforeStackBundles: []
+  m_AfterStackBundles: []
 --- !u!1 &136316123644457572
 GameObject:
   m_ObjectHideFlags: 0
@@ -163,15 +229,15 @@ GameObject:
   - component: {fileID: 136316123644457586}
   - component: {fileID: 136316123644457582}
   - component: {fileID: 136316123644457583}
-  - component: {fileID: 136316123644457595}
   - component: {fileID: 136316123644457588}
   - component: {fileID: 136316123644457589}
   - component: {fileID: 136316123644457585}
   - component: {fileID: 136316123644457591}
   - component: {fileID: 136316123644457590}
   - component: {fileID: 136316124117708435}
-  - component: {fileID: 136316124117708434}
-  m_Layer: 7
+  - component: {fileID: 2489034269617967255}
+  - component: {fileID: 2078341407805195439}
+  m_Layer: 10
   m_Name: PlayerCharacter
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -203,12 +269,12 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 136316123644457572}
   serializedVersion: 2
-  m_Mass: 55
+  m_Mass: 10
   m_Drag: 0
   m_AngularDrag: 0.05
   m_UseGravity: 1
   m_IsKinematic: 0
-  m_Interpolate: 1
+  m_Interpolate: 2
   m_Constraints: 112
   m_CollisionDetection: 1
 --- !u!136 &136316123644457583
@@ -225,102 +291,6 @@ CapsuleCollider:
   m_Height: 1.6
   m_Direction: 1
   m_Center: {x: 0, y: 0.8, z: 0}
---- !u!82 &136316123644457595
-AudioSource:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 136316123644457572}
-  m_Enabled: 1
-  serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
-  m_Volume: 1
-  m_Pitch: 1
-  Loop: 0
-  Mute: 0
-  Spatialize: 0
-  SpatializePostEffects: 0
-  Priority: 128
-  DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
-  Pan2D: 0
-  rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
-  rolloffCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  panLevelCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  spreadCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  reverbZoneMixCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
 --- !u!114 &136316123644457588
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -342,30 +312,14 @@ MonoBehaviour:
   originalAnimator: {fileID: 0}
   cloneAnimator: {fileID: 0}
   mouseLook: {fileID: 0}
-  moveSpeed: 15
-  crouchSpeed: 7
-  jumpPower: 300
-  groundDrag: 3
-  stepInterval: 7
-  moveVector: {x: 0, y: 0, z: 0}
+  objectCenter: {x: 0, y: 0.8, z: 0}
+  moveSpeed: 5
+  crouchSpeed: 3
+  jumpPower: 60
+  stepInterval: 2.5
   playerHeight: 1.6
   playerCrouchHeight: 1.1
-  footStepSound_concret:
-  - {fileID: 8300000, guid: e2060492fc3670945b7d47d5fba1aad3, type: 3}
-  - {fileID: 8300000, guid: 09718fa3193b48a45a00ac814ec13bba, type: 3}
-  - {fileID: 8300000, guid: 631bb75dd819db2459db676cfa99afe7, type: 3}
-  - {fileID: 8300000, guid: 6d57b9d86a1988b46a5c11134d9b7085, type: 3}
-  footStepSound_metal:
-  - {fileID: 8300000, guid: af291dcf175ffd34c82499d91c8b19f4, type: 3}
-  - {fileID: 8300000, guid: 0b983bd1c1cc58d4a81e064f5761caa3, type: 3}
-  - {fileID: 8300000, guid: 5e52a7654dbb0b84f98beda7981385a7, type: 3}
-  - {fileID: 8300000, guid: 1f75f1cb501076d44b0c83b604a597e5, type: 3}
-  jumpSound_concret: {fileID: 0}
-  jumpSound_metal: {fileID: 0}
-  playerTeleportSound:
-  - {fileID: 8300000, guid: 23fa60b84cfd20a48a0af16c767e7d71, type: 3}
-  - {fileID: 8300000, guid: 1345e277388e8644a80b0bbcee57161c, type: 3}
-  portalPair: {fileID: 0}
+  moveVector: {x: 0, y: 0, z: 0}
 --- !u!114 &136316123644457589
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -380,6 +334,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_oTransform: {fileID: 0}
   m_oRigidBody: {fileID: 0}
+  recoilX: -2
+  recoilY: 2
+  snappiness: 6
+  returnSpeed: 0.5
 --- !u!114 &136316123644457585
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -410,9 +368,9 @@ MonoBehaviour:
   m_oRigidBody: {fileID: 0}
   portalBullet: {fileID: -8714702662077799910, guid: 9ea9b55fb62598e4687bb3b49f0c8099, type: 3}
   muzzlePosition: {fileID: 136316122353437097}
-  placementMask:
+  portalGunCheckLayer:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 33472
   portalPair: {fileID: 0}
 --- !u!114 &136316123644457590
 MonoBehaviour:
@@ -429,6 +387,9 @@ MonoBehaviour:
   m_oTransform: {fileID: 0}
   m_oRigidBody: {fileID: 0}
   rayDistance: 10
+  grabPositionLayer:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!114 &136316124117708435
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -443,15 +404,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_oTransform: {fileID: 0}
   m_oRigidBody: {fileID: 0}
-  interactionSound: {fileID: 8300000, guid: 88f16358069811142a1d80883c232370, type: 3}
-  grabSound: {fileID: 0}
-  interactionFailSound: {fileID: 8300000, guid: f7a24e690419b4247b388c11b0a52e14, type: 3}
-  portalShootBlueClip: {fileID: 8300000, guid: a5f2c6082d316164fa46d52ad8a5522f, type: 3}
-  portalShootOrangeClip: {fileID: 8300000, guid: cc6487f90435aef429741fd0cfb93f33, type: 3}
   portalGunObject: {fileID: 5938435492445592010}
   portalGunFirstPerson: {fileID: 947201896588672377}
   portalGunAnim: {fileID: 136316122359871498}
---- !u!114 &136316124117708434
+--- !u!114 &2489034269617967255
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -460,15 +416,36 @@ MonoBehaviour:
   m_GameObject: {fileID: 136316123644457572}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aabdaeb5f817ff8449732bb477d29453, type: 3}
+  m_Script: {fileID: 11500000, guid: e81835d813ae6db498494200f240ec6f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_oTransform: {fileID: 0}
   m_oRigidBody: {fileID: 0}
-  isDrawBluePortalGun: 0
-  isDrawOrangePortalGun: 0
   isGrab: 0
   grabObject: {fileID: 0}
+  isDrawBluePortalGun: 0
+  isDrawOrangePortalGun: 0
+  playerHp: 100
+  damageDelay: 0.5
+  cameraFade: {fileID: 0}
+--- !u!114 &2078341407805195439
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 136316123644457572}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 345241abfb825b84bb8bee1b29a00399, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_oTransform: {fileID: 0}
+  m_oRigidBody: {fileID: 0}
+  deathCamera: {fileID: 3266512764734611181, guid: 46ac1dd82d05fbf409a490f4a32ce9db, type: 3}
+  endingCamera: {fileID: 0}
+  dropPortalGun: {fileID: 0}
+  deathFade: {fileID: 0}
 --- !u!1 &136316124101189134
 GameObject:
   m_ObjectHideFlags: 0
@@ -532,7 +509,7 @@ Camera:
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 32255
+    m_Bits: 61439
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -607,7 +584,7 @@ Camera:
   m_Depth: 1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 2048
+    m_Bits: 8192
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -628,7 +605,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7897536724811856015}
-  m_Layer: 11
+  m_Layer: 13
   m_Name: ValveBiped.Arm1_A
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -660,7 +637,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4638837649881422348}
-  m_Layer: 11
+  m_Layer: 13
   m_Name: ValveBiped.Arm1_C
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -692,7 +669,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2378505148957271147}
-  m_Layer: 3
+  m_Layer: 11
   m_Name: index_base_R
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -724,7 +701,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5027973231054077658}
-  m_Layer: 3
+  m_Layer: 11
   m_Name: forward_end
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -755,7 +732,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2729359201443700235}
-  m_Layer: 3
+  m_Layer: 11
   m_Name: mid_base_R
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -787,7 +764,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1000581709942231989}
-  m_Layer: 11
+  m_Layer: 13
   m_Name: ValveBiped.Arm3_A
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -819,7 +796,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3793374335776645724}
-  m_Layer: 11
+  m_Layer: 13
   m_Name: ValveBiped.Arm3_C_end
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -850,7 +827,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3966104100006360148}
-  m_Layer: 3
+  m_Layer: 11
   m_Name: thumb_end_R_end
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -881,7 +858,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6292104068821588462}
-  m_Layer: 3
+  m_Layer: 11
   m_Name: hips
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -914,7 +891,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3269166939921556762}
-  m_Layer: 3
+  m_Layer: 11
   m_Name: spring_end_R_end
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -945,7 +922,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1385012789002223543}
-  m_Layer: 3
+  m_Layer: 11
   m_Name: bicep_twist_R
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -978,7 +955,7 @@ GameObject:
   m_Component:
   - component: {fileID: 463575781505797620}
   - component: {fileID: 5804822586330011534}
-  m_Layer: 3
+  m_Layer: 11
   m_Name: chell
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -1033,8 +1010,7 @@ GameObject:
   - component: {fileID: 463575782628665283}
   - component: {fileID: 136316122359871497}
   - component: {fileID: 136316122359871498}
-  - component: {fileID: 136316122714107985}
-  m_Layer: 11
+  m_Layer: 13
   m_Name: PortalGun
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -1099,104 +1075,6 @@ MonoBehaviour:
   m_oTransform: {fileID: 0}
   m_oRigidBody: {fileID: 0}
   portalgunDrawTime: 1.6
-  fizzleSound: {fileID: 8300000, guid: 693688dd606071a4c92ecd02c39d1445, type: 3}
-  grabSound: {fileID: 0}
---- !u!82 &136316122714107985
-AudioSource:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 947201896588672377}
-  m_Enabled: 1
-  serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 0
-  m_Volume: 1
-  m_Pitch: 1
-  Loop: 0
-  Mute: 0
-  Spatialize: 0
-  SpatializePostEffects: 0
-  Priority: 128
-  DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
-  Pan2D: 0
-  rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
-  rolloffCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  panLevelCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  spreadCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  reverbZoneMixCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
 --- !u!1 &1055557438729894137
 GameObject:
   m_ObjectHideFlags: 0
@@ -1206,7 +1084,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7194566654218541700}
-  m_Layer: 11
+  m_Layer: 13
   m_Name: ValveBiped.Wire3_A
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -1238,7 +1116,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1149088448644169557}
-  m_Layer: 11
+  m_Layer: 13
   m_Name: ValveBiped.Wire1_C
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -1270,7 +1148,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3273164434196251260}
-  m_Layer: 11
+  m_Layer: 13
   m_Name: ValveBiped.Bip01_R_Finger1
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -1302,7 +1180,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8722930230691212801}
-  m_Layer: 11
+  m_Layer: 13
   m_Name: ValveBiped.Wire2_C
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -1334,7 +1212,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5103680748891252896}
-  m_Layer: 11
+  m_Layer: 13
   m_Name: ValveBiped.Bip01_R_Finger12_end
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -1365,7 +1243,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3990436008907411372}
-  m_Layer: 3
+  m_Layer: 11
   m_Name: spine_mid
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -1397,7 +1275,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1827647739953441847}
-  m_Layer: 11
+  m_Layer: 13
   m_Name: ValveBiped.Bip01_R_Finger22
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -1429,7 +1307,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2275771447529069318}
-  m_Layer: 11
+  m_Layer: 13
   m_Name: ValveBiped.Bip01_R_Finger2
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -1461,7 +1339,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3439993374184137550}
-  m_Layer: 3
+  m_Layer: 11
   m_Name: pinky_base_L
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -1493,7 +1371,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 391519452899543290}
-  m_Layer: 11
+  m_Layer: 13
   m_Name: ValveBiped.Wire1_B
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -1525,7 +1403,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4008422158514108991}
-  m_Layer: 3
+  m_Layer: 11
   m_Name: mid_mid_L
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -1557,7 +1435,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5488218802188964226}
-  m_Layer: 3
+  m_Layer: 11
   m_Name: spring_1_R_end
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -1588,7 +1466,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1778699583066731493}
-  m_Layer: 11
+  m_Layer: 13
   m_Name: ValveBiped.Wire3_B_end
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -1619,7 +1497,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2998183379608316037}
-  m_Layer: 3
+  m_Layer: 11
   m_Name: bicep_twist_R_end
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -1650,7 +1528,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4071624961564842246}
-  m_Layer: 11
+  m_Layer: 13
   m_Name: ValveBiped.Wire3_B
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -1682,7 +1560,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5949702729232907734}
-  m_Layer: 11
+  m_Layer: 13
   m_Name: ValveBiped.Bip01_R_Finger12
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -1714,7 +1592,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2301136376460447754}
-  m_Layer: 11
+  m_Layer: 13
   m_Name: ValveBiped.Bip01_R_Clavicle
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -1746,7 +1624,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8148057430419799588}
-  m_Layer: 3
+  m_Layer: 11
   m_Name: ring_base_R
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -1778,7 +1656,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1571264717350478450}
-  m_Layer: 3
+  m_Layer: 11
   m_Name: mid_end_R
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -1810,7 +1688,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7549236779845431630}
-  m_Layer: 3
+  m_Layer: 11
   m_Name: thigh_twist_R
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -1842,7 +1720,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8320365730820192226}
-  m_Layer: 3
+  m_Layer: 11
   m_Name: ring_end_L
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -1874,7 +1752,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1261280275057694846}
-  m_Layer: 11
+  m_Layer: 13
   m_Name: ValveBiped.Wire1_B_end
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -1905,7 +1783,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6557161571552358249}
-  m_Layer: 3
+  m_Layer: 11
   m_Name: root
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -1938,7 +1816,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7167963603906551877}
-  m_Layer: 3
+  m_Layer: 11
   m_Name: spring_1_L_end
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -1969,7 +1847,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2809890355219302447}
-  m_Layer: 3
+  m_Layer: 11
   m_Name: index_base_L
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -2001,7 +1879,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 852057870564093926}
-  m_Layer: 11
+  m_Layer: 13
   m_Name: ValveBiped.Bip01_Spine1
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -2033,7 +1911,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1610639287400297781}
-  m_Layer: 11
+  m_Layer: 13
   m_Name: ValveBiped.Bip01_R_Finger0
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -2065,7 +1943,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4380543719977125347}
-  m_Layer: 3
+  m_Layer: 11
   m_Name: pinky_end_R_end
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -2096,7 +1974,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7065097818740503726}
-  m_Layer: 3
+  m_Layer: 11
   m_Name: ankle_R
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -2128,7 +2006,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7204295534015500905}
-  m_Layer: 3
+  m_Layer: 11
   m_Name: ankle_L
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -2160,7 +2038,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5387499672075385351}
-  m_Layer: 3
+  m_Layer: 11
   m_Name: thumb_base_R
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -2192,7 +2070,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4657304229807117780}
-  m_Layer: 3
+  m_Layer: 11
   m_Name: index_mid_L
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -2224,7 +2102,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5537046379233168161}
-  m_Layer: 11
+  m_Layer: 13
   m_Name: ValveBiped.Front_Cover_Stop_end
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -2255,7 +2133,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4405051063303260075}
-  m_Layer: 3
+  m_Layer: 11
   m_Name: pinky_base_R
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -2287,7 +2165,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1713013659094770731}
-  m_Layer: 3
+  m_Layer: 11
   m_Name: bicep_R
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -2320,7 +2198,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1124401483128504503}
-  m_Layer: 3
+  m_Layer: 11
   m_Name: toe_L
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -2352,7 +2230,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 191407653196338427}
-  m_Layer: 3
+  m_Layer: 11
   m_Name: thumb_mid_L
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -2384,7 +2262,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5258772781333124741}
-  m_Layer: 3
+  m_Layer: 11
   m_Name: thigh_L
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -2416,7 +2294,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6541351941506608670}
-  m_Layer: 3
+  m_Layer: 11
   m_Name: mid_end_L_end
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -2447,7 +2325,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7888824146632088114}
-  m_Layer: 3
+  m_Layer: 11
   m_Name: pinky_mid_L
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -2479,7 +2357,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2194321556900016727}
-  m_Layer: 11
+  m_Layer: 13
   m_Name: ValveBiped.Arm3_C
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -2511,7 +2389,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8578170286684456504}
-  m_Layer: 3
+  m_Layer: 11
   m_Name: ponytail
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -2543,7 +2421,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8399612897462755715}
-  m_Layer: 3
+  m_Layer: 11
   m_Name: ring_end_L_end
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -2574,7 +2452,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3994643751915979030}
-  m_Layer: 3
+  m_Layer: 11
   m_Name: toe_R
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -2606,7 +2484,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8980583614710161694}
-  m_Layer: 3
+  m_Layer: 11
   m_Name: bicep_twist_L
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -2638,7 +2516,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1130508706213063151}
-  m_Layer: 11
+  m_Layer: 13
   m_Name: ValveBiped.Bip01_R_Finger02_end
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -2669,7 +2547,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7262627726651520389}
-  m_Layer: 11
+  m_Layer: 13
   m_Name: ValveBiped.Front_Cover_Stop
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -2701,7 +2579,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 148004619811485984}
-  m_Layer: 3
+  m_Layer: 11
   m_Name: elbow_L
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -2734,7 +2612,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4967666177950295272}
-  m_Layer: 11
+  m_Layer: 13
   m_Name: ValveBiped.Arm2_B
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -2766,7 +2644,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5014826271780957369}
-  m_Layer: 11
+  m_Layer: 13
   m_Name: ValveBiped.Bip01_R_Finger32_end
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -2797,7 +2675,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5994144402436024781}
-  m_Layer: 11
+  m_Layer: 13
   m_Name: ValveBiped.Bip01_Spine2
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -2829,7 +2707,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1175379397467936817}
-  m_Layer: 11
+  m_Layer: 13
   m_Name: ValveBiped.Bip01_R_Finger11
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -2861,7 +2739,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6103142134732318393}
-  m_Layer: 3
+  m_Layer: 11
   m_Name: index_end_R
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -2893,7 +2771,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5541453976123653224}
-  m_Layer: 11
+  m_Layer: 13
   m_Name: ValveBiped.Wire3_C_end
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -2924,7 +2802,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4385164391999546871}
-  m_Layer: 3
+  m_Layer: 11
   m_Name: index_end_L_end
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -2955,7 +2833,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6195311891425620137}
-  m_Layer: 3
+  m_Layer: 11
   m_Name: weapon_bone_end
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -2987,7 +2865,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7963297403870968694}
-  m_Layer: 3
+  m_Layer: 11
   m_Name: spring_end_L
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -3019,7 +2897,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8104652737124876501}
-  m_Layer: 11
+  m_Layer: 13
   m_Name: ValveBiped.Wire2_A
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -3051,7 +2929,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6433962708281413024}
-  m_Layer: 3
+  m_Layer: 11
   m_Name: index_end_L
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -3083,7 +2961,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6213953226314069957}
-  m_Layer: 3
+  m_Layer: 11
   m_Name: thigh_twist_L
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -3115,7 +2993,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5805598165255736812}
-  m_Layer: 3
+  m_Layer: 11
   m_Name: forward
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -3147,7 +3025,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4232427634736107264}
-  m_Layer: 3
+  m_Layer: 11
   m_Name: clavicle_R
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -3179,7 +3057,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9186727421036050217}
-  m_Layer: 3
+  m_Layer: 11
   m_Name: thigh_R
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -3211,7 +3089,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4729026320375702552}
-  m_Layer: 11
+  m_Layer: 13
   m_Name: ValveBiped.Wire1_A
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -3243,7 +3121,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6035626059780507677}
-  m_Layer: 3
+  m_Layer: 11
   m_Name: chell.qc_skeleton
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -3275,7 +3153,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3639608792883347161}
-  m_Layer: 11
+  m_Layer: 13
   m_Name: ValveBiped.Front_Cover
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -3319,7 +3197,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7093985078872331540}
-  m_Layer: 11
+  m_Layer: 13
   m_Name: ValveBiped.Arm2_A
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -3351,7 +3229,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1016850001107211147}
-  m_Layer: 11
+  m_Layer: 13
   m_Name: ValveBiped.Bip01_R_Finger42_end
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -3382,7 +3260,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6594169185990520916}
-  m_Layer: 3
+  m_Layer: 11
   m_Name: spring_end_R
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -3414,7 +3292,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5276931039215633996}
-  m_Layer: 11
+  m_Layer: 13
   m_Name: v_portalgun.qc_skeleton
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -3446,7 +3324,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2302399046384149348}
-  m_Layer: 3
+  m_Layer: 11
   m_Name: mid_mid_R
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -3478,7 +3356,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8313984493381476712}
-  m_Layer: 3
+  m_Layer: 11
   m_Name: thumb_mid_R
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -3510,7 +3388,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1701451371025915286}
-  m_Layer: 3
+  m_Layer: 11
   m_Name: toe_R_end
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -3541,7 +3419,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7741680938724094309}
-  m_Layer: 11
+  m_Layer: 13
   m_Name: ValveBiped.Wire1_A_end
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -3572,7 +3450,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8674860414515137805}
-  m_Layer: 11
+  m_Layer: 13
   m_Name: ValveBiped.Arm1_B
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -3604,7 +3482,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2153295462046311477}
-  m_Layer: 3
+  m_Layer: 11
   m_Name: bicep_twist_L_end
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -3635,7 +3513,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5139000211084689721}
-  m_Layer: 11
+  m_Layer: 13
   m_Name: ValveBiped.Bip01_R_Hand
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -3672,7 +3550,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4745317133434576353}
-  m_Layer: 3
+  m_Layer: 11
   m_Name: thumb_end_L_end
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -3703,7 +3581,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5480472955061578050}
-  m_Layer: 3
+  m_Layer: 11
   m_Name: index_end_R_end
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -3734,7 +3612,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3871411706581642034}
-  m_Layer: 3
+  m_Layer: 11
   m_Name: knee_L
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -3767,7 +3645,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5600411926739287753}
-  m_Layer: 11
+  m_Layer: 13
   m_Name: ValveBiped.Wire2_A_end
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -3798,7 +3676,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7466017374801855445}
-  m_Layer: 3
+  m_Layer: 11
   m_Name: toe_L_end
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -3829,7 +3707,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7304160111005572155}
-  m_Layer: 3
+  m_Layer: 11
   m_Name: w_portalgun_p3
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -3861,7 +3739,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9184964794353891298}
-  m_Layer: 3
+  m_Layer: 11
   m_Name: head
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -3894,7 +3772,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4940403846804239339}
-  m_Layer: 11
+  m_Layer: 13
   m_Name: ValveBiped.Bip01_R_Finger4
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -3926,7 +3804,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2792545144912030621}
-  m_Layer: 3
+  m_Layer: 11
   m_Name: ring_end_R_end
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -3957,7 +3835,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4190772812040143217}
-  m_Layer: 11
+  m_Layer: 13
   m_Name: ValveBiped.Arm3_B
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -3989,7 +3867,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 577507401038855410}
-  m_Layer: 11
+  m_Layer: 13
   m_Name: ValveBiped.Bip01_R_Forearm
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -4021,7 +3899,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9115510089909689146}
-  m_Layer: 3
+  m_Layer: 11
   m_Name: knee_R
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -4054,7 +3932,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 356745608543315321}
-  m_Layer: 3
+  m_Layer: 11
   m_Name: spine_base
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -4086,7 +3964,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2195925423032232157}
-  m_Layer: 3
+  m_Layer: 11
   m_Name: chest
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -4120,7 +3998,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3981940832680701651}
-  m_Layer: 11
+  m_Layer: 13
   m_Name: ValveBiped.Bip01_R_Finger22_end
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -4151,7 +4029,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 310791579003010738}
-  m_Layer: 11
+  m_Layer: 13
   m_Name: ValveBiped.Bip01_Spine
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -4183,7 +4061,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3176201238327973203}
-  m_Layer: 11
+  m_Layer: 13
   m_Name: ValveBiped.Bip01
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -4215,7 +4093,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5238599296117721181}
-  m_Layer: 11
+  m_Layer: 13
   m_Name: ValveBiped.Bip01_R_Finger3
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -4247,7 +4125,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 268710741475830161}
-  m_Layer: 11
+  m_Layer: 13
   m_Name: ValveBiped.Bip01_R_Finger21
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -4279,7 +4157,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6311978322537291000}
-  m_Layer: 3
+  m_Layer: 11
   m_Name: mid_end_R_end
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -4311,7 +4189,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1192215736866626412}
   - component: {fileID: 1520515947944301808}
-  m_Layer: 11
+  m_Layer: 13
   m_Name: portalgun_reference
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -4460,7 +4338,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 779405414189332629}
-  m_Layer: 3
+  m_Layer: 11
   m_Name: thumb_end_L
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -4492,7 +4370,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4415585400536091296}
-  m_Layer: 3
+  m_Layer: 11
   m_Name: weapon_bone
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -4524,7 +4402,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4692029116165809644}
-  m_Layer: 3
+  m_Layer: 11
   m_Name: spring_base_R
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -4557,7 +4435,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7998393446946956297}
-  m_Layer: 3
+  m_Layer: 11
   m_Name: wrist_L
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -4593,7 +4471,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1476151123281161061}
-  m_Layer: 3
+  m_Layer: 11
   m_Name: spring_end_L_end
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -4624,7 +4502,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8887740741778649339}
-  m_Layer: 3
+  m_Layer: 11
   m_Name: clavicle_L
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -4658,9 +4536,9 @@ GameObject:
   - component: {fileID: 4370755072475441278}
   - component: {fileID: 8741147724988655426}
   - component: {fileID: 7577855962361026522}
-  m_Layer: 3
+  m_Layer: 11
   m_Name: default
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4739,7 +4617,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1712886852787238933}
-  m_Layer: 3
+  m_Layer: 11
   m_Name: ring_mid_L
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -4771,7 +4649,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7715729076447502210}
-  m_Layer: 3
+  m_Layer: 11
   m_Name: pinky_mid_R
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -4803,7 +4681,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4055425876984516736}
-  m_Layer: 3
+  m_Layer: 11
   m_Name: wrist_twist_L
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -4835,7 +4713,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8504474721233714548}
-  m_Layer: 11
+  m_Layer: 13
   m_Name: ValveBiped.Base
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -4867,7 +4745,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 935145400304088492}
-  m_Layer: 3
+  m_Layer: 11
   m_Name: wrist_twist_R
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -4899,7 +4777,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 875063899617398023}
-  m_Layer: 3
+  m_Layer: 11
   m_Name: index_mid_R
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -4931,7 +4809,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2819793756887366827}
-  m_Layer: 11
+  m_Layer: 13
   m_Name: ValveBiped.Wire3_C
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -4963,7 +4841,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5275466825581884917}
-  m_Layer: 11
+  m_Layer: 13
   m_Name: ValveBiped.Bip01_R_Finger31
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -4995,7 +4873,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5902745686116473342}
-  m_Layer: 11
+  m_Layer: 13
   m_Name: ValveBiped.Bip01_R_UpperArm
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -5027,7 +4905,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4941278308172655643}
-  m_Layer: 11
+  m_Layer: 13
   m_Name: ValveBiped.Wire2_B_end
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -5058,7 +4936,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 942593405301710921}
-  m_Layer: 11
+  m_Layer: 13
   m_Name: ValveBiped.Bip01_R_Finger41
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -5090,7 +4968,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7295998728302562778}
-  m_Layer: 3
+  m_Layer: 11
   m_Name: ring_end_R
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -5122,7 +5000,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1714264586940346946}
-  m_Layer: 3
+  m_Layer: 11
   m_Name: mid_base_L
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -5154,7 +5032,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6983443035859259486}
-  m_Layer: 3
+  m_Layer: 11
   m_Name: pinky_end_L
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -5186,7 +5064,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5747878508539872703}
-  m_Layer: 3
+  m_Layer: 11
   m_Name: pinky_end_L_end
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -5217,7 +5095,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3819623867296158848}
-  m_Layer: 11
+  m_Layer: 13
   m_Name: ValveBiped.Arm1_C_end
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -5248,7 +5126,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3328949862935850166}
-  m_Layer: 11
+  m_Layer: 13
   m_Name: ValveBiped.Bip01_R_Finger42
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -5280,7 +5158,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6248350978876650115}
-  m_Layer: 3
+  m_Layer: 11
   m_Name: elbow_R
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -5313,7 +5191,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1083563185471971037}
-  m_Layer: 11
+  m_Layer: 13
   m_Name: ValveBiped.Wire3_A_end
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -5344,7 +5222,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2868374499995415889}
-  m_Layer: 3
+  m_Layer: 11
   m_Name: wrist_R
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -5381,7 +5259,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8166183587773696882}
-  m_Layer: 3
+  m_Layer: 11
   m_Name: neck
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -5413,7 +5291,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5295309808102221836}
-  m_Layer: 11
+  m_Layer: 13
   m_Name: ValveBiped.Arm2_C
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -5445,7 +5323,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1617370075246729142}
-  m_Layer: 11
+  m_Layer: 13
   m_Name: ValveBiped.Wire2_B
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -5477,7 +5355,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8149459013928657996}
-  m_Layer: 3
+  m_Layer: 11
   m_Name: spring_1_R
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -5509,7 +5387,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7917160095457795045}
-  m_Layer: 11
+  m_Layer: 13
   m_Name: ValveBiped.Wire1_C_end
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -5540,7 +5418,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1932263566469412524}
-  m_Layer: 11
+  m_Layer: 13
   m_Name: ValveBiped.Bip01_R_Finger02
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -5572,7 +5450,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 20772367326202173}
-  m_Layer: 11
+  m_Layer: 13
   m_Name: ValveBiped.Bip01_R_Finger32
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -5604,7 +5482,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 983182043038755253}
-  m_Layer: 3
+  m_Layer: 11
   m_Name: thumb_base_L
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -5636,7 +5514,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2062068909642021995}
-  m_Layer: 3
+  m_Layer: 11
   m_Name: ring_mid_R
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -5668,7 +5546,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2864955773093061687}
-  m_Layer: 3
+  m_Layer: 11
   m_Name: mid_end_L
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -5700,7 +5578,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4890869442114389233}
-  m_Layer: 11
+  m_Layer: 13
   m_Name: ValveBiped.Bip01_R_Finger01
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -5732,7 +5610,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1719086393508788748}
-  m_Layer: 3
+  m_Layer: 11
   m_Name: spring_base_L
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -5765,7 +5643,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4298660724891139128}
-  m_Layer: 3
+  m_Layer: 11
   m_Name: ponytail_end
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -5796,7 +5674,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6579246300648667557}
-  m_Layer: 3
+  m_Layer: 11
   m_Name: pinky_end_R
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -5828,7 +5706,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5887808375272333047}
-  m_Layer: 3
+  m_Layer: 11
   m_Name: thumb_end_R
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -5860,7 +5738,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2008327750333112570}
-  m_Layer: 3
+  m_Layer: 11
   m_Name: bicep_L
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -5893,7 +5771,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8248691306893492418}
-  m_Layer: 11
+  m_Layer: 13
   m_Name: ValveBiped.Wire2_C_end
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -5924,7 +5802,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5455613178760874184}
-  m_Layer: 3
+  m_Layer: 11
   m_Name: spring_1_L
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -5957,7 +5835,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3330688947854589417}
   - component: {fileID: 5600102523217356339}
-  m_Layer: 3
+  m_Layer: 11
   m_Name: chell_reference_2
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -6136,7 +6014,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4561757660940066516}
-  m_Layer: 11
+  m_Layer: 13
   m_Name: ValveBiped.Arm2_C_end
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -6167,7 +6045,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4197307184280386965}
-  m_Layer: 3
+  m_Layer: 11
   m_Name: ring_base_L
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -6199,7 +6077,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6331492754599849749}
-  m_Layer: 11
+  m_Layer: 13
   m_Name: ValveBiped.Bip01_Spine4
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -6231,7 +6109,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3061913481228242702}
-  m_Layer: 3
+  m_Layer: 11
   m_Name: wrist_twist_L_end
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -6262,7 +6140,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3270560965174566942}
-  m_Layer: 3
+  m_Layer: 11
   m_Name: wrist_twist_R_end
   m_TagString: Player
   m_Icon: {fileID: 0}

@@ -1,3 +1,4 @@
+using FMODUnity;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -16,21 +17,15 @@ public class CLabSignage : CComponent
     [Header("Renderer")]
     [SerializeField] private Renderer signageRenderer;
 
-    [Header("Sound")]
-    [SerializeField] private AudioClip fluorescentHum1Clip;
-    [SerializeField] private AudioClip fluorescentHum2Clip;
-
     private Material[] signageMaterials;
     private Color[] signageColors;
-    private AudioSource audioSource;
+    private StudioEventEmitter emitter;
 
     private bool isOn;
 
     public override void Awake()
     {
         base.Awake();
-
-        audioSource = GetComponent<AudioSource>();
 
         signageMaterials = new Material[signageRenderer.materials.Length];
         signageColors = new Color[signageRenderer.materials.Length];
@@ -47,9 +42,7 @@ public class CLabSignage : CComponent
     {
         base.Start();
 
-        audioSource.clip = fluorescentHum1Clip;
-        audioSource.loop = true;
-        audioSource.volume = CSoundLoader.Instance.GetEffectVolume(0.03f);
+        emitter = CAudioManager.Instance.InitializeEventEmitter(CFMODEvents.Instance.fluorescentHum, this.gameObject);
 
         for (int i = 1; i < signageMaterials.Length; i++)
         {
@@ -71,7 +64,8 @@ public class CLabSignage : CComponent
     {
         yield return new WaitForSeconds(1f);
 
-        audioSource.Play();
+        emitter.Play();
+        emitter.EventInstance.setParameterByName("signage_intensity", 0);
         signageMaterials[0].mainTexture = turnOnBeforeTexture;
 
         yield return new WaitForSeconds(0.083f);
@@ -88,22 +82,15 @@ public class CLabSignage : CComponent
         yield return new WaitForSeconds(0.253f);
 
         signageMaterials[0].mainTexture = turnOnTexture;
-        signageMaterials[0].EnableKeyword("_EMISSION");
-        signageMaterials[0].globalIlluminationFlags = MaterialGlobalIlluminationFlags.RealtimeEmissive;
 
         yield return new WaitForSeconds(0.2f);
 
-        audioSource.Stop();
-        signageMaterials[0].mainTexture = turnOnBeforeTexture;
-        signageMaterials[0].DisableKeyword("_EMISSION");
+        emitter.Stop();
 
         yield return new WaitForSeconds(0.083f);
 
-        audioSource.clip = fluorescentHum2Clip;
-        audioSource.Play(); 
+        emitter.Play();
         signageMaterials[0].mainTexture = turnOnTexture;
-        signageMaterials[0].EnableKeyword("_EMISSION");
-        signageMaterials[0].globalIlluminationFlags = MaterialGlobalIlluminationFlags.RealtimeEmissive;
 
         yield return new WaitForSeconds(0.216f);
 
@@ -114,9 +101,7 @@ public class CLabSignage : CComponent
 
         signageColors[last].a = 1f;
         signageMaterials[last].color = signageColors[last];
-        audioSource.clip = fluorescentHum1Clip;
-        audioSource.volume = CSoundLoader.Instance.GetEffectVolume(0.045f);
-        audioSource.Play();
+        emitter.EventInstance.setParameterByName("signage_intensity", 1);
 
         yield return null;
     }

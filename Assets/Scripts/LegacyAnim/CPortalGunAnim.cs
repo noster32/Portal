@@ -1,3 +1,4 @@
+using FMOD.Studio;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,14 +8,12 @@ public class CPortalGunAnim : CComponent
     private Animation portalGunAnim;
 
     [SerializeField] private float portalgunDrawTime = 1.0f;
-    [SerializeField] private AudioClip fizzleSound;
-    [SerializeField] private AudioClip grabSound;
-    private AudioSource audioSource;
+    private EventInstance portalGunHoldSound;
+
     public override void Awake()
     {
         base.Awake();
 
-        audioSource = GetComponent<AudioSource>();
         portalGunAnim = GetComponent<Animation>();
         portalGunAnim["portalgun_draw"].speed = portalgunDrawTime;
     }
@@ -23,18 +22,27 @@ public class CPortalGunAnim : CComponent
     {
         base.Start();
 
-        audioSource.clip = grabSound;
-        audioSource.loop = true;
-        
-        if(portalGunAnim) 
+        if (portalGunAnim) 
         {
             PortalGunDrawUp();
         }
+
+        portalGunHoldSound = CAudioManager.Instance.CreateEventInstance(CFMODEvents.Instance.portalGunHold);
     }
 
-    public void PortalGunShoot()
+    public void PortalGunShoot(int num)
     {
         portalGunAnim.Play("portalgun_fire1");
+
+        switch (num)
+        {
+            case 0:
+                CAudioManager.Instance.PlayOneShot(CFMODEvents.Instance.portalgunShootBlue, this.transform.position);
+                break;
+            case 1:
+                CAudioManager.Instance.PlayOneShot(CFMODEvents.Instance.portalgunShootRed, this.transform.position);
+                break;
+        }
     }
 
     public void PortalGunDrawUp()
@@ -45,18 +53,18 @@ public class CPortalGunAnim : CComponent
     public void PortalGunFizzle()
     {
         portalGunAnim.Play("portalgun_fizzle");
-        audioSource.PlayOneShot(fizzleSound, 0.1f);
+        CAudioManager.Instance.PlayOneShot(CFMODEvents.Instance.portalgunFizzle, this.transform.position);
     }
 
     public void PortalGunGrab()
     {
         portalGunAnim.Play("portalgun_pickup");
-        audioSource.Play();
+        portalGunHoldSound.start();
     }
 
     public void PortalGunRelease()
     {
         portalGunAnim.Play("portalgun_release");
-        audioSource.Stop();
+        portalGunHoldSound.stop(STOP_MODE.ALLOWFADEOUT);
     }
 }

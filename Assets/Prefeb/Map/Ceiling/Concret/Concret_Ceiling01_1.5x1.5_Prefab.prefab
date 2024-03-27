@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 5140366370702994304}
   m_Layer: 6
   m_Name: Concret_Ceiling01_1.5x1.5_Prefab
-  m_TagString: Untagged
+  m_TagString: Concret
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647

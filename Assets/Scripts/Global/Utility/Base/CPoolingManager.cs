@@ -1,9 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using TMPro.EditorUtilities;
-using UnityEditor.SearchService;
-using UnityEngine;
 using UnityEngine.Pool;
 
 public abstract class CPoolingManager<T> : CComponent where T : CComponent

@@ -7,11 +7,6 @@ public class CBedCover : CComponent
     [Header("Animator")]
     [SerializeField] Animator bedAnimator;
 
-    [Header("Sound")]
-    [SerializeField] private AudioSource audioSource;
-    [SerializeField] private AudioClip openSoundClip;
-    [SerializeField] private AudioClip sparkSound;
-
     [Header("Particle")]
     [SerializeField] private CSparkParticle particle;
     [SerializeField] private Transform sparkTransform;
@@ -40,13 +35,13 @@ public class CBedCover : CComponent
     public void PlayBedSpark()
     {
         particle.PlayParticle(1, sparkTransform);
-        audioSource.PlayOneShot(sparkSound, CSoundLoader.Instance.GetEffectVolume(0.06f));
+        CAudioManager.Instance.PlayOneShot(CFMODEventsEnergy.Instance.spark6, this.transform.position);
     }
 
     private IEnumerator BedCoverOpen()
     {
         bedAnimator.Play("opening");
-        audioSource.PlayOneShot(openSoundClip, CSoundLoader.Instance.GetEffectVolume(0.15f));
+        CAudioManager.Instance.PlayOneShot(CFMODEvents.Instance.door3, this.transform.position);
         yield return new WaitForSeconds(2f);
 
         animCoroutine = null;
@@ -56,7 +51,7 @@ public class CBedCover : CComponent
     private IEnumerator BedCoverClose()
     {
         bedAnimator.Play("closing");
-        audioSource.PlayOneShot(openSoundClip, CSoundLoader.Instance.GetEffectVolume(0.15f));
+        CAudioManager.Instance.PlayOneShot(CFMODEvents.Instance.door3, this.transform.position);
         yield return new WaitForSeconds(2f);
 
         animCoroutine = null;

@@ -1,11 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
-using TreeEditor;
-using Unity.VisualScripting;
-using UnityEditor.Timeline;
 using UnityEngine;
-using UnityEngine.Rendering;
-using UnityEngine.UIElements;
 
 public class CPortalCamera : CComponent
 {
@@ -21,7 +14,7 @@ public class CPortalCamera : CComponent
     private RenderTexture tempTexture1;
     private RenderTexture tempTexture2;
 
-    //Æ÷Å» Ä«¸Ş¶ó ¹İº¹ È½¼ö
+    //í¬íƒˆ ì¹´ë©”ë¼ ë°˜ë³µ íšŸìˆ˜
     private const int iterations = 7;
 
     private Camera mainCamera;
@@ -50,6 +43,9 @@ public class CPortalCamera : CComponent
     public override void Start()
     {
         base.Start();
+
+        if (portalPair == null)
+            portalPair = CSceneManager.Instance.portalPair;
 
         portalPair.portals[0].SetTexture(defaultTexture1);
         portalPair.portals[1].SetTexture(defaultTexture2);
@@ -94,20 +90,20 @@ public class CPortalCamera : CComponent
         Transform lPortalTransform = lookPortal.transform;
         Transform oPortalTransform = otherPortal.transform;
 
-        //Æ÷Å» Ä«¸Ş¶ó Æ®·£½ºÆû °¡Á®¿À±â
+        //í¬íƒˆ ì¹´ë©”ë¼ íŠ¸ëœìŠ¤í¼ ê°€ì ¸ì˜¤ê¸°
         Transform cameraTransform = pCamera.transform;
         cameraTransform.position = transform.position;
         cameraTransform.rotation = transform.rotation;
 
         for(int i = 0; i <= iteration; ++i)
         {
-            //Æ÷Å»¿¡ ´ëÇÑ Ä«¸Ş¶óÀÇ ·ÎÄÃ ÁÂÇ¥ ±¸ÇÏ±â
+            //í¬íƒˆì— ëŒ€í•œ ì¹´ë©”ë¼ì˜ ë¡œì»¬ ì¢Œí‘œ êµ¬í•˜ê¸°
             Vector3 relativeCamPos = lPortalTransform.InverseTransformPoint(transform.position);
 
-            //Æ÷Å»ÀÇ µÚ·Î ÀÌµ¿ÇØ¾ß ÇÏ±â ‹š¹®¿¡ ·ÎÄÃ ÁÂÇ¥¸¦ 180µµ È¸Àü
+            //í¬íƒˆì˜ ë’¤ë¡œ ì´ë™í•´ì•¼ í•˜ê¸° ë–„ë¬¸ì— ë¡œì»¬ ì¢Œí‘œë¥¼ 180ë„ íšŒì „
             relativeCamPos = reverse * relativeCamPos;
 
-            //·ÎÄÃ ÁÂÇ¥¸¦ ¹İ´ëÂÊ Æ÷Å»¿¡ Àû¿ë½ÃÄÑ¼­ Æ÷Å» Ä«¸Ş¶ó À§Ä¡ ¼³Á¤
+            //ë¡œì»¬ ì¢Œí‘œë¥¼ ë°˜ëŒ€ìª½ í¬íƒˆì— ì ìš©ì‹œì¼œì„œ í¬íƒˆ ì¹´ë©”ë¼ ìœ„ì¹˜ ì„¤ì •
             cameraTransform.position = oPortalTransform.TransformPoint(relativeCamPos);
 
             Quaternion relativeRot = Quaternion.Inverse(lPortalTransform.rotation) * transform.rotation;
@@ -115,7 +111,7 @@ public class CPortalCamera : CComponent
             cameraTransform.rotation = oPortalTransform.rotation * relativeRot;
         }
 
-        //Æ÷Å»ÀÌ ºÙ¾îÀÖ´Â º®¸éÀ» Å¬¸®ÇÎÇØ¼­ º® ³Ê¸Ó·Îµµ Ä«¸Ş¶ó°¡ º¸ÀÏ ¼ö ÀÖ°Ô ÇÑ´Ù
+        //í¬íƒˆì´ ë¶™ì–´ìˆëŠ” ë²½ë©´ì„ í´ë¦¬í•‘í•´ì„œ ë²½ ë„ˆë¨¸ë¡œë„ ì¹´ë©”ë¼ê°€ ë³´ì¼ ìˆ˜ ìˆê²Œ í•œë‹¤
         Plane p = new Plane(oPortalTransform.forward, oPortalTransform.position);
         Vector4 clipPlane = new Vector4(p.normal.x, p.normal.y, p.normal.z, p.distance);
         Vector4 clipPlaneCameraSpace = Matrix4x4.Transpose(Matrix4x4.Inverse(pCamera.worldToCameraMatrix)) * clipPlane;
@@ -131,20 +127,20 @@ public class CPortalCamera : CComponent
         Transform lPortalTransform = lookPortal.transform;
         Transform oPortalTransform = otherPortal.transform;
 
-        //Æ÷Å» Ä«¸Ş¶ó Æ®·£½ºÆû °¡Á®¿À±â
+        //í¬íƒˆ ì¹´ë©”ë¼ íŠ¸ëœìŠ¤í¼ ê°€ì ¸ì˜¤ê¸°
         Transform cameraTransform = portalCamera.transform;
         cameraTransform.position = transform.position;
         cameraTransform.rotation = transform.rotation;
 
         for (int i = 0; i <= iteration; ++i)
         {
-            //Æ÷Å»¿¡ ´ëÇÑ Ä«¸Ş¶óÀÇ ·ÎÄÃ ÁÂÇ¥ ±¸ÇÏ±â
+            //í¬íƒˆì— ëŒ€í•œ ì¹´ë©”ë¼ì˜ ë¡œì»¬ ì¢Œí‘œ êµ¬í•˜ê¸°
             Vector3 relativeCamPos = lPortalTransform.InverseTransformPoint(cameraTransform.position);
 
-            //Æ÷Å»ÀÇ µÚ·Î ÀÌµ¿ÇØ¾ß ÇÏ±â ‹š¹®¿¡ ·ÎÄÃ ÁÂÇ¥¸¦ 180µµ È¸Àü
+            //í¬íƒˆì˜ ë’¤ë¡œ ì´ë™í•´ì•¼ í•˜ê¸° ë–„ë¬¸ì— ë¡œì»¬ ì¢Œí‘œë¥¼ 180ë„ íšŒì „
             relativeCamPos = reverse * relativeCamPos;
 
-            //·ÎÄÃ ÁÂÇ¥¸¦ ¹İ´ëÂÊ Æ÷Å»¿¡ Àû¿ë½ÃÄÑ¼­ Æ÷Å» Ä«¸Ş¶ó À§Ä¡ ¼³Á¤
+            //ë¡œì»¬ ì¢Œí‘œë¥¼ ë°˜ëŒ€ìª½ í¬íƒˆì— ì ìš©ì‹œì¼œì„œ í¬íƒˆ ì¹´ë©”ë¼ ìœ„ì¹˜ ì„¤ì •
             cameraTransform.position = oPortalTransform.TransformPoint(relativeCamPos);
 
             Quaternion relativeRot = Quaternion.Inverse(lPortalTransform.rotation) * cameraTransform.rotation;
@@ -152,7 +148,7 @@ public class CPortalCamera : CComponent
             cameraTransform.rotation = oPortalTransform.rotation * relativeRot;
         }
 
-        //Æ÷Å»ÀÌ ºÙ¾îÀÖ´Â º®¸éÀ» Å¬¸®ÇÎÇØ¼­ º® ³Ê¸Ó·Îµµ Ä«¸Ş¶ó°¡ º¸ÀÏ ¼ö ÀÖ°Ô ÇÑ´Ù
+        //í¬íƒˆì´ ë¶™ì–´ìˆëŠ” ë²½ë©´ì„ í´ë¦¬í•‘í•´ì„œ ë²½ ë„ˆë¨¸ë¡œë„ ì¹´ë©”ë¼ê°€ ë³´ì¼ ìˆ˜ ìˆê²Œ í•œë‹¤
         Plane p = new Plane(oPortalTransform.forward, oPortalTransform.position);
         Vector4 clipPlane = new Vector4(p.normal.x, p.normal.y, p.normal.z, p.distance);
         Vector4 clipPlaneCameraSpace = Matrix4x4.Transpose(Matrix4x4.Inverse(portalCamera.worldToCameraMatrix)) * clipPlane;

@@ -9,6 +9,7 @@ public class CPedestalPortalGunBullet : CComponent
     [SerializeField] private Gradient colorGradient;
 
     private TrailRenderer trail;
+    private Coroutine destroyCoroutine;
 
     public override void Awake()
     {
@@ -22,7 +23,7 @@ public class CPedestalPortalGunBullet : CComponent
         base.Start();
 
         trail.colorGradient = colorGradient;
-        StartCoroutine(bulletDestroyCoroutine(maxLifeTime));
+        destroyCoroutine = StartCoroutine(bulletDestroyCoroutine(maxLifeTime));
     }
 
     public override void FixedUpdate()
@@ -43,5 +44,14 @@ public class CPedestalPortalGunBullet : CComponent
         }
 
         Destroy(this.gameObject);
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.gameObject.layer == LayerMask.NameToLayer("PortalPlaceable"))
+        {
+            StopCoroutine(destroyCoroutine);
+            Destroy(this.gameObject);
+        }
     }
 }

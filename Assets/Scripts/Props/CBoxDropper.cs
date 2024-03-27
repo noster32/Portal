@@ -2,7 +2,6 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(AudioSource))]
 public class CBoxDropper : CComponent
 {
     [Header("Setting")]
@@ -13,19 +12,7 @@ public class CBoxDropper : CComponent
     [Header("Animator")]
     [SerializeField] Animator boxDropperAnimator;
 
-    [Header("Sound")]
-    [SerializeField] private AudioClip coverOpenClip;
-    [SerializeField] private AudioClip coverCloseClip;
-
-    private AudioSource audioSource;
     private Coroutine animCoroutine;
-
-    public override void Awake()
-    {
-        base.Awake();
-
-        audioSource = GetComponent<AudioSource>();
-    }
 
     public override void Start()
     {
@@ -38,10 +25,10 @@ public class CBoxDropper : CComponent
     {
         base.Update();
 
-        //if(Input.GetKeyDown(KeyCode.I))
-        //{
-        //    BoxSpawn();
-        //}
+        if(Input.GetKeyDown(KeyCode.I))
+        {
+            BoxSpawn();
+        }
     }
 
     public void BoxSpawn()
@@ -53,12 +40,12 @@ public class CBoxDropper : CComponent
     private IEnumerator BoxSpawnCoroutine()
     {
         boxDropperAnimator.Play("opening");
-        audioSource.PlayOneShot(coverOpenClip, CSoundLoader.Instance.effectSoundVolume);
+        CAudioManager.Instance.PlayOneShot(CFMODEvents.Instance.door2, this.transform.position);
         yield return new WaitForSeconds(boxDropperAnimator.GetCurrentAnimatorClipInfo(0).Length);
 
 
         boxDropperAnimator.Play("closing");
-        audioSource.PlayOneShot(coverCloseClip, CSoundLoader.Instance.effectSoundVolume);
+        CAudioManager.Instance.PlayOneShot(CFMODEvents.Instance.door3, this.transform.position);
         yield return new WaitForSeconds(boxDropperAnimator.GetCurrentAnimatorClipInfo(0).Length - 0.1f);
 
 

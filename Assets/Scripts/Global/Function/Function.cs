@@ -57,5 +57,4 @@ public static partial class Function
             a_oCallBack?.Invoke(a_oAsyncOperation);
         }
     }
-
 }

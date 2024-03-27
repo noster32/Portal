@@ -5,7 +5,6 @@ using UnityEngine.UIElements;
 
 public abstract class CComponent : MonoBehaviour
 {
-
     [HideInInspector]public Transform m_oTransform = null;
     [HideInInspector]public Rigidbody m_oRigidBody = null;
 
@@ -22,6 +21,7 @@ public abstract class CComponent : MonoBehaviour
 
     public virtual void Update()
     {
+
         //Do Nothing
     }
 

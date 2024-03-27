@@ -5,32 +5,26 @@ using UnityEngine;
 public class CPortal : CComponent
 {
     [Header("Setting")]
-    public CPortal otherPortal;
-    [SerializeField] private Renderer outlineRenderer;
-    [SerializeField] private Color portalColor;
+    public CPortal otherPortal;                                                                     //반대 쪽 포탈
+    [SerializeField] private Renderer outlineRenderer;                                              //포탈 테두리 렌더러
+    [SerializeField] private Color portalColor;                                                     //포탈 색
+    [SerializeField] private LayerMask teleportObjectMask;                                          //텔레포트 가능한 오브젝트 레이어 마스크
+    [SerializeField] private CPortalIgnoreCollision portalIgnoreCollision;                          //컴포넌트
 
-    [HideInInspector] public List<CTeleportObject> teleportObjects = new List<CTeleportObject>();
-    [HideInInspector] public Collider wallCollider;
-
-    [Header("Sound")]
-    [SerializeField] private CPortalSound portalSoundPrefab;
-    [SerializeField] private Transform portalSoundParent;
-    [SerializeField] private AudioClip portalOpenClip;
-    [SerializeField] private AudioClip portalCloseClip;
+    [HideInInspector] public List<CTeleportObject> teleportObjects = new List<CTeleportObject>();   //텔레포트 가능한 범위 안에 있는 오브젝트 리스트
 
     private Material material;
     private Renderer portalRenderer;
+    private BoxCollider boxCollider;
 
-    private Coroutine lerpCoroutine;
-
-    private bool isPlaced = false;
-    private bool isLevelPlaced = false;
-
+    private Coroutine lerpCoroutine;                                                                //포탈 열리거나 닫힐 때 스케일 조정 코루틴
+    private bool isPlaced = false;        
 
     public override void Awake()
     {
         base.Awake();
 
+        boxCollider = GetComponent<BoxCollider>();
         portalRenderer = GetComponent<Renderer>();
         material = portalRenderer.material;
     }
@@ -38,8 +32,8 @@ public class CPortal : CComponent
     public override void Start()
     {
         base.Start();
-        SetColor(portalColor);
 
+        SetColor(portalColor);
     }
 
     public override void Update()
@@ -49,93 +43,137 @@ public class CPortal : CComponent
         if (!isPlaced || !otherPortal.isPlaced)
             return;
 
+        //텔레포트 가능한 범위 안에 있는 오브젝트 체크
         for (int i = 0; i < teleportObjects.Count; ++i)
         {
             Vector3 offsetFromPortal;
+            offsetFromPortal = (teleportObjects[i].transform.position + teleportObjects[i].objectCenter) - transform.position;
 
-            if (teleportObjects[i].tag == "Player")
-            {
-                offsetFromPortal = (teleportObjects[i].transform.position + new Vector3(0f, 0.8f, 0f)) - transform.position;
-            }
-            else
-            {
-                offsetFromPortal = teleportObjects[i].transform.position - transform.position;
-            }
-
+            //위치 확인을 위한 내적
             int dotValue = System.Math.Sign(Vector3.Dot(offsetFromPortal, transform.forward));
 
+            //포탈의 반대편에 있을 경우 텔레포트
+            //텔레포트 이후 현재 포탈의 리스트에서 제거
             if (dotValue <= 0f)
             {
                 teleportObjects[i].Teleport();
-                teleportObjects[i].ExitPortal(wallCollider);
+                teleportObjects[i].EnterPortalIgnoreCollision(otherPortal.portalIgnoreCollision.GetWallList());
+                teleportObjects[i].ExitPortal();
                 teleportObjects.RemoveAt(i);
                 i--;
             }
         }
     }
 
+    //텔레포트 가능한 범위 안에 들어왔을 경우 리스트에 추가, 오브젝트의 클론 active
     private void OnTriggerEnter(Collider other)
     {
         if (!isPlaced || !otherPortal.isPlaced)
             return;
 
         CTeleportObject tpObject;
-        if(other.tag == "Turret")
+        if (other.tag == "Turret")
             tpObject = other.GetComponentInParent<CTeleportObject>();
         else
-            tpObject = other.GetComponent<CTeleportObject> ();
+            tpObject = other.GetComponent<CTeleportObject>();
 
         if (tpObject != null)
         {
             teleportObjects.Add(tpObject);
-            tpObject.EnterPortal(this, otherPortal, wallCollider);
+            tpObject.EnterPortal(this, otherPortal);
         }
     }
 
+    //텔레포트 가능한 범위를 벗어났을 경우 리스트에서 제거, 오브젝트의 클론 disable
     private void OnTriggerExit(Collider other)
     {
         if (!isPlaced || !otherPortal.isPlaced)
             return;
+
         CTeleportObject tpObject;
-        
         if (other.tag == "Turret")
             tpObject = other.GetComponentInParent<CTeleportObject>();
         else
-            tpObject = other.GetComponent<CTeleportObject> ();
+            tpObject = other.GetComponent<CTeleportObject>();
 
-        if(teleportObjects.Contains(tpObject))
+        if (teleportObjects.Contains(tpObject))
         {
             teleportObjects.Remove(tpObject);
-            tpObject.ExitPortal(wallCollider);
+            tpObject.ExitPortal();
         }
     }
 
-    public void PlacePortal(Collider collide, Vector3 pos, Quaternion rot)
+    //포탈을 설치했을 때 텔레포트 가능한 구역 안에 오브젝트가 있는 경우 리스트에 추가
+    //주로 오브젝트 밑에 포탈을 설치했을 경우 사용된다
+    private void PortalTeleportAreaCheck()
     {
-        if(isPlaced)
-        {
-            var portalCloseSoundInstance = Instantiate(portalSoundPrefab, transform.position, Quaternion.identity, portalSoundParent);
-            portalCloseSoundInstance.PlayPortalSound(portalCloseClip, 1f);
+        Collider[] collider = Physics.OverlapBox(transform.TransformPoint(boxCollider.center), boxCollider.size / 2, transform.rotation, teleportObjectMask);
 
+        if (collider.Length > 0)
+        {
+            foreach (Collider col in collider)
+            {
+                if (col.tag == "Turret")
+                {
+                    CTeleportObject obj = col.transform.GetComponentInParent<CTeleportObject>();
+
+                    if (obj != null)
+                    {
+                        teleportObjects.Add(obj);
+                        obj.EnterPortal(this, otherPortal);
+                    }
+                }
+                else
+                {
+                    if (col.transform.TryGetComponent(out CTeleportObject obj))
+                    {
+                        teleportObjects.Add(obj);
+                        obj.EnterPortal(this, otherPortal);
+                    }
+                }
+
+            }
+        }
+    }
+
+    //포탈 설치
+    public void PlacePortal(Vector3 pos, Quaternion rot)
+    {
+        //포탈이 설치 되어있는 경우 설치되어 있던 벽면의 리스트 제거
+        if (isPlaced)
+        {
+            CAudioManager.Instance.PlayOneShot(CFMODEvents.Instance.portalClose, this.transform.position);
             isPlaced = false;
+            portalIgnoreCollision.ClearPlacedWallList();
         }
 
+        //포탈이 열리는 중이였을 경우 중단
         if (lerpCoroutine != null)
         {
             StopCoroutine(lerpCoroutine);
             lerpCoroutine = null;
         }
-        this.wallCollider = collide;
+
         transform.position = pos;
         transform.rotation = rot;
-        transform.position += transform.forward * 0.001f;
+        transform.position += transform.forward * 0.005f;
         transform.localScale = Vector3.zero;
-
         gameObject.SetActive(true);
-        lerpCoroutine = StartCoroutine(LerpPortal(0.8f, Vector3.zero, Vector3.one, true));
 
-        var portalOpenSoundInstance = Instantiate(portalSoundPrefab, pos, Quaternion.identity, portalSoundParent);
-        portalOpenSoundInstance.PlayPortalSound(portalOpenClip, 1f);
+        portalIgnoreCollision.StartGetPlacedWallCollider(this.transform);
+
+        PortalTeleportAreaCheck();
+        portalIgnoreCollision.PlaceInsidePortalAreaCheck(this.transform);
+
+        lerpCoroutine = StartCoroutine(LerpPortal(0.3f, Vector3.zero, Vector3.one, true));
+
+        //포탈 설치 사운드
+        if (tag == "PortalB")
+            CAudioManager.Instance.PlayOneShot(CFMODEvents.Instance.portalOpen1, this.transform.position);
+        else if (tag == "PortalO")
+            CAudioManager.Instance.PlayOneShot(CFMODEvents.Instance.portalOpen3, this.transform.position);
+        else
+            Debug.LogWarning("portal tag is invalid");
     }
 
     public void CleanPortal()
@@ -146,17 +184,16 @@ public class CPortal : CComponent
             lerpCoroutine = null;
         }
 
-        var portalCloseSoundInstance = Instantiate(portalSoundPrefab, transform.position, Quaternion.identity, portalSoundParent);
-        portalCloseSoundInstance.PlayPortalSound(portalCloseClip, 1f);
+        CAudioManager.Instance.PlayOneShot(CFMODEvents.Instance.portalClose, this.transform.position);
 
         isPlaced = false;
         lerpCoroutine = StartCoroutine(LerpPortal(0.1f, transform.localScale, Vector3.zero, false));
     }
 
-    
+
     private IEnumerator LerpPortal(float duration, Vector3 start, Vector3 end, bool place)
     {
-        //placed : ��Ż�� ��ġ�Ϸ��� ��� true �׷��� ���� ��� false
+        //placed : 포탈을 설치하려는 경우 true 그렇지 않은 경우 false
         float timeElapsed = 0f;
 
         while (timeElapsed < duration)
@@ -170,16 +207,16 @@ public class CPortal : CComponent
 
         transform.localScale = end;
 
-        if(place)
+        if (place)
+        {
             isPlaced = true;
+            portalIgnoreCollision.InsidePortalAreaObjectIgnoreCollision();
+            otherPortal.portalIgnoreCollision.InsidePortalAreaObjectIgnoreCollision();
+        }
         else
             gameObject.SetActive(false);
 
         lerpCoroutine = null;
-    }
-    public bool IsRendererVisible()
-    {
-        return portalRenderer.isVisible;
     }
 
     public void SetTexture(Texture texture)
@@ -192,20 +229,45 @@ public class CPortal : CComponent
         return isPlaced;
     }
 
-    public bool IsLevelPlaced()
-    {
-        return isLevelPlaced;
-    }
-
     public void SetColor(Color color)
     {
         outlineRenderer.material.SetColor("_OutlineColor", color);
     }
+
 
     public bool isVisibleFromMainCamera(Camera camera)
     {
         Plane[] planes = GeometryUtility.CalculateFrustumPlanes(camera);
 
         return GeometryUtility.TestPlanesAABB(planes, portalRenderer.bounds);
+    }
+
+
+    public Vector3 GetOtherPortalRelativePoint(Vector3 origin)
+    {
+        Vector3 relativePos = transform.InverseTransformPoint(origin);
+        relativePos = Quaternion.Euler(0f, 180f, 0f) * relativePos;
+        Vector3 result = otherPortal.transform.TransformPoint(relativePos);
+
+        return result;
+    }
+
+    //
+    public Vector3 GetOtherPortalRelativeDirection(Vector3 origin)
+    {
+        Vector3 relativeDir = transform.InverseTransformDirection(origin);
+        relativeDir = Quaternion.Euler(0f, 180f, 0f) * relativeDir;
+        Vector3 result = otherPortal.transform.TransformDirection(relativeDir);
+
+        return result;
+    }
+
+    //포지션과 포탈의 내적 return
+    public int GetPortalDotValue(Vector3 position)
+    {
+        var offset = (position - transform.position).normalized;
+        int dot = System.Math.Sign(Vector3.Dot(offset, transform.forward));
+
+        return dot;
     }
 }

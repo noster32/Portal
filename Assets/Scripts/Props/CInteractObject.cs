@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CInteractObject : MonoBehaviour
+public class CInteractObject : CComponent
 {
     CInteractEvent interact = new CInteractEvent();
     CPlayerInteraction player;

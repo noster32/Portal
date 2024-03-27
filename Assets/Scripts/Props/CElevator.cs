@@ -1,7 +1,5 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Rendering;
 
 public class CElevator : CComponent
 {
@@ -12,42 +10,31 @@ public class CElevator : CComponent
     [Header("Collider")]
     [SerializeField] private GameObject elevatorDoorCollider;
 
-    [Header("Sound")]
-    [SerializeField] private AudioClip doorOpenCloseClip;
-    [SerializeField] private AudioClip doorOpenSound2;
-    [SerializeField] private AudioClip elevatorMoveSound;
-    [SerializeField] private AudioClip elevatorStopSound;
-    [SerializeField] private AudioClip elevatorChime;
-
     [Header("Camera")]
     [SerializeField] private CPlayerCameraEffect cameraEffect;
 
-    private AudioSource audioSource;
     private Coroutine doorCoroutine;
     private Animator elevatorAnimator;
     private Vector3 floorGapVector;
-
-    private bool isDoorOpen;
 
     public override void Awake()
     {
         base.Awake();
 
         elevatorAnimator = GetComponent<Animator>();
-        audioSource = GetComponent<AudioSource>();
     }
 
     public override void Start()
     {
         base.Start();
 
+        if (cameraEffect == null)
+            Camera.main.transform.GetComponent<CPlayerCameraEffect>();
+
         floorGapVector = new Vector3(0f, floorGap, 0f);
         transform.localPosition = floorGapVector;
 
         elevatorAnimator.Play("closing", 0, 1f);
-
-        if (elevatorMoveSound)
-            audioSource.clip = elevatorMoveSound;
     }
 
     public void ActiveElevator()
@@ -77,12 +64,40 @@ public class CElevator : CComponent
         doorCoroutine = StartCoroutine(DoorOpenAnim());
     }
 
+    public void PlayStartDoorOpen()
+    {
+        if (doorCoroutine != null)
+        {
+            StopCoroutine(doorCoroutine);
+        }
+
+        doorCoroutine = StartCoroutine(StartDoorOpenAnim());
+    }
+
+    private IEnumerator StartDoorOpenAnim()
+    {
+        CAudioManager.Instance.PlayOneShot(CFMODEvents.Instance.garageStop1, this.transform.position);
+
+        yield return new WaitForSeconds(1f);
+
+        elevatorDoorCollider.SetActive(false);
+        elevatorAnimator.Play("opening");
+        CAudioManager.Instance.PlayOneShot(CFMODEvents.Instance.elevatorDoor, this.transform.position);
+        CAudioManager.Instance.PlayOneShot(CFMODEvents.Instance.doorLatch1, this.transform.position);
+        yield return new WaitForSeconds(elevatorAnimator.GetCurrentAnimatorClipInfo(0).Length);
+
+
+        CAudioManager.Instance.PlayOneShot(CFMODEvents.Instance.portalElevatorChime, this.transform.position);
+        doorCoroutine = null;
+        yield return null;
+    }
+
     private IEnumerator DoorOpenAnim()
     {
         elevatorDoorCollider.SetActive(false);
         elevatorAnimator.Play("opening");
-        audioSource.PlayOneShot(doorOpenCloseClip, CSoundLoader.Instance.GetEffectVolume(0.3f));
-        audioSource.PlayOneShot(doorOpenSound2, CSoundLoader.Instance.GetEffectVolume(0.3f));
+        CAudioManager.Instance.PlayOneShot(CFMODEvents.Instance.elevatorDoor, this.transform.position);
+        CAudioManager.Instance.PlayOneShot(CFMODEvents.Instance.doorLatch1, this.transform.position);
         yield return new WaitForSeconds(elevatorAnimator.GetCurrentAnimatorClipInfo(0).Length);
 
         doorCoroutine = null;
@@ -93,7 +108,7 @@ public class CElevator : CComponent
     {
         elevatorDoorCollider.SetActive(true);
         elevatorAnimator.Play("closing");
-        audioSource.PlayOneShot(doorOpenCloseClip, CSoundLoader.Instance.GetEffectVolume(0.3f));
+        CAudioManager.Instance.PlayOneShot(CFMODEvents.Instance.elevatorDoor, this.transform.position);
         yield return new WaitForSeconds(elevatorAnimator.GetCurrentAnimatorClipInfo(0).Length);
 
         doorCoroutine = null;
@@ -105,7 +120,7 @@ public class CElevator : CComponent
         yield return new WaitForSeconds(startDelay);
 
         cameraEffect.PlayCameraShake(2f, 0.2f);
-        audioSource.PlayOneShot(elevatorMoveSound, CSoundLoader.Instance.GetEffectVolume(0.3f));
+        CAudioManager.Instance.PlayOneShot(CFMODEvents.Instance.elevatorMove, this.transform.position);
 
         float elapsedTime = 0f;
         while (elapsedTime < duration)
@@ -118,13 +133,12 @@ public class CElevator : CComponent
         }
 
         transform.localPosition = end;
-        audioSource.PlayOneShot(elevatorStopSound, CSoundLoader.Instance.GetEffectVolume(0.3f));
+        CAudioManager.Instance.PlayOneShot(CFMODEvents.Instance.garageStop1, this.transform.position);
 
         yield return new WaitForSeconds(1f);
 
         PlayDoorOpen();
-        audioSource.PlayOneShot(elevatorChime, CSoundLoader.Instance.GetEffectVolume(0.3f));
-        
+        CAudioManager.Instance.PlayOneShot(CFMODEvents.Instance.portalElevatorChime, this.transform.position);
 
         yield return null;
     }

@@ -12,6 +12,12 @@ public class CPlayerCameraEffect : CComponent
             m_cameraShakeCoroutine = StartCoroutine(CameraShake(duration, magnitude));
     }
 
+    public void PlayCameraShakeUpdown(float duration, float magnitude)
+    {
+        if (m_cameraShakeCoroutine == null)
+            m_cameraShakeCoroutine = StartCoroutine(CameraShakeUpDown(duration, magnitude));
+    }
+
     private IEnumerator CameraShake(float duration, float magnitude)
     {
         Vector3 originalPos = transform.localPosition;
@@ -37,4 +43,29 @@ public class CPlayerCameraEffect : CComponent
         m_cameraShakeCoroutine = null;
     }
 
+    private IEnumerator CameraShakeUpDown(float duration, float magnitude)
+    {
+        Quaternion originalRotation = transform.localRotation;
+
+        float elapsedTime = 0f;
+        float originalMagnitude = magnitude;
+
+        while (elapsedTime < duration)
+        {
+            float y = Random.Range(0, 1f) * magnitude;
+
+            transform.localRotation = Quaternion.Euler(originalRotation.eulerAngles.x, 
+                                                        originalRotation.eulerAngles.y + y, 
+                                                        originalRotation.eulerAngles.z);
+
+            magnitude = Mathf.Lerp(originalMagnitude, 0f, elapsedTime / duration);
+
+            elapsedTime += Time.deltaTime;
+
+            yield return null;
+        }
+
+        transform.localRotation = originalRotation;
+        m_cameraShakeCoroutine = null;
+    }
 }

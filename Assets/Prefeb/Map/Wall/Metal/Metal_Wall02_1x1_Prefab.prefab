@@ -12,9 +12,9 @@ GameObject:
   - component: {fileID: 5236742978326637615}
   - component: {fileID: 5236742978326637600}
   - component: {fileID: 5236742978326637601}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Metal_Wall02_1x1_Prefab
-  m_TagString: Untagged
+  m_TagString: Metal
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -62,7 +62,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: cd417013e9a53ad4f934bb74ce8f6d3d, type: 2}
+  - {fileID: 2100000, guid: 59e5848e734eb944ab1788cc03d83ea0, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

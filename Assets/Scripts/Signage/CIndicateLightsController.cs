@@ -4,8 +4,16 @@ using UnityEngine;
 
 public class CIndicateLightsController : CComponent
 {
-    [SerializeField] private CIndicateLights[] indicateLights;
+    private CIndicateLights[] indicateLights;
 
+
+    public override void Start()
+    {
+        base.Start();
+
+        indicateLights = transform.GetComponentsInChildren<CIndicateLights>();
+        Debug.Log(indicateLights.Length);
+    }
     public void OnIndicateLights()
     {
         foreach (var indicateLight in indicateLights)
@@ -21,4 +29,5 @@ public class CIndicateLightsController : CComponent
             indicateLight.ButtonOff();
         }
     }
+
 }

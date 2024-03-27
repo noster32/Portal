@@ -1,0 +1,342 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &4983311319806630870
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4983311319806630871}
+  - component: {fileID: 4983311319806630868}
+  m_Layer: 0
+  m_Name: FMODEvents
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4983311319806630871
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4983311319806630870}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4983311319806630868
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4983311319806630870}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 945f77c8bad88154b92cbbb56e70280a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_oTransform: {fileID: 0}
+  m_oRigidBody: {fileID: 0}
+  <loopingRadioMix>k__BackingField:
+    Guid:
+      Data1: 967510180
+      Data2: 1077340725
+      Data3: 1937557680
+      Data4: -1236608711
+    Path: event:/ambient/music/looping_radio_mix
+  <fluorescentHum>k__BackingField:
+    Guid:
+      Data1: 1692080380
+      Data2: 1184940592
+      Data3: 590187149
+      Data4: 831175863
+    Path: event:/ambient/machine/fluorescent_hum
+  <portalgunRotateLoop>k__BackingField:
+    Guid:
+      Data1: -876546610
+      Data2: 1333263507
+      Data3: -927405159
+      Data4: 1368105342
+    Path: event:/ambient/machine/portalgun_rotate_loop1
+  <ticktock1>k__BackingField:
+    Guid:
+      Data1: 1797582352
+      Data2: 1109102995
+      Data3: 1028908928
+      Data4: -469570984
+    Path: event:/ambient/machine/ticktock1
+  <beamPlatformLoop1>k__BackingField:
+    Guid:
+      Data1: 275102722
+      Data2: 1130234542
+      Data3: 1858223500
+      Data4: 765409727
+    Path: event:/ambient/machine/beam_platform_loop1
+  <stepSoundConcret>k__BackingField:
+    Guid:
+      Data1: -1216257788
+      Data2: 1323082877
+      Data3: 892850062
+      Data4: -1377102071
+    Path: event:/player/player_footsteps_concret
+  <stepSoundMetal>k__BackingField:
+    Guid:
+      Data1: 708334092
+      Data2: 1268864085
+      Data3: -1670142281
+      Data4: 213763010
+    Path: event:/player/player_footsteps_metal
+  <stepSoundMetalGrate>k__BackingField:
+    Guid:
+      Data1: -1122827197
+      Data2: 1226399189
+      Data3: -2038087296
+      Data4: 1075606914
+    Path: event:/player/player_footsteps_metalgrate
+  <teleport>k__BackingField:
+    Guid:
+      Data1: 1279893475
+      Data2: 1102721112
+      Data3: 608741780
+      Data4: 95863696
+    Path: event:/player/player_teleport
+  <interaction>k__BackingField:
+    Guid:
+      Data1: -1439236827
+      Data2: 1106719974
+      Data3: -2024915785
+      Data4: 1412386730
+    Path: event:/player/player_interaction
+  <interactionFail>k__BackingField:
+    Guid:
+      Data1: 988141620
+      Data2: 1321779996
+      Data3: 48499364
+      Data4: -246209385
+    Path: event:/player/player_interaction_fail
+  <bodyMediumImpactHard>k__BackingField:
+    Guid:
+      Data1: -1121359044
+      Data2: 1076330925
+      Data3: 1080687519
+      Data4: 484606728
+    Path: event:/collision/body/body_medium_impact
+  <bodyMediumImpactSoft>k__BackingField:
+    Guid:
+      Data1: -1414739270
+      Data2: 1088455582
+      Data3: -671300952
+      Data4: 146025199
+    Path: event:/collision/body/body_medium_impact_soft
+  <nearmiss>k__BackingField:
+    Guid:
+      Data1: -1852422985
+      Data2: 1124835793
+      Data3: 1729898173
+      Data4: -1802066407
+    Path: event:/collision/nearmiss/nearmiss
+  <portalgunShootBlue>k__BackingField:
+    Guid:
+      Data1: 839425777
+      Data2: 1330469210
+      Data3: -111161936
+      Data4: 218115089
+    Path: event:/weapon/portalgun/portalgun_shoot_blue
+  <portalgunShootRed>k__BackingField:
+    Guid:
+      Data1: 219481424
+      Data2: 1287129047
+      Data3: 541239730
+      Data4: -376320940
+    Path: event:/weapon/portalgun/portalgun_shoot_red
+  <portalGunHold>k__BackingField:
+    Guid:
+      Data1: -355813668
+      Data2: 1301268854
+      Data3: 1113868475
+      Data4: 954717267
+    Path: event:/weapon/portalgun/portalgun_hold
+  <portalgunFizzle>k__BackingField:
+    Guid:
+      Data1: 284080684
+      Data2: 1150061309
+      Data3: -853229380
+      Data4: 733412013
+    Path: event:/weapon/portalgun/portalgun_fizzle
+  <portalOpen1>k__BackingField:
+    Guid:
+      Data1: 1538083359
+      Data2: 1260044432
+      Data3: 1228886665
+      Data4: -1023140154
+    Path: event:/weapon/portalgun/portal_open1
+  <portalOpen3>k__BackingField:
+    Guid:
+      Data1: -1366549967
+      Data2: 1079153064
+      Data3: -149479003
+      Data4: -1918876951
+    Path: event:/weapon/portalgun/portal_open3
+  <portalClose>k__BackingField:
+    Guid:
+      Data1: -329403343
+      Data2: 1170689644
+      Data3: -1579296845
+      Data4: 691663131
+    Path: event:/weapon/portalgun/portal_close1
+  <portalCharging>k__BackingField:
+    Guid:
+      Data1: 1366956895
+      Data2: 1096367622
+      Data3: 1716667530
+      Data4: 1768091814
+    Path: event:/weapon/portalgun/portalgun_charging
+  <button3>k__BackingField:
+    Guid:
+      Data1: 1878997247
+      Data2: 1318969825
+      Data3: -1377446733
+      Data4: 1931181511
+    Path: event:/button/button3
+  <button10>k__BackingField:
+    Guid:
+      Data1: -1721896182
+      Data2: 1187719450
+      Data3: 861056951
+      Data4: 1615926962
+    Path: event:/button/button10
+  <elevbell>k__BackingField:
+    Guid:
+      Data1: 543765971
+      Data2: 1282268514
+      Data3: -575249007
+      Data4: -1305411094
+    Path: event:/button/elevbell
+  <door1>k__BackingField:
+    Guid:
+      Data1: 696002085
+      Data2: 1194617565
+      Data3: -1218805606
+      Data4: -1899085191
+    Path: event:/props/door/door
+  <door2>k__BackingField:
+    Guid:
+      Data1: -1086159503
+      Data2: 1121295507
+      Data3: 856411826
+      Data4: 1405838537
+    Path: event:/props/door/door2
+  <door3>k__BackingField:
+    Guid:
+      Data1: -250491851
+      Data2: 1100650069
+      Data3: -1609241926
+      Data4: 1538318575
+    Path: event:/props/door/door3
+  <lever1>k__BackingField:
+    Guid:
+      Data1: 1948183443
+      Data2: 1224310232
+      Data3: 527396765
+      Data4: -851166124
+    Path: event:/button/lever1
+  <lever2>k__BackingField:
+    Guid:
+      Data1: -788319880
+      Data2: 1210610038
+      Data3: -1858226281
+      Data4: 1381145043
+    Path: event:/button/lever2
+  <doorLatch1>k__BackingField:
+    Guid:
+      Data1: -590138857
+      Data2: 1162821619
+      Data3: -424037230
+      Data4: 514724769
+    Path: event:/props/elevator/door_latch1
+  <elevatorDoor>k__BackingField:
+    Guid:
+      Data1: -1503968926
+      Data2: 1237527051
+      Data3: 1351831969
+      Data4: -1097170834
+    Path: event:/props/elevator/elevatorDoor
+  <elevatorMove>k__BackingField:
+    Guid:
+      Data1: -522628271
+      Data2: 1082179902
+      Data3: -1217311082
+      Data4: 1196573066
+    Path: event:/props/elevator/elevatorMove
+  <garageStop1>k__BackingField:
+    Guid:
+      Data1: -1976239884
+      Data2: 1255399518
+      Data3: 567971974
+      Data4: -726846543
+    Path: event:/props/elevator/garage_stop1
+  <portalElevatorChime>k__BackingField:
+    Guid:
+      Data1: -1431936660
+      Data2: 1087318347
+      Data3: -1209860186
+      Data4: -1842554372
+    Path: event:/props/elevator/portal_elevator_chime
+  <metalSolidImpactHard>k__BackingField:
+    Guid:
+      Data1: 1973256184
+      Data2: 1152050525
+      Data3: -49007965
+      Data4: 693764874
+    Path: event:/collision/metal/metal_solid_impact_hard
+  <metalSolidImpactSoft>k__BackingField:
+    Guid:
+      Data1: -1384401098
+      Data2: 1139054531
+      Data3: -461494398
+      Data4: -1360762993
+    Path: event:/collision/metal/metal_solid_impact_soft
+  <apcStart>k__BackingField:
+    Guid:
+      Data1: 522811982
+      Data2: 1340211981
+      Data3: 2042519709
+      Data4: 1822621754
+    Path: event:/props/apc_start
+  <apcShutdown>k__BackingField:
+    Guid:
+      Data1: 231851280
+      Data2: 1117070414
+      Data3: -362465896
+      Data4: 1576699451
+    Path: event:/props/apc_shutdown
+  <apcFirstgearLoop1>k__BackingField:
+    Guid:
+      Data1: -359684875
+      Data2: 1325450569
+      Data3: -336901716
+      Data4: -1598361815
+    Path: event:/sfx/apc_firstgear_loop1
+  <buttonClickRelease>k__BackingField:
+    Guid:
+      Data1: -1102664185
+      Data2: 1095875045
+      Data3: 638885796
+      Data4: 408156675
+    Path: event:/ui/buttonclickrelease
+  <buttonRollOver>k__BackingField:
+    Guid:
+      Data1: -736746522
+      Data2: 1161350867
+      Data3: -1776210786
+      Data4: -1727590397
+    Path: event:/ui/buttonrollover

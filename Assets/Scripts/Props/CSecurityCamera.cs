@@ -1,10 +1,11 @@
-using UnityEditor.Timeline;
+using FMODUnity;
 using UnityEngine;
 
 public class CSecurityCamera : CComponent
 {
 
     [Header("Setting")]
+    [SerializeField] float volume = 0.01f;
     [SerializeField] float rotationSpeedX = 0.5f;
     [SerializeField] float rotationSpeedY = 0.5f;
 
@@ -15,27 +16,32 @@ public class CSecurityCamera : CComponent
     [SerializeField] private Transform cameraLeftRightTransform;
     [SerializeField] private Transform cameraUpDownTransform;
 
-    [Header("Sound")]
-    private AudioSource audioSource;
-    [SerializeField] private AudioClip moveSoundClip;
 
     private Quaternion m_cameraRotationXZ;
     private Quaternion m_cameraRotationZY;
     private Quaternion m_lastCameraRotationXZ;
     private Quaternion m_lastCameraRotationZY;
 
-    public override void Awake()
-    {
-        base.Awake();
+    private StudioEventEmitter emitter;
 
-        audioSource = GetComponent<AudioSource>();
-        audioSource.loop = true;
-        audioSource.clip = moveSoundClip;
+    public override void Start()
+    {
+        base.Start();
+
+        if(playerTransform == null)
+            playerTransform = CSceneManager.Instance.player.transform;
+
+        //emitter의 EventInstance.setVolume(value)는 emitter가 play중일때 만 설정 가능
+        emitter = CAudioManager.Instance.InitializeEventEmitter(CFMODEvents.Instance.portalgunRotateLoop, basisTransform.gameObject);
     }
 
     public override void Update()
     {
         base.Update();
+
+        if(Input.GetKeyDown(KeyCode.O))
+        {
+        }
 
         if(playerTransform == null)
         {
@@ -43,18 +49,15 @@ public class CSecurityCamera : CComponent
             return;
         }
 
-        audioSource.volume = CSoundLoader.Instance.GetEffectVolume(0.05f);
-
         Vector3 directionToTarget = ((playerTransform.position + new Vector3(0f, 1.6f, 0f)) - basisTransform.position).normalized;
         int dotValue = System.Math.Sign(Vector3.Dot(basisTransform.forward, directionToTarget));
         
         if(dotValue > 0)
         {
             Vector3 directionXZ = new Vector3(directionToTarget.x, 0f ,directionToTarget.z);
-            Vector2 directionZY = new Vector2(directionToTarget.z, directionToTarget.y);
 
             float m_angleXZ = Vector3.Angle(basisTransform.right, directionXZ);
-            float m_angleZY = Vector2.Angle(basisTransform.up, directionZY);
+            float m_angleZY = Vector3.Angle(basisTransform.up, directionToTarget);
 
             m_angleXZ *= dotValue;
             m_angleZY *= dotValue;
@@ -77,13 +80,16 @@ public class CSecurityCamera : CComponent
 
             if (rotationChangedXZ || rotationChangedZY)
             {
-                if(!audioSource.isPlaying)
-                    audioSource.Play();
+                if (!emitter.IsPlaying())
+                {
+                    emitter.Play();
+                    emitter.EventInstance.setVolume(volume);
+                }
             }
             else
             {
-                if(audioSource.isPlaying)
-                    audioSource.Stop();
+                if(emitter.IsPlaying())
+                    emitter.Stop();
             }
 
             m_lastCameraRotationXZ = cameraLeftRightTransform.localRotation;
@@ -92,8 +98,8 @@ public class CSecurityCamera : CComponent
         }
         else
         {
-            if (audioSource.isPlaying)
-                audioSource.Stop();
+            if (emitter.IsPlaying())
+                emitter.Stop();
         }
     }
 

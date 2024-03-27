@@ -6,6 +6,8 @@ public class CTurret : CGrabableObject
     [SerializeField] float aimUpDown;
     [SerializeField] private float falldownRotation = 50f;
     [SerializeField] private float normalizeAngle;
+    [SerializeField] private CTurretLaser turretLaser;
+    [SerializeField] private CPortalPair portalPair;
 
     private CTurretSound turretSound;
     private CEnemyFieldOfView turretDetect;
@@ -16,12 +18,12 @@ public class CTurret : CGrabableObject
 
     public enum TurretState
     {
-        IDLE,                   //±âº»
-        DEPLOY,                 //Àû È®ÀÎ
-        ATTACK,                 //°ø°İ
-        SEARCHINGTARGET,        //ÀûÀÌ ½Ã¾ß¿¡¼­ ¹ş¾î³²
-        RETRACT,                //¼­Äª Á¾·á
-        PICKUP,                    //ÀâÇôÀÖ´Â °æ¿ì
+        IDLE,                   //ê¸°ë³¸
+        DEPLOY,                 //ì  í™•ì¸
+        ATTACK,                 //ê³µê²©
+        SEARCHINGTARGET,        //ì ì´ ì‹œì•¼ì—ì„œ ë²—ì–´ë‚¨
+        RETRACT,                //ì„œì¹­ ì¢…ë£Œ
+        PICKUP,                    //ì¡í˜€ìˆëŠ” ê²½ìš°
         FALLDOWN,
         TURNOFF,
         DIE
@@ -41,7 +43,14 @@ public class CTurret : CGrabableObject
         turretSound = GetComponent<CTurretSound>();
         turretDetect = GetComponent<CEnemyFieldOfView>();
         turretAnimator = GetComponentInChildren<Animator>();
+    }
 
+    public override void Start()
+    {
+        base.Start();
+
+        if(portalPair == null)
+            portalPair = CSceneManager.Instance.portalPair;
     }
 
     public override void Update()
@@ -53,9 +62,9 @@ public class CTurret : CGrabableObject
 
         ChangeTurretState();
         PlayTurretAnim();
-        
-        normalizeAngle = (turretDetect.angleToTarget / (turretDetect.angle * 2)) - 0.8f;
-        aimLeftRight = Mathf.Abs(normalizeAngle);
+        TurretLaserPoint();
+        TurretLRAngle();
+ 
     }
 
     private void ChangeTurretState()
@@ -117,6 +126,83 @@ public class CTurret : CGrabableObject
                 state = TurretState.SEARCHINGTARGET;
                 animationCoroutine = StartCoroutine(TurretSearchingCoroutine());
             }
+        }
+    }
+
+    private void TurretLRAngle()
+    {
+        if (turretDetect.canSeePlayer)
+        {
+            float changeAngleBasis = 0f;
+            if (turretDetect.angleToTarget < 0)
+                changeAngleBasis = Mathf.Abs(turretDetect.angleToTarget) + 90f;
+            else
+                changeAngleBasis = 90f - turretDetect.angleToTarget;
+
+            float minAngle = 5f;
+            float maxAngle = 175f;
+
+            float centeredAngle = changeAngleBasis - minAngle;
+            float range = maxAngle - minAngle;
+
+            //í¬íƒˆ ì• ë‹ˆë©”ì´ì…˜ ì •ì¤‘ì•™ì´ 0.75ê°€ì•„ë‹ˆë¼ 0.8, ê·¸ë˜ì„œ 0.5 -> 0.55
+            float normalizeValue = (centeredAngle / range) * 0.5f + 0.55f;
+            aimLeftRight = Mathf.Abs(normalizeValue);
+        }
+        else
+            aimLeftRight = 0.8f;
+    }
+
+    private void TurretLaserPoint()
+    {
+        RaycastHit hit;
+
+        //170f -> TurretLRAngle : range 
+        float inverseNormalize = ((aimLeftRight - 0.55f) / 0.5f) * 170f;
+        inverseNormalize += 5f;
+
+        if(inverseNormalize > 90f)
+        {
+            inverseNormalize -= 90f;
+            inverseNormalize *= -1;
+        }
+        else
+        {
+            inverseNormalize = 90f - inverseNormalize;
+        }
+
+        Vector3 laserDirection = Quaternion.Euler(0f, inverseNormalize, 0f) * turretLaser.transform.forward;
+        if (Physics.Raycast(turretLaser.transform.position, laserDirection, out hit, 50f, ~0, QueryTriggerInteraction.Ignore))
+        {
+            Collider[] portalColliders = Physics.OverlapSphere(hit.point, 0.5f, LayerMask.GetMask("PortalCollider"));
+            if (portalColliders.Length > 0)
+            {
+                if (!portalPair.PlacedBothPortal())
+                    return;
+
+                CPortal portal;
+                if (portalColliders[0].tag == "PortalB")
+                {
+                    portal = portalPair.portals[0];
+                }
+                else
+                    portal = portalPair.portals[1];
+
+                turretLaser.EnableLaserThroughPortal();
+
+                Vector3 startPoint = portal.GetOtherPortalRelativePoint(hit.point);
+                Vector3 laserDirectionThroughPortal = portal.GetOtherPortalRelativeDirection(laserDirection);
+
+                RaycastHit hit2;
+                if (Physics.Raycast(startPoint, laserDirectionThroughPortal, out hit2, 50f, ~LayerMask.GetMask("Portal", "PortalCollider"), QueryTriggerInteraction.Ignore))
+                {
+                    turretLaser.SetPointPortalLaser(startPoint, hit2.point);
+                }
+            }
+            else
+                turretLaser.DisableLaserThroughPortal();
+
+            turretLaser.SetEndPoint(hit.point);
         }
     }
 
@@ -188,6 +274,8 @@ public class CTurret : CGrabableObject
                 yield return new WaitForSeconds(2f);
 
                 Debug.Log("Turret Die");
+
+                turretLaser.DisableLaser();
                 state = TurretState.DIE;
                 break;
         }
@@ -210,7 +298,7 @@ public class CTurret : CGrabableObject
             startNum = aimLeftRight;
             elapsedTime = 0f;
 
-            //·£´ı º¯¼ö¸¦ ÅëÇØ ¿ŞÂÊ ¿À¸¥ÂÊÀ¸·Î ÅÍ·¿ ¿¡ÀÓÀÌ ÀÌµ¿ÇÑ´Ù
+            //ëœë¤ ë³€ìˆ˜ë¥¼ í†µí•´ ì™¼ìª½ ì˜¤ë¥¸ìª½ìœ¼ë¡œ í„°ë › ì—ì„ì´ ì´ë™í•œë‹¤
             if (aimLeftRight < 0.8f)
             {
                 randomNumber = Random.Range(0.85f, 0.95f);
@@ -235,6 +323,7 @@ public class CTurret : CGrabableObject
             turretSound.PlayTurretPingSound();
         }
 
+        aimLeftRight = 0.8f;
         animationCoroutine = null;
         state = TurretState.RETRACT;
         animationCoroutine = StartCoroutine(TurretOnAndOffCoroutine());
@@ -259,7 +348,7 @@ public class CTurret : CGrabableObject
             startNum = aimLeftRight;
             elapsedTime = 0f;
 
-            //·£´ı º¯¼ö¸¦ ÅëÇØ ¿ŞÂÊ ¿À¸¥ÂÊÀ¸·Î ÅÍ·¿ ¿¡ÀÓÀÌ ÀÌµ¿ÇÑ´Ù
+            //ëœë¤ ë³€ìˆ˜ë¥¼ í†µí•´ ì™¼ìª½ ì˜¤ë¥¸ìª½ìœ¼ë¡œ í„°ë › ì—ì„ì´ ì´ë™í•œë‹¤
             if (aimLeftRight < 0.8f)
             {
                 randomNumber = Random.Range(0.85f, 0.95f);
@@ -305,7 +394,7 @@ public class CTurret : CGrabableObject
 
             turretSound.PlayTurretGunRotationSound();
 
-            //·£´ı º¯¼ö¸¦ ÅëÇØ ¿ŞÂÊ ¿À¸¥ÂÊÀ¸·Î ÅÍ·¿ ¿¡ÀÓÀÌ ÀÌµ¿ÇÑ´Ù
+            //ëœë¤ ë³€ìˆ˜ë¥¼ í†µí•´ ì™¼ìª½ ì˜¤ë¥¸ìª½ìœ¼ë¡œ í„°ë › ì—ì„ì´ ì´ë™í•œë‹¤
             if (aimLeftRight < 0.8f)
             {
                 randomNumber = Random.Range(0.85f, 0.95f);

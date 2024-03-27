@@ -1,0 +1,167 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &5647930492373457496
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5647930492373457497}
+  - component: {fileID: 5647930492373457502}
+  m_Layer: 0
+  m_Name: FMODEventsTurret
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5647930492373457497
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5647930492373457496}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5647930492373457502
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5647930492373457496}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7d4d175175819149a71026550e776b3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_oTransform: {fileID: 0}
+  m_oRigidBody: {fileID: 0}
+  <turretActive>k__BackingField:
+    Guid:
+      Data1: 409260929
+      Data2: 1076130502
+      Data3: 1874401199
+      Data4: 1603735954
+    Path: event:/npc/voice/turret_active
+  <turretDisabled>k__BackingField:
+    Guid:
+      Data1: -329198551
+      Data2: 1148328423
+      Data3: 1163048363
+      Data4: -1452309792
+    Path: event:/npc/voice/turret_disabled
+  <turretFizzler>k__BackingField:
+    Guid:
+      Data1: 1355253605
+      Data2: 1196948280
+      Data3: -316533578
+      Data4: 632573785
+    Path: event:/npc/voice/turret_fizzler
+  <turretPickup>k__BackingField:
+    Guid:
+      Data1: -568323440
+      Data2: 1122677367
+      Data3: 1690897334
+      Data4: -221095487
+    Path: event:/npc/voice/turret_pickup
+  <turretRetire>k__BackingField:
+    Guid:
+      Data1: 838321563
+      Data2: 1153143432
+      Data3: 461400208
+      Data4: 673170935
+    Path: event:/npc/voice/turret_retire
+  <turretSearch>k__BackingField:
+    Guid:
+      Data1: -899085994
+      Data2: 1322171138
+      Data3: 2061438876
+      Data4: -22918306
+    Path: event:/npc/voice/turret_search
+  <turretShotat>k__BackingField:
+    Guid:
+      Data1: 619579079
+      Data2: 1219713088
+      Data3: 218657673
+      Data4: -518175213
+    Path: event:/npc/voice/turret_shotat
+  <turretTipped>k__BackingField:
+    Guid:
+      Data1: -1288403355
+      Data2: 1180026029
+      Data3: -1664474185
+      Data4: -755311512
+    Path: event:/npc/voice/turret_tipped
+  <active>k__BackingField:
+    Guid:
+      Data1: -1533977326
+      Data2: 1096759610
+      Data3: -95535994
+      Data4: 1188164649
+    Path: event:/npc/active
+  <deploy>k__BackingField:
+    Guid:
+      Data1: -1262445027
+      Data2: 1317011247
+      Data3: -1146488130
+      Data4: 505472191
+    Path: event:/npc/deploy
+  <die>k__BackingField:
+    Guid:
+      Data1: 714931230
+      Data2: 1314935830
+      Data3: 747997104
+      Data4: -683084423
+    Path: event:/npc/die
+  <ping>k__BackingField:
+    Guid:
+      Data1: -571594170
+      Data2: 1311571060
+      Data3: -1355154499
+      Data4: 1137258373
+    Path: event:/npc/ping
+  <retract>k__BackingField:
+    Guid:
+      Data1: 1506007586
+      Data2: 1268583279
+      Data3: -822225007
+      Data4: -1578551132
+    Path: event:/npc/retract
+  <shoot>k__BackingField:
+    Guid:
+      Data1: -1817864984
+      Data2: 1099265115
+      Data3: 566783404
+      Data4: 1987955415
+    Path: event:/npc/shoot
+  <concreteImpactBullet>k__BackingField:
+    Guid:
+      Data1: 2111854422
+      Data2: 1260596330
+      Data3: 1229396630
+      Data4: 1883261717
+    Path: event:/collision/concret/concrete_impact_bullet
+  <glassImpactBullet>k__BackingField:
+    Guid:
+      Data1: -788827332
+      Data2: 1312524582
+      Data3: -1158114904
+      Data4: -1072475307
+    Path: event:/collision/glass/glass_impact_bullet
+  <metalImpactBullet>k__BackingField:
+    Guid:
+      Data1: 2003267139
+      Data2: 1195787007
+      Data3: -2074753878
+      Data4: 1414196586
+    Path: event:/collision/metal/metal_impact_bullet

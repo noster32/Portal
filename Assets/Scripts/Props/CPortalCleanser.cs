@@ -11,6 +11,12 @@ public class CPortalCleanser : CComponent
     [SerializeField] private UnityEvent deleteEvent;
     [SerializeField] private CPortalGunAnim portalGun;
 
+    public override void Start()
+    {
+        base.Start();
+
+        portalGun = CSceneManager.Instance.player.transform.GetChild(1).GetChild(1).GetComponent<CPortalGunAnim>();
+    }
     private void OnTriggerEnter(Collider other)
     {
         if(other.tag == "Player")

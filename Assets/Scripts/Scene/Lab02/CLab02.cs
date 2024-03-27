@@ -1,30 +1,32 @@
+using FMOD.Studio;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class CLab02 : CComponent
 {
+    [Header("Setting")]
+    [SerializeField] private GameObject portalGunCrosshair;
+
     [Header("Event")]
-    [SerializeField] UnityEvent entryDoorEvent;
+    [SerializeField] private UnityEvent entryDoorEvent;
 
-    [Header("Aperture Sound")]
-    [SerializeField] private float voiceVolume = 1f;
-    [SerializeField] private AudioClip blipSound;
-    [SerializeField] private AudioClip[] part1EntryAISoundClip;
-    [SerializeField] private AudioClip[] part1GetPortalGunAISoundClip;
-    [SerializeField] private AudioClip part2EntryAISoundClip;
-    [SerializeField] private AudioClip part2SuccessAISoundClip;
-
-    [Header("Ambient Sound")]
-    [SerializeField] private AudioClip Lab02Part1Music;
-    [SerializeField] private AudioClip changeAmbient;
+    private EventInstance musicPortalTasteOfBloodInstance;
 
     private bool isPart1Entry = false;
     private bool isPart1GetPortalGun = false;
     private bool isPart2Entry = false;
     private bool isPart2Success = false;
+
+    public override void Start()
+    {
+        base.Start();
+
+        musicPortalTasteOfBloodInstance = CAudioManager.Instance.CreateEventInstance(CFMODEventsLab02.Instance.portalTasteOfBlood);
+    }
 
     public void PlayPart1Entry()
     {
@@ -63,25 +65,21 @@ public class CLab02 : CComponent
     }
     public void Part2EntryMusic()
     {
-        CSoundLoader.Instance.PlaySoundOneShot(Lab02Part1Music, 0.05f);
+        musicPortalTasteOfBloodInstance.start();
     }
 
     private IEnumerator Part1EntryCoroutine()
     {
-        CSoundLoader.Instance.PlaySoundOneShot(blipSound, voiceVolume);
+        CAudioManager.Instance.PlayOneShot(CFMODEventsLab02.Instance.part1Entry1, this.transform.position);
+        CSceneManager.Instance.subtitle.SetText(CScriptManager.Instance.GetText("lab02", "lab02_part1_entry_1"),
+                                        CAudioManager.Instance.GetAudioLength(CFMODEventsLab02.Instance.part1Entry1));
+        yield return new WaitForSeconds(CAudioManager.Instance.GetAudioLength(CFMODEventsLab02.Instance.part1Entry1));
 
-        yield return new WaitForSeconds(blipSound.length);
-
-        foreach (AudioClip aiSound in part1EntryAISoundClip)
-        {
-            CSoundLoader.Instance.PlaySoundOneShot(aiSound, voiceVolume);
-
-            yield return new WaitForSeconds(aiSound.length);
-        }
-
-        CSoundLoader.Instance.PlaySoundOneShot(blipSound, voiceVolume);
-
-        yield return new WaitForSeconds(blipSound.length);
+        CAudioManager.Instance.PlayOneShot(CFMODEventsLab02.Instance.part1Entry2, this.transform.position);
+        CSceneManager.Instance.subtitle.SetText(CScriptManager.Instance.GetText("lab02", "lab02_part1_entry_2"),
+                                        CAudioManager.Instance.GetAudioLength(CFMODEventsLab02.Instance.part1Entry2));
+        print(CScriptManager.Instance.GetText("lab02", "lab02_part1_entry_2"));
+        yield return new WaitForSeconds(CAudioManager.Instance.GetAudioLength(CFMODEventsLab02.Instance.part1Entry2));
 
         entryDoorEvent.Invoke();
 
@@ -90,47 +88,62 @@ public class CLab02 : CComponent
 
     private IEnumerator Part1GetPortalGunCoroutine()
     {
-        CSoundLoader.Instance.PlaySoundOneShot(blipSound, voiceVolume);
+        portalGunCrosshair.SetActive(true);
 
-        yield return new WaitForSeconds(blipSound.length);
+        CAudioManager.Instance.PlayOneShot(CFMODEventsLab02.Instance.part1GetPortalGun1, this.transform.position);
+        CSceneManager.Instance.subtitle.SetText(CScriptManager.Instance.GetText("lab02", "lab00_part1_getportalgunB_1"),
+                                CAudioManager.Instance.GetAudioLength(CFMODEventsLab02.Instance.part1GetPortalGun1));
+        yield return new WaitForSeconds(CAudioManager.Instance.GetAudioLength(CFMODEventsLab02.Instance.part1GetPortalGun1));
 
-        foreach (AudioClip aiSound in part1GetPortalGunAISoundClip)
-        {
-            CSoundLoader.Instance.PlaySoundOneShot(aiSound, voiceVolume);
+        CAudioManager.Instance.PlayOneShot(CFMODEventsLab02.Instance.part1GetPortalGun2, this.transform.position);
+        CSceneManager.Instance.subtitle.SetText(CScriptManager.Instance.GetText("lab02", "lab00_part1_getportalgunB_2"),
+                                CAudioManager.Instance.GetAudioLength(CFMODEventsLab02.Instance.part1GetPortalGun2));
+        yield return new WaitForSeconds(CAudioManager.Instance.GetAudioLength(CFMODEventsLab02.Instance.part1GetPortalGun2));
 
-            yield return new WaitForSeconds(aiSound.length);
-        }
+        CAudioManager.Instance.PlayOneShot(CFMODEventsLab02.Instance.part1GetPortalGun3, this.transform.position);
+        CSceneManager.Instance.subtitle.SetText(CScriptManager.Instance.GetText("lab02", "lab00_part1_getportalgunB_3"),
+                                CAudioManager.Instance.GetAudioLength(CFMODEventsLab02.Instance.part1GetPortalGun3));
+        yield return new WaitForSeconds(CAudioManager.Instance.GetAudioLength(CFMODEventsLab02.Instance.part1GetPortalGun3));
 
-        CSoundLoader.Instance.PlaySoundOneShot(blipSound, voiceVolume);
+        CAudioManager.Instance.PlayOneShot(CFMODEventsLab02.Instance.part1GetPortalGun4, this.transform.position);
+        CSceneManager.Instance.subtitle.SetText(CScriptManager.Instance.GetText("lab02", "lab00_part1_getportalgunB_4"),
+                                CAudioManager.Instance.GetAudioLength(CFMODEventsLab02.Instance.part1GetPortalGun4));
+        yield return new WaitForSeconds(CAudioManager.Instance.GetAudioLength(CFMODEventsLab02.Instance.part1GetPortalGun4));
+
+        CAudioManager.Instance.PlayOneShot(CFMODEventsLab02.Instance.part1GetPortalGun5, this.transform.position);
+        CSceneManager.Instance.subtitle.SetText(CScriptManager.Instance.GetText("lab02", "lab00_part1_getportalgunB_5"),
+                                CAudioManager.Instance.GetAudioLength(CFMODEventsLab02.Instance.part1GetPortalGun5));
+        yield return new WaitForSeconds(CAudioManager.Instance.GetAudioLength(CFMODEventsLab02.Instance.part1GetPortalGun5));
+
+        CAudioManager.Instance.PlayOneShot(CFMODEventsLab02.Instance.part1GetPortalGun6, this.transform.position);
+        CSceneManager.Instance.subtitle.SetText(CScriptManager.Instance.GetText("lab02", "lab00_part1_getportalgunB_6"),
+                                CAudioManager.Instance.GetAudioLength(CFMODEventsLab02.Instance.part1GetPortalGun6));
+        yield return new WaitForSeconds(CAudioManager.Instance.GetAudioLength(CFMODEventsLab02.Instance.part1GetPortalGun6));
+
+        CAudioManager.Instance.PlayOneShot(CFMODEventsLab02.Instance.part1GetPortalGun7, this.transform.position);
+        CSceneManager.Instance.subtitle.SetText(CScriptManager.Instance.GetText("lab02", "lab00_part1_getportalgunB_7"),
+                                CAudioManager.Instance.GetAudioLength(CFMODEventsLab02.Instance.part1GetPortalGun7));
+        yield return new WaitForSeconds(CAudioManager.Instance.GetAudioLength(CFMODEventsLab02.Instance.part1GetPortalGun7));
+
+        CAudioManager.Instance.PlayOneShot(CFMODEventsLab02.Instance.part1GetPortalGun8, this.transform.position);
+        CSceneManager.Instance.subtitle.SetText(CScriptManager.Instance.GetText("lab02", "lab00_part1_getportalgunB_8"),
+                                CAudioManager.Instance.GetAudioLength(CFMODEventsLab02.Instance.part1GetPortalGun8));
+        yield return new WaitForSeconds(CAudioManager.Instance.GetAudioLength(CFMODEventsLab02.Instance.part1GetPortalGun8));
     }
 
     private IEnumerator Part2EntryCoroutine()
     {
-        CSoundLoader.Instance.PlaySoundOneShot(blipSound, voiceVolume);
-
-        yield return new WaitForSeconds(blipSound.length);
-
-        CSoundLoader.Instance.PlaySoundOneShot(part2EntryAISoundClip, voiceVolume);
-
-        yield return new WaitForSeconds(part2EntryAISoundClip.length);
-
-        CSoundLoader.Instance.PlaySoundOneShot(blipSound, voiceVolume);
-
+        CAudioManager.Instance.PlayOneShot(CFMODEventsLab02.Instance.part2Entry, this.transform.position);
+        CSceneManager.Instance.subtitle.SetText(CScriptManager.Instance.GetText("lab02", "lab02_part2_entry_1"),
+                                                CAudioManager.Instance.GetAudioLength(CFMODEventsLab02.Instance.part2Entry));
         yield return null; 
     }
 
     private IEnumerator Part2SuccessCoroutine()
     {
-        CSoundLoader.Instance.PlaySoundOneShot(blipSound, voiceVolume);
-
-        yield return new WaitForSeconds(blipSound.length);
-
-        CSoundLoader.Instance.PlaySoundOneShot(part2SuccessAISoundClip, voiceVolume);
-
-        yield return new WaitForSeconds(part2SuccessAISoundClip.length);
-
-        CSoundLoader.Instance.PlaySoundOneShot(blipSound, voiceVolume);
-
+        CAudioManager.Instance.PlayOneShot(CFMODEventsLab02.Instance.part2Success, this.transform.position);
+        CSceneManager.Instance.subtitle.SetText(CScriptManager.Instance.GetText("lab02", "lab02_part2_success_1"),
+                                        CAudioManager.Instance.GetAudioLength(CFMODEventsLab02.Instance.part2Success));
         yield return null;
     }
 

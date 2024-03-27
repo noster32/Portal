@@ -1,25 +1,25 @@
+using FMODUnity;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class CPedestal : CComponent
 {
+    [Header("Setting")]
+    [SerializeField][Range(0, 3)] private int startAutoPortalNum;
+    [SerializeField] UnityEvent pedestalOpenAreaEvent;
+
     [Header("Auto Portal")]
     [SerializeField] private CAutoPortal[] autoPortals;
-    [SerializeField] private CAutoPortal autoOrangePortal;
+    [SerializeField] private CAutoPortal autoPortalOther;
 
 
     [Header("GameObject")]
     [SerializeField] private GameObject portalGunObject;
     [SerializeField] private GameObject portalGunBullet;
+    [SerializeField] private GameObject audioObject;
     [SerializeField] private Transform pedestalCenterTransform;
     [SerializeField] private Transform portalGunMuzzleTransform;
-
-    [Header("Sound")]
-    [SerializeField] private AudioSource audioSource;
-    [SerializeField] private AudioClip pedestalRotationSoundClip;
-    [SerializeField] private AudioClip pedestalGlassOpenSoundClip;
-    [SerializeField] private AudioClip portalGunChargingSoundClip;
-    [SerializeField] private AudioClip portalGunShootSoundClip;
 
     [Header("Animator")]
     [SerializeField] Animator pedestalBaseAnimator;
@@ -28,32 +28,19 @@ public class CPedestal : CComponent
     private Coroutine rotationCoroutine;
 
     private bool m_isOpenGlass;
+    private StudioEventEmitter emitter;
 
-    public override void Awake()
-    {
-        base.Awake();
-
-        audioSource.loop = true;
-        audioSource.clip = pedestalRotationSoundClip;
-        
-    }
 
     public override void Start()
     {
         base.Start();
 
-        audioSource.volume = CSoundLoader.Instance.GetEffectVolume(0.5f);
+        emitter = CAudioManager.Instance.InitializeEventEmitter(CFMODEvents.Instance.portalgunRotateLoop, audioObject);
         pedestalCenterAnimator.Play("close", 0, 1f);
-
-        pedestalCoroutine = StartCoroutine(PortalAutoFireCoroutine());
+        pedestalCenterTransform.rotation = Quaternion.Euler(0f, 90f * (startAutoPortalNum + 1), 0f);
+        pedestalCoroutine = StartCoroutine(PortalAutoFireCoroutine(startAutoPortalNum));
     }
 
-    public override void Update()
-    {
-        base.Update();
-
-        audioSource.volume = CSoundLoader.Instance.GetEffectVolume(0.5f);
-    }
 
     public void StopPedestal()
     {
@@ -66,8 +53,8 @@ public class CPedestal : CComponent
             StopCoroutine(pedestalCoroutine);
         }
 
-        if (audioSource.isPlaying)
-            audioSource.Stop();
+        if (emitter.IsPlaying())
+            emitter.Stop();
 
         portalGunObject.SetActive(false);
         autoPortals[0].AutoRemovePortal();
@@ -75,37 +62,53 @@ public class CPedestal : CComponent
         StartCoroutine(PedestalMoveDownCoroutine(4f));
     }
 
-    private IEnumerator PortalAutoFireCoroutine()
+    private IEnumerator PortalAutoFireCoroutine(int startNum)
     {
-        autoPortals[1].AutoPlacePortal();
-        autoOrangePortal.AutoPlacePortal();
+        if(autoPortals[startNum + 1])
+            autoPortals[startNum + 1].AutoPlacePortal();
+        if(autoPortalOther)
+            autoPortalOther.AutoPlacePortal();
 
-        int count = 0;
-
+        int count = startNum;
+        bool placedAutoPortal = true;
         while (true)
         {
+            if (!autoPortals[count])
+            {
+                placedAutoPortal = false;
+            }
+            else if (autoPortals[count])
+                placedAutoPortal = true;
+
             rotationCoroutine = StartCoroutine(PedestalRotationCoroutine(3f, count));
-            if(!audioSource.isPlaying)
-                audioSource.Play();
+            if (!emitter.IsPlaying())
+                emitter.Play();
             
             yield return new WaitForSeconds(3f);
 
-            if(audioSource.isPlaying)
-                audioSource.Stop();
-            audioSource.PlayOneShot(portalGunChargingSoundClip, CSoundLoader.Instance.GetEffectVolume(0.8f));
-
-            yield return new WaitForSeconds(0.833f);
+            if (emitter.IsPlaying())
+                emitter.Stop();
 
             // shoot Portal Bullet
-            Instantiate(portalGunBullet, portalGunMuzzleTransform.position, pedestalCenterTransform.rotation);
-            audioSource.PlayOneShot(portalGunShootSoundClip, CSoundLoader.Instance.GetEffectVolume(0.8f));
+            if(placedAutoPortal)
+            {
+                CAudioManager.Instance.PlayOneShot(CFMODEvents.Instance.portalCharging, audioObject.transform.position);
 
-            yield return new WaitForSeconds(0.167f);
+                yield return new WaitForSeconds(0.833f);
 
-            //Place Portal
-            autoPortals[count].AutoPlacePortal(); 
+                Instantiate(portalGunBullet, portalGunMuzzleTransform.position, pedestalCenterTransform.rotation);
+                CAudioManager.Instance.PlayOneShot(CFMODEvents.Instance.portalgunShootBlue, audioObject.transform.position);
 
-            yield return new WaitForSeconds(3f);
+
+                yield return new WaitForSeconds(0.167f);
+
+                autoPortals[count].AutoPlacePortal();
+
+
+                yield return new WaitForSeconds(3f);
+            }
+            else
+                yield return new WaitForSeconds(1f);
 
             if (count == 0)
                 count = 3;
@@ -119,7 +122,7 @@ public class CPedestal : CComponent
         float elapsedTime = 0f;
         float changeAngle = 90f;
         float speed = changeAngle / duration;
-
+        Quaternion start = pedestalCenterTransform.rotation;
         while (elapsedTime < duration)
         {
             pedestalCenterTransform.rotation = Quaternion.RotateTowards(
@@ -160,7 +163,9 @@ public class CPedestal : CComponent
         {
             m_isOpenGlass = true;
             pedestalCenterAnimator.Play("open");
-            audioSource.PlayOneShot(pedestalGlassOpenSoundClip, CSoundLoader.Instance.GetEffectVolume(0.8f));
+            CAudioManager.Instance.PlayOneShot(CFMODEvents.Instance.lever2, audioObject.transform.position);
+            if (pedestalOpenAreaEvent != null)
+                pedestalOpenAreaEvent.Invoke();
         }
     }
 }

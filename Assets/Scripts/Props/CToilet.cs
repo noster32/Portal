@@ -1,23 +1,13 @@
+using FMOD.Studio;
 using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
 
 public class CToilet : CComponent
 {
-    [SerializeField] private AudioClip useToiletFlushClip;
-    [SerializeField] private AudioClip useToiletThanksClip;
-
     [SerializeField] private CInteractObject useToiletInteraction;
 
-    private AudioSource audioSource;
     private Coroutine playCoroutine;
-
-    public override void Awake()
-    {
-        base.Awake();
-
-        audioSource = GetComponent<AudioSource>();
-    }
 
     private void OnEnable()
     {
@@ -39,13 +29,13 @@ public class CToilet : CComponent
 
     private IEnumerator PlayClips()
     {
-        audioSource.PlayOneShot(useToiletFlushClip, CSoundLoader.Instance.GetEffectVolume(0.6f));
+        CAudioManager.Instance.PlayOneShot(CFMODEventLab00.Instance.useToiletFlush, this.transform.position);
 
         yield return new WaitForSeconds(4f);
 
-        audioSource.PlayOneShot(useToiletThanksClip, CSoundLoader.Instance.GetEffectVolume(0.6f));
+        CAudioManager.Instance.PlayOneShot(CFMODEventLab00.Instance.useToiletThanks, this.transform.position);
 
-        yield return new WaitForSeconds(useToiletThanksClip.length);
+        yield return new WaitForSeconds(3f);
 
         playCoroutine = null;
     }

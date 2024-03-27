@@ -1,36 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &168257913
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 168257914}
-  m_Layer: 0
-  m_Name: PortalSound
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &168257914
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 168257913}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 5023564398000946085}
-  m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &721885652
 GameObject:
   m_ObjectHideFlags: 0
@@ -75,8 +44,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1.3, y: 2.4, z: 2}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 1.3, y: 2.4, z: 1.05}
+  m_Center: {x: 0, y: 0, z: 0.5}
 --- !u!114 &721885654
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -91,7 +60,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_oTransform: {fileID: 0}
   m_oRigidBody: {fileID: 0}
-  portal: {fileID: 8471882074133947917}
+  portalPair: {fileID: 5023564398000946084}
+  teleportObjectMask:
+    serializedVersion: 2
+    m_Bits: 17536
 --- !u!1 &2000098281
 GameObject:
   m_ObjectHideFlags: 0
@@ -136,8 +108,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1.3, y: 2.4, z: 2}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 1.3, y: 2.4, z: 1.05}
+  m_Center: {x: 0, y: 0, z: 0.5}
 --- !u!114 &2000098283
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -152,7 +124,140 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_oTransform: {fileID: 0}
   m_oRigidBody: {fileID: 0}
+  portalPair: {fileID: 5023564398000946084}
+  teleportObjectMask:
+    serializedVersion: 2
+    m_Bits: 17536
+--- !u!1 &1715024709960455119
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8435348555008620369}
+  - component: {fileID: 8194125160381972281}
+  - component: {fileID: 3731383704295239330}
+  m_Layer: 8
+  m_Name: ConCollider
+  m_TagString: PortalB
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8435348555008620369
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1715024709960455119}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -13.5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4773235376436275625}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8194125160381972281
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1715024709960455119}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 544e52e7528d39543a55e8259cace9bb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_angle: 5
+  m_distance: 40
+  m_isTrigger: 1
+  m_isFixScale: 1
+--- !u!114 &3731383704295239330
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1715024709960455119}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f4d5c2f7ef57f24f9942cabfb665b0e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_oTransform: {fileID: 0}
+  m_oRigidBody: {fileID: 0}
+  portal: {fileID: 8471882074133947917}
+  playerMove: {fileID: 0}
+--- !u!1 &4458081107462522821
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8068338617243179926}
+  - component: {fileID: 3999305157436201667}
+  - component: {fileID: 6157251261747578485}
+  m_Layer: 8
+  m_Name: ConCollider
+  m_TagString: PortalO
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8068338617243179926
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4458081107462522821}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -13.5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5023564398197137519}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3999305157436201667
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4458081107462522821}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 544e52e7528d39543a55e8259cace9bb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_angle: 5
+  m_distance: 30
+  m_isTrigger: 1
+  m_isFixScale: 1
+--- !u!114 &6157251261747578485
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4458081107462522821}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f4d5c2f7ef57f24f9942cabfb665b0e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_oTransform: {fileID: 0}
+  m_oRigidBody: {fileID: 0}
   portal: {fileID: 5023564398197137504}
+  playerMove: {fileID: 0}
 --- !u!1 &5023564397059140021
 GameObject:
   m_ObjectHideFlags: 0
@@ -246,10 +351,10 @@ BoxCollider:
   m_GameObject: {fileID: 5023564397059140021}
   m_Material: {fileID: 0}
   m_IsTrigger: 1
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1.3, y: 2.4, z: 0.1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 1.3, y: 2.4, z: 0.06}
+  m_Center: {x: 0, y: 0, z: 0.03}
 --- !u!1 &5023564397795897854
 GameObject:
   m_ObjectHideFlags: 0
@@ -260,7 +365,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5023564397795897855}
   - component: {fileID: 5023564397795897840}
-  m_Layer: 8
+  m_Layer: 9
   m_Name: Collider
   m_TagString: PortalO
   m_Icon: {fileID: 0}
@@ -293,7 +398,7 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1.3, y: 2.4, z: 0.01}
+  m_Size: {x: 1.4, y: 2.5, z: 0.04}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &5023564398000946083
 GameObject:
@@ -326,7 +431,6 @@ Transform:
   m_Children:
   - {fileID: 4773235376436275625}
   - {fileID: 5023564398197137519}
-  - {fileID: 168257914}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -357,7 +461,6 @@ GameObject:
   - component: {fileID: 5023564398197137506}
   - component: {fileID: 5023564398197137505}
   - component: {fileID: 5023564398197137504}
-  - component: {fileID: 5023564398660218384}
   m_Layer: 8
   m_Name: portalO
   m_TagString: PortalO
@@ -380,6 +483,7 @@ Transform:
   - {fileID: 5023564397795897855}
   - {fileID: 5023564397059140022}
   - {fileID: 2000098282}
+  - {fileID: 8068338617243179926}
   m_Father: {fileID: 5023564398000946085}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -463,117 +567,11 @@ MonoBehaviour:
   otherPortal: {fileID: 8471882074133947917}
   outlineRenderer: {fileID: 5023564397059139912}
   portalColor: {r: 1, g: 0.3647059, b: 0, a: 0}
+  teleportObjectMask:
+    serializedVersion: 2
+    m_Bits: 20608
+  portalIgnoreCollision: {fileID: 2000098283}
   teleportObjects: []
-  wallCollider: {fileID: 0}
-  portalSoundPrefab: {fileID: -4716399430485350232, guid: 112d89602a68f0041b634e09900e18b9, type: 3}
-  portalSoundParent: {fileID: 168257914}
-  portalOpenClip: {fileID: 8300000, guid: 372c6e2c9a9b2e84ea93f04de9ac392a, type: 3}
-  portalCloseClip: {fileID: 8300000, guid: 8e969e82beebfb64fa50879bcebd3aae, type: 3}
---- !u!82 &5023564398660218384
-AudioSource:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5023564398197137518}
-  m_Enabled: 1
-  serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
-  m_Volume: 0.045
-  m_Pitch: 1
-  Loop: 1
-  Mute: 0
-  Spatialize: 0
-  SpatializePostEffects: 0
-  Priority: 128
-  DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 15
-  Pan2D: 0
-  rolloffMode: 2
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
-  rolloffCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0.99191284
-      inSlope: 0.105266124
-      outSlope: 0.105266124
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0.25274727
-    - serializedVersion: 3
-      time: 0.99450684
-      value: 0
-      inSlope: 0.032238156
-      outSlope: 0.032238156
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.25414467
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  panLevelCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  spreadCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 0.8681319
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  reverbZoneMixCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
 --- !u!1 &5023564398503704490
 GameObject:
   m_ObjectHideFlags: 0
@@ -584,7 +582,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5023564398503704491}
   - component: {fileID: 5023564398503704492}
-  m_Layer: 8
+  m_Layer: 9
   m_Name: Collider
   m_TagString: PortalB
   m_Icon: {fileID: 0}
@@ -617,7 +615,7 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1.3, y: 2.4, z: 0.01}
+  m_Size: {x: 1.4, y: 2.5, z: 0.04}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &5023564398659245652
 GameObject:
@@ -712,10 +710,10 @@ BoxCollider:
   m_GameObject: {fileID: 5023564398659245652}
   m_Material: {fileID: 0}
   m_IsTrigger: 1
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1.3, y: 2.4, z: 0.1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 1.3, y: 2.4, z: 0.06}
+  m_Center: {x: 0, y: 0, z: 0.03}
 --- !u!1 &5293454582549033747
 GameObject:
   m_ObjectHideFlags: 0
@@ -729,7 +727,6 @@ GameObject:
   - component: {fileID: 5942179293786280646}
   - component: {fileID: 5023564399180418628}
   - component: {fileID: 8471882074133947917}
-  - component: {fileID: 8471882074133947906}
   m_Layer: 8
   m_Name: portalB
   m_TagString: PortalB
@@ -744,7 +741,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5293454582549033747}
-  m_LocalRotation: {x: 0, y: 0.7071068, z: -0, w: -0.7071068}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
@@ -752,9 +749,10 @@ Transform:
   - {fileID: 5023564398503704491}
   - {fileID: 5023564398659245653}
   - {fileID: 721885653}
+  - {fileID: 8435348555008620369}
   m_Father: {fileID: 5023564398000946085}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 270, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &8471882074133947916
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -835,114 +833,8 @@ MonoBehaviour:
   otherPortal: {fileID: 5023564398197137504}
   outlineRenderer: {fileID: 5023564398659245655}
   portalColor: {r: 0, g: 0.39607844, b: 1, a: 0}
+  teleportObjectMask:
+    serializedVersion: 2
+    m_Bits: 20608
+  portalIgnoreCollision: {fileID: 721885654}
   teleportObjects: []
-  wallCollider: {fileID: 0}
-  portalSoundPrefab: {fileID: -4716399430485350232, guid: 112d89602a68f0041b634e09900e18b9, type: 3}
-  portalSoundParent: {fileID: 168257914}
-  portalOpenClip: {fileID: 8300000, guid: 84ea295dc2d8b7448bbdc87139b72959, type: 3}
-  portalCloseClip: {fileID: 8300000, guid: 8e969e82beebfb64fa50879bcebd3aae, type: 3}
---- !u!82 &8471882074133947906
-AudioSource:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5293454582549033747}
-  m_Enabled: 1
-  serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
-  m_Volume: 0.045
-  m_Pitch: 1
-  Loop: 0
-  Mute: 0
-  Spatialize: 0
-  SpatializePostEffects: 0
-  Priority: 128
-  DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 15
-  Pan2D: 0
-  rolloffMode: 2
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
-  rolloffCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0.99191284
-      inSlope: 0.105266124
-      outSlope: 0.105266124
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0.25274727
-    - serializedVersion: 3
-      time: 0.99450684
-      value: 0
-      inSlope: 0.032238156
-      outSlope: 0.032238156
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.25414467
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  panLevelCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  spreadCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 0.8681319
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  reverbZoneMixCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4

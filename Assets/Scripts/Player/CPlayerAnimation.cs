@@ -6,15 +6,15 @@ public class CPlayerAnimation : CComponent
 {
     #region component
     CPlayerMovement playerMovement;
-    CPlayerData playerData;
+    CPlayerState playerState;
     Animator chellAnimator;
     #endregion
 
-    public override void Start()
+    public override void Awake()
     {
-        base.Start();
+        base.Awake();
 
-        playerData = CPlayerData.GetInstance();
+        playerState = GetComponent<CPlayerState>();
         playerMovement = GetComponent<CPlayerMovement>();
         chellAnimator = transform.GetChild(0).GetComponent<Animator>();
     }
@@ -23,17 +23,20 @@ public class CPlayerAnimation : CComponent
     {
         base.Update();
 
+        if (playerState.GetIsPlayerDie())
+            return;
+
         chellAnimator.SetFloat("DirectionN", playerMovement.moveVector.z, 0.5f, Time.deltaTime);
         chellAnimator.SetFloat("DirectionE", playerMovement.moveVector.x, 0.5f, Time.deltaTime);
 
-        if(playerData.GetDrawPortalGun())
+        if(playerState.GetDrawPortalGun())
             AnimationChangeDrawPortalGun();
         else
             AnimationChange();
 
         if(playerMovement.grapicsClone && playerMovement.grapicsClone.activeSelf && playerMovement.originalAnimator && playerMovement.cloneAnimator)
         {
-            if (playerData.GetDrawPortalGun())
+            if (playerState.GetDrawPortalGun())
                 AnimationChangeDrawPortalGun(playerMovement.cloneAnimator);
             else
                 AnimationChange(playerMovement.cloneAnimator);
@@ -42,21 +45,21 @@ public class CPlayerAnimation : CComponent
 
     private void AnimationChange()
     {
-        switch (playerData.GetPlayerState())
+        switch (playerState.GetPlayerState())
         {
-            case CPlayerData.PlayerState.IDLE:
+            case CPlayerState.PlayerState.IDLE:
                 chellAnimator.CrossFade("IDLE", 0.03f);
                 break;
-            case CPlayerData.PlayerState.WALK:
+            case CPlayerState.PlayerState.WALK:
                 chellAnimator.Play("WalkBT", 0);
                 break;
-            case CPlayerData.PlayerState.JUMP:
+            case CPlayerState.PlayerState.JUMP:
                 chellAnimator.Play("Jump", 0);
                 break;
-            case CPlayerData.PlayerState.CROUCH:
+            case CPlayerState.PlayerState.CROUCH:
                 chellAnimator.CrossFade("Crouch IDLE", 0.03f);
                 break;
-            case CPlayerData.PlayerState.CROUCHWALK:
+            case CPlayerState.PlayerState.CROUCHWALK:
                 chellAnimator.Play("CrouchBT", 0);
                 break;
             default:
@@ -67,21 +70,21 @@ public class CPlayerAnimation : CComponent
     
     public void AnimationChange(Animator animator)
     {
-        switch (playerData.GetPlayerState())
+        switch (playerState.GetPlayerState())
         {
-            case CPlayerData.PlayerState.IDLE:
+            case CPlayerState.PlayerState.IDLE:
                 animator.CrossFade("IDLE", 0.03f);
                 break;
-            case CPlayerData.PlayerState.WALK:
+            case CPlayerState.PlayerState.WALK:
                 animator.Play("WalkBT", 0);
                 break;
-            case CPlayerData.PlayerState.JUMP:
+            case CPlayerState.PlayerState.JUMP:
                 animator.Play("Jump", 0);
                 break;
-            case CPlayerData.PlayerState.CROUCH:
+            case CPlayerState.PlayerState.CROUCH:
                 animator.CrossFade("Crouch IDLE", 0.03f);
                 break;
-            case CPlayerData.PlayerState.CROUCHWALK:
+            case CPlayerState.PlayerState.CROUCHWALK:
                 animator.Play("CrouchBT", 0);
                 break;
             default:
@@ -92,21 +95,21 @@ public class CPlayerAnimation : CComponent
 
     private void AnimationChangeDrawPortalGun()
     {
-        switch (playerData.GetPlayerState())
+        switch (playerState.GetPlayerState())
         {
-            case CPlayerData.PlayerState.IDLE:
+            case CPlayerState.PlayerState.IDLE:
                 chellAnimator.CrossFade("Idle_PortalGun", 0.03f);
                 break;
-            case CPlayerData.PlayerState.WALK:
+            case CPlayerState.PlayerState.WALK:
                 chellAnimator.Play("WalkBT_PortalGun", 0);
                 break;
-            case CPlayerData.PlayerState.JUMP:
+            case CPlayerState.PlayerState.JUMP:
                 chellAnimator.Play("Jump_PortalGun", 0);
                 break;
-            case CPlayerData.PlayerState.CROUCH:
+            case CPlayerState.PlayerState.CROUCH:
                 chellAnimator.CrossFade("Crouch_Idle_PortalGun", 0.03f);
                 break;
-            case CPlayerData.PlayerState.CROUCHWALK:
+            case CPlayerState.PlayerState.CROUCHWALK:
                 chellAnimator.Play("CrouchBT_PortalGun", 0);
                 break;
             default:
@@ -117,21 +120,21 @@ public class CPlayerAnimation : CComponent
 
     private void AnimationChangeDrawPortalGun(Animator animator)
     {
-        switch (playerData.GetPlayerState())
+        switch (playerState.GetPlayerState())
         {
-            case CPlayerData.PlayerState.IDLE:
+            case CPlayerState.PlayerState.IDLE:
                 animator.CrossFade("Idle_PortalGun", 0.03f);
                 break;
-            case CPlayerData.PlayerState.WALK:
+            case CPlayerState.PlayerState.WALK:
                 animator.Play("WalkBT_PortalGun", 0);
                 break;
-            case CPlayerData.PlayerState.JUMP:
+            case CPlayerState.PlayerState.JUMP:
                 animator.Play("Jump_PortalGun", 0);
                 break;
-            case CPlayerData.PlayerState.CROUCH:
+            case CPlayerState.PlayerState.CROUCH:
                 animator.CrossFade("Crouch_Idle_PortalGun", 0.03f);
                 break;
-            case CPlayerData.PlayerState.CROUCHWALK:
+            case CPlayerState.PlayerState.CROUCHWALK:
                 animator.Play("CrouchBT_PortalGun", 0);
                 break;
             default:

@@ -655,7 +655,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6024097412615839170}
-  - component: {fileID: 6024097412615839171}
+  - component: {fileID: 3188561729559434084}
   m_Layer: 0
   m_Name: Audio
   m_TagString: Untagged
@@ -678,102 +678,37 @@ Transform:
   m_Father: {fileID: 6024097413993265522}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!82 &6024097412615839171
-AudioSource:
+--- !u!114 &3188561729559434084
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6024097412615839172}
   m_Enabled: 1
-  serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
-  m_Volume: 1
-  m_Pitch: 1
-  Loop: 0
-  Mute: 0
-  Spatialize: 0
-  SpatializePostEffects: 0
-  Priority: 128
-  DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
-  Pan2D: 0
-  rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
-  rolloffCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  panLevelCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  spreadCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  reverbZoneMixCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: -876546610
+      Data2: 1333263507
+      Data3: -927405159
+      Data4: 1368105342
+    Path: event:/ambient/machine/portalgun_rotate_loop1
+  Event: 
+  PlayEvent: 0
+  StopEvent: 0
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  AllowNonRigidbodyDoppler: 0
+  Params: []
+  OverrideAttenuation: 1
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
 --- !u!1 &6024097413099375012
 GameObject:
   m_ObjectHideFlags: 0
@@ -865,13 +800,9 @@ MonoBehaviour:
   autoOrangePortal: {fileID: 0}
   portalGunObject: {fileID: 3447357659497902559}
   portalGunBullet: {fileID: 4249681891163409076, guid: bc21978289af6bc4f949ee258214a5a3, type: 3}
+  audioObject: {fileID: 0}
   pedestalCenterTransform: {fileID: 8900666331757958989}
   portalGunMuzzleTransform: {fileID: 6024097413099375011}
-  audioSource: {fileID: 6024097412615839171}
-  pedestalRotationSoundClip: {fileID: 8300000, guid: ed773bbf847fc674290274624581d53d, type: 3}
-  pedestalGlassOpenSoundClip: {fileID: 8300000, guid: ef4cbbc229d0e1044a8b60ffa5c93d07, type: 3}
-  portalGunChargingSoundClip: {fileID: 8300000, guid: d8a50d434c302af4baf981527ca729ec, type: 3}
-  portalGunShootSoundClip: {fileID: 8300000, guid: a5f2c6082d316164fa46d52ad8a5522f, type: 3}
   pedestalBaseAnimator: {fileID: 4377543001785772709}
   pedestalCenterAnimator: {fileID: 8900666331757958988}
 --- !u!65 &6024097413993265521

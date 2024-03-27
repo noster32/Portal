@@ -14,25 +14,28 @@ TagManager:
   - PortalO
   - Metal
   - Toilet
-  - ComBall
   - Bullet
   - Glass
+  - CombineBall
+  - Pedestal
+  - MetalGrate
+  - PausePanel
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - InvisiblePlayer
+  - Post
   - Water
   - UI
   - PortalPlaceable
-  - Player
+  - NonPortalPlaceable
   - Portal
+  - PortalCollider
+  - Player
+  - InvisiblePlayer
   - PlayerClone
-  - Ground
   - PlayerHand
   - InteractionObject
-  - Bullet
-  - Turret
   - 
   - 
   - 

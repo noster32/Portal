@@ -3,11 +3,8 @@ using UnityEngine;
 
 public class CBulletSpawn : CPoolingManager<CBullet>
 {
-    #region component
-
     CEnemyFieldOfView enemyFOV;
-
-    #endregion
+    private CBulletHoleSpawn bulletHoleSpawn;
 
     #region private
     [SerializeField] private CBullet bulletPrefab;
@@ -30,6 +27,7 @@ public class CBulletSpawn : CPoolingManager<CBullet>
         base.Awake();
 
         enemyFOV = GetComponent<CEnemyFieldOfView>();
+        bulletHoleSpawn = GetComponent<CBulletHoleSpawn>();
     }
     public override void Start()
     {
@@ -50,6 +48,7 @@ public class CBulletSpawn : CPoolingManager<CBullet>
         bullet.maxLifeTime = this.maxLifeTime;
         
         bullet.DeleteBullet(KillBullet);
+        bullet.BulletHoleFunction(bulletHoleSpawn.CreateBulletHoleConcret, bulletHoleSpawn.CreateBulletHoleMetal, bulletHoleSpawn.CreateBulletHoleGlass);
     }
 
     public void FIreBulletRay()

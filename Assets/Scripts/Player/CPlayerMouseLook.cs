@@ -7,17 +7,45 @@ public class CPlayerMouseLook : CComponent
 {
     private Quaternion m_playerCharacterRot;
     private Quaternion m_cameraRot;
-    private bool m_cursorIsLocked = true;
     private Coroutine m_cameraCoroutine;
 
-    public void Init(Transform character, Transform camera)
+    //recoil
+    private Vector3 recoilRotation;
+    private Vector3 currentRotation;
+
+    [SerializeField] private float recoilX;
+    [SerializeField] private float recoilY;
+
+    [SerializeField] private float snappiness;
+    [SerializeField] private float returnSpeed;
+
+
+    public void Init(Transform camera)
     {
-       m_playerCharacterRot = character.localRotation;
+        m_cameraRot = camera.localRotation;
+    }
+
+    public void Init(Transform camera, Transform character)
+    {
+       m_playerCharacterRot = character.rotation;
        m_cameraRot = camera.localRotation;
     }
 
-    public void MouseRotation(Transform character, Transform camera)
+    public void MouseRotation(Transform camera)
     {
+        float yRot = Input.GetAxis("Mouse X");
+        float xRot = Input.GetAxis("Mouse Y");
+
+        m_cameraRot *= Quaternion.Euler(-xRot, yRot, 0f);
+
+        camera.localRotation = Quaternion.Euler(m_cameraRot.eulerAngles.x, m_cameraRot.eulerAngles.y, 0f);
+    }
+
+    public void MouseRotation(Transform camera, Transform character)
+    {
+        if (CGameManager.Instance.GetIsPaused())
+            return;
+
         float yRot = Input.GetAxis("Mouse X");
         float xRot = Input.GetAxis("Mouse Y");
 
@@ -31,15 +59,36 @@ public class CPlayerMouseLook : CComponent
                 m_cameraCoroutine = StartCoroutine(CameraRotationOriginal(3f));
         }
 
-        character.localRotation = Quaternion.Slerp(character.localRotation, m_playerCharacterRot, 10.0f * Time.deltaTime);
-        camera.localRotation = m_cameraRot;
+        character.rotation = m_playerCharacterRot;
+        camera.localRotation = m_cameraRot * Quaternion.Euler(currentRotation);
     }
 
+    public void RecoilRotation()
+    {
+        recoilRotation = Vector3.Lerp(recoilRotation, Vector3.zero, returnSpeed * Time.deltaTime);
+        currentRotation = Vector3.Slerp(currentRotation, recoilRotation, snappiness * Time.fixedDeltaTime);
+    }
+    
+    public void FireRecoil()
+    {
+        recoilRotation += new Vector3(recoilX, Random.Range(-recoilY, recoilY), 0f);
+    }
+
+    public void AimPunch(float punchX)
+    {
+        recoilRotation = new Vector3(punchX, 0f, 0f);
+    }
 
     public void TeleportCameraRotation(Quaternion rot)
     {
         m_playerCharacterRot = Quaternion.Euler(0f, rot.eulerAngles.y, 0f);
         m_cameraRot = Quaternion.Euler(rot.eulerAngles.x, 0f, rot.eulerAngles.z);
+    }
+
+    public void SetCameraRotation(Quaternion rot)
+    {
+        m_playerCharacterRot = Quaternion.Euler(0f, rot.eulerAngles.y, 0f);
+        m_cameraRot = Quaternion.Euler(rot.eulerAngles.x, 0f, 0f);
     }
 
     public Quaternion GetPlayerRot()
