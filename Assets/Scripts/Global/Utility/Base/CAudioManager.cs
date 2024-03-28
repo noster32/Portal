@@ -111,15 +111,15 @@ public class CAudioManager : CSingleton<CAudioManager>
 
     private void CleanUp()
     {
-        foreach(EventInstance eventInstance in eventInstances)
+        for(int i = 0; i < eventInstances.Count; ++i) 
         {
-            eventInstance.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
-            eventInstance.release();
+            eventInstances[i].stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+            eventInstances[i].release();
         }
 
-        foreach(StudioEventEmitter emitter in eventEmitters)
+        for(int i = 0; i < eventEmitters.Count; ++i)
         {
-            emitter.Stop();
+            eventEmitters[i].Stop();
         }
     }
  

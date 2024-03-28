@@ -36,14 +36,13 @@ public class CBulletSpawn : CPoolingManager<CBullet>
         InitPool(bulletPrefab, 50, 100, false);
     }
 
-    public void CreateBullet(CBullet bullet, Vector3 pos, Vector3 vel, Vector3 rot, Vector3 endPos)
+    public void CreateBullet(CBullet bullet, Vector3 pos, Vector3 vel, Vector3 rot)
     {
         bullet.transform.parent = parent;
         bullet.transform.position = pos;
         bullet.transform.rotation = Quaternion.Euler(rot);
         bullet.initialPosition = pos;
         bullet.initialVelocity = vel;
-        bullet.endPosition = endPos;
         bullet.time = 0f;
         bullet.maxLifeTime = this.maxLifeTime;
         
@@ -81,8 +80,8 @@ public class CBulletSpawn : CPoolingManager<CBullet>
         Vector3 velocityL = velocityCal(rayL.origin, destinationLeft, 50f);
         Vector3 velocityR = velocityCal(rayL.origin, destinationRight, 50f);
 
-        CreateBullet(bulletLeft, rayL.origin, velocityL, bulletRotationLeft, destinationLeft);
-        CreateBullet(bulletRight, rayR.origin, velocityR, bulletRotationRight, destinationRight);
+        CreateBullet(bulletLeft, rayL.origin, velocityL, bulletRotationLeft);
+        CreateBullet(bulletRight, rayR.origin, velocityR, bulletRotationRight);
     }
 
     public void FallDownFireBulletRay()
@@ -117,8 +116,8 @@ public class CBulletSpawn : CPoolingManager<CBullet>
         Vector3 velocityL = velocityCal(rayL.origin, destinationLeft, 50f);
         Vector3 velocityR = velocityCal(rayL.origin, destinationRight, 50f);
 
-        CreateBullet(bulletLeft, rayL.origin, velocityL, bulletRotationLeft, destinationLeft);
-        CreateBullet(bulletRight, rayR.origin, velocityR, bulletRotationRight, destinationRight);
+        CreateBullet(bulletLeft, rayL.origin, velocityL, bulletRotationLeft);
+        CreateBullet(bulletRight, rayR.origin, velocityR, bulletRotationRight);
     }
 
     public void FireBullet()

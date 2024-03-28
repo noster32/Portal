@@ -123,7 +123,6 @@ public class CPlayerGrab : CComponent
             Debug.DrawLine(otherPortalPoint, hit.point, Color.red, 10f);
             if (playerState.grabObject)
             {
-                playerState.grabObject.SetPortal2(portal);
                 GrabObjectInit();
             }
         }

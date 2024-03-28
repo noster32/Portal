@@ -9,6 +9,9 @@ public class CTurret : CGrabableObject
     [SerializeField] private CTurretLaser turretLaser;
     [SerializeField] private CPortalPair portalPair;
 
+    private Material[] originalMaterials;                  //원본 머터리얼
+    private Material[] cloneMaterials;                     //복제 머터리얼
+
     private CTurretSound turretSound;
     private CEnemyFieldOfView turretDetect;
     private Animator turretAnimator;
@@ -36,13 +39,24 @@ public class CTurret : CGrabableObject
         get { return state; }
     }
 
-
     public override void Awake()
     {
         base.Awake();
+
         turretSound = GetComponent<CTurretSound>();
         turretDetect = GetComponent<CEnemyFieldOfView>();
         turretAnimator = GetComponentInChildren<Animator>();
+
+        grapicsClone = Instantiate(grapicsObject);
+        Destroy(grapicsClone.transform.GetChild(1).gameObject);
+        grapicsClone.transform.parent = grapicsObject.transform;
+        grapicsClone.transform.GetChild(2).gameObject.layer = LayerMask.NameToLayer("PlayerClone");
+
+        originalMaterials = GetMaterials(grapicsObject);
+        cloneMaterials = GetMaterials(grapicsClone);
+        GetAnimator(grapicsObject, grapicsClone);
+
+        grapicsClone.SetActive(false);
     }
 
     public override void Start()
@@ -61,10 +75,13 @@ public class CTurret : CGrabableObject
             return;
 
         ChangeTurretState();
+
         PlayTurretAnim();
+        if (cloneAnimator && grapicsClone.activeSelf)
+            PlayTurretCloneAnim();
+
         TurretLaserPoint();
         TurretLRAngle();
- 
     }
 
     private void ChangeTurretState()
@@ -87,7 +104,6 @@ public class CTurret : CGrabableObject
 
         if (isGrabbed && state != TurretState.PICKUP)
         {
-            Debug.Log("state Grab");
             if (animationCoroutine != null)
                 StopCoroutine(animationCoroutine);
 
@@ -233,14 +249,44 @@ public class CTurret : CGrabableObject
         }
     }
 
+    private void PlayTurretCloneAnim()
+    {
+        switch (state)
+        {
+            case TurretState.IDLE:
+                cloneAnimator.Play("turretIdle");
+                break;
+
+            case TurretState.ATTACK:
+                cloneAnimator.CrossFade("aimLeftRight", 1f, 0, aimLeftRight);
+                cloneAnimator.Play("turretFire1", 1);
+                break;
+
+            case TurretState.SEARCHINGTARGET:
+                cloneAnimator.Play("aimLeftRight", 0, aimLeftRight);
+                break;
+
+            case TurretState.PICKUP:
+                cloneAnimator.Play("aimLeftRight", 0, aimLeftRight);
+                break;
+
+            case TurretState.FALLDOWN:
+                cloneAnimator.Play("aimLeftRight", 0, aimLeftRight);
+                break;
+        }
+    }
+
     private IEnumerator TurretOnAndOffCoroutine()
     {
         switch (state)
         {
             case TurretState.DEPLOY:
                 turretAnimator.Play("TurretDeploy");
+                if(cloneAnimator && grapicsClone.activeSelf)
+                    cloneAnimator.Play("TurretDeploy");
                 turretSound.PlayTurretDeploySound();
                 yield return new WaitForSeconds(0.5f);
+
                 turretSound.PlayTurretActiveVoiceSound();
                 yield return new WaitForSeconds(0.5f);
 
@@ -248,39 +294,39 @@ public class CTurret : CGrabableObject
                 break;
 
             case TurretState.RETRACT:
-                Debug.Log("AimNatural");
                 turretAnimator.CrossFade("aimNatural", 2f);
+                if (cloneAnimator && grapicsClone.activeSelf)
+                    cloneAnimator.CrossFade("aimNatural", 2f);
                 yield return new WaitForSeconds(1f);
 
-                Debug.Log("Retract");
                 turretAnimator.Play("TurretRetract");
+                if (cloneAnimator && grapicsClone.activeSelf)
+                    cloneAnimator.Play("TurretRetract");
                 turretSound.PlayTurretSearchingRetireVoiceSound();
                 turretSound.PlayTurretRetractSound();
                 yield return new WaitForSeconds(2f);
 
-                Debug.Log("Retract Done");
                 state = TurretState.IDLE;
                 break;
 
             case TurretState.TURNOFF:
-                Debug.Log("Turn Off Aim Natural");
                 turretAnimator.CrossFade("aimNatural", 2f);
+                if (cloneAnimator && grapicsClone.activeSelf)
+                    cloneAnimator.CrossFade("aimNatural", 2f);
                 yield return new WaitForSeconds(1f);
 
-                Debug.Log("Turn Off");
                 turretAnimator.Play("TurretRetract");
+                if (cloneAnimator && grapicsClone.activeSelf)
+                    cloneAnimator.Play("TurretRetract");
                 turretSound.PlayTurretDIsableVoiceSound();
                 turretSound.PlayTurretDieSound();
                 yield return new WaitForSeconds(2f);
-
-                Debug.Log("Turret Die");
 
                 turretLaser.DisableLaser();
                 state = TurretState.DIE;
                 break;
         }
 
-        Debug.Log("Animation finished");
         animationCoroutine = null;
         yield return null;
     }
@@ -290,7 +336,6 @@ public class CTurret : CGrabableObject
         float startNum;
         float elapsedTime;
         float duration = 1f;
-        Debug.Log("Searching Start");
         turretSound.PlayTurretSearchingVoiceSound();
 
         for (int i = 0; i < 5; i++)
@@ -339,7 +384,6 @@ public class CTurret : CGrabableObject
         float fallDownShootDuration = 3f;
         float startTime = Time.time;
 
-        Debug.Log("Turret Fall Down Fire");
         turretSound.PlayTurretFallDownVoiceSound();
 
         while (Time.time - startTime < fallDownShootDuration)
@@ -384,7 +428,6 @@ public class CTurret : CGrabableObject
         float startNum;
         float elapsedTime;
         float duration = 0.4f;
-        Debug.Log("Turret Grab");
         turretSound.PlayTurretPickUpVoiceSound();
 
         while(isGrabbed)

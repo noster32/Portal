@@ -8,17 +8,17 @@ public class CAudioSettingGroup : CComponent
 
     public void ApplyChanges()
     {
-        foreach(var setting in audioSettings)
+        for(int i = 0; i < audioSettings.Count; ++i)
         {
-            setting.ApplyChange();
+            audioSettings[i].ApplyChange();
         }
     }
 
     public void CancelChanges()
     {
-        foreach (var setting in audioSettings)
+        for (int i = 0; i < audioSettings.Count; ++i)
         {
-            setting.CancelChange();
+            audioSettings[i].CancelChange();
         }
     }
 }

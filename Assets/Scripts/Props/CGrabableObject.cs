@@ -90,10 +90,10 @@ public class CGrabableObject : CTeleportObject
         {
             if (!isCollide)
             {
-                Quaternion relativeRot = Quaternion.Inverse(portal2.transform.rotation) * portal1.transform.rotation;
-                relativeRot = reverse * relativeRot;
-                Vector3 result = relativeRot * originalRotation;
-                transform.forward = playerTransform.TransformDirection(result);
+                //Quaternion relativeRot = Quaternion.Inverse(portal2.transform.rotation) * portal1.transform.rotation;
+                //relativeRot = reverse * relativeRot;
+                //Vector3 result = relativeRot * originalRotation;
+                //transform.forward = playerTransform.TransformDirection(result);
             }
         }
         else
@@ -130,18 +130,6 @@ public class CGrabableObject : CTeleportObject
         transform.rotation = end;
 
         rotationCoroutine = null;
-    }
-
-    public void SetPortal1(CPortal portal)
-    {
-        portal1 = portal;
-        portal2 = portal.otherPortal;
-    }
-
-    public void SetPortal2(CPortal portal)
-    {
-        portal1 = portal.otherPortal;
-        portal2 = portal;
     }
 
     public override void Teleport()

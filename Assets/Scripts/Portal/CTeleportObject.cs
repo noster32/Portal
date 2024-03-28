@@ -3,18 +3,15 @@ using UnityEngine;
 
 public class CTeleportObject : CComponent
 {
-    protected CPortal portal1;
-    protected CPortal portal2;
+    protected CPortal enterPortal;
 
     #region portalClone
     [Header("Portal Clone Object")]
-    [SerializeField] private GameObject grapicsObject;
+    [SerializeField] protected GameObject grapicsObject;                    //메시 오브젝트
 
-    [HideInInspector] public GameObject grapicsClone;
-    [HideInInspector] public Material[] originalMaterials;
-    [HideInInspector] public Material[] cloneMaterials;
-    [HideInInspector] public Animator originalAnimator;
-    [HideInInspector] public Animator cloneAnimator;
+    [HideInInspector] public GameObject grapicsClone;                       //클론 오브젝트
+    [HideInInspector] public Animator originalAnimator;                     //원본 애니메이터 
+    [HideInInspector] public Animator cloneAnimator;                        //복제 애니메이터
     #endregion
 
     #region player
@@ -22,9 +19,7 @@ public class CTeleportObject : CComponent
     #endregion
 
     public Vector3 objectCenter = Vector3.zero;
-    protected Quaternion reverse = Quaternion.Euler(0f, 180f, 0f);
     private Collider objectCollider;
-
     protected Transform cameraTransform;
     private bool isPlayer;
     private bool isTurret;
@@ -50,7 +45,7 @@ public class CTeleportObject : CComponent
             grapicsClone.transform.parent = transform;
             grapicsClone.transform.localScale = new Vector3(1f, 1f, 1f);
         }
-
+        
         if(isTurret)
             objectCollider = GetComponentInChildren<Collider>();
         else
@@ -67,114 +62,53 @@ public class CTeleportObject : CComponent
     {
         base.LateUpdate();
         
-        if(portal1 == null || portal2 == null)
-        {
+        if(!CSceneManager.Instance.portalPair.PlacedBothPortal())
             return;
-        }
 
         if(grapicsClone != null && grapicsClone.activeSelf)
         {
-            Transform enterPortalTransform = portal1.transform;
-            Transform exitPortalTransform = portal2.transform;
-
-            Vector3 relativePos = enterPortalTransform.InverseTransformPoint(transform.position);
-            relativePos = reverse * relativePos;
-            grapicsClone.transform.position = exitPortalTransform.TransformPoint(relativePos);
-
-            Quaternion relativeRot = Quaternion.Inverse(enterPortalTransform.rotation) * transform.rotation;
-            relativeRot = reverse * relativeRot;
-            grapicsClone.transform.rotation = exitPortalTransform.rotation * relativeRot;
+            grapicsClone.transform.position = enterPortal.GetOtherPortalRelativePoint(transform.position);
+            grapicsClone.transform.rotation = enterPortal.GetOtherPortalRelativeRotation(transform.rotation);
         }
     }
 
     public virtual void Teleport()
     {
-        Transform enterPortalTransform = portal1.transform;
-        Transform exitPortalTransform = portal2.transform;
-
-        
-        Vector3 relativeObjPos = enterPortalTransform.InverseTransformPoint(transform.position + objectCenter);
-        relativeObjPos = reverse * relativeObjPos;
-        Vector3 temp = exitPortalTransform.TransformPoint(relativeObjPos);
+        Vector3 temp = enterPortal.GetOtherPortalRelativePoint(transform.position + objectCenter);
         transform.position = temp - objectCenter;
 
         if(isPlayer && cameraTransform)
         {
-            Quaternion relativeCamRot = Quaternion.Inverse(enterPortalTransform.rotation) * cameraTransform.rotation;
-            relativeCamRot = reverse * relativeCamRot;
-            Quaternion resultRot = exitPortalTransform.rotation * relativeCamRot;
+            Quaternion resultRot = enterPortal.GetOtherPortalRelativeRotation(cameraTransform.rotation);
             transform.rotation = Quaternion.Euler(0f, resultRot.eulerAngles.y, 0f);
             mouseLook.TeleportCameraRotation(resultRot);
         }
         else
-        {
-            Quaternion relativeObjRot = Quaternion.Inverse(enterPortalTransform.rotation) * transform.rotation;
-            relativeObjRot = reverse * relativeObjRot;
-            transform.rotation = exitPortalTransform.rotation * relativeObjRot;
-        }
+            transform.rotation = enterPortal.GetOtherPortalRelativeRotation(transform.rotation);
 
         if(m_oRigidBody)
-        {
-            Vector3 relativeObjVel = enterPortalTransform.InverseTransformDirection(m_oRigidBody.velocity);
-            relativeObjVel = reverse * relativeObjVel;
-            m_oRigidBody.velocity = exitPortalTransform.TransformDirection(relativeObjVel);
-        }
+            m_oRigidBody.velocity = enterPortal.GetOtherPortalRelativeDirection(m_oRigidBody.velocity);
 
-        var tmp = portal1;
-        portal1 = portal2;
-        portal2 = tmp;
+        enterPortal = enterPortal.otherPortal;
     }
 
-    public void EnterPortal(CPortal enterPortal, CPortal exitPortal)
+    //텔레포트 구역에 입장 시 클론 active
+    public void EnterPortal(CPortal enterPortal)
     {
-        this.portal1 = enterPortal;
-        this.portal2 = exitPortal;
+        this.enterPortal = enterPortal;
 
-        if(isPlayer && grapicsClone == null)
-        {
-            grapicsClone = Instantiate(grapicsObject);
-            grapicsClone.transform.parent = grapicsObject.transform;
-
-            grapicsClone.transform.GetChild(0).
-                Find("root/spine_base/spine_mid/chest/clavicle_R/bicep_R/elbow_R/wrist_R/weapon_bone/weapon_bone_end/w_portalgun_p3/default").gameObject.layer
-                = LayerMask.NameToLayer("PlayerClone");
-
-            grapicsClone.transform.GetChild(1).gameObject.layer = LayerMask.NameToLayer("PlayerClone"); 
-            grapicsClone.transform.localScale = new Vector3(1f, 1f, 1f);
-
-            originalMaterials = GetMaterials(grapicsObject);
-            cloneMaterials = GetMaterials(grapicsClone);
-            if(grapicsObject.tag == "Player")
-            {
-                GetAnimator(grapicsObject, grapicsClone);
-            }
-        }
-        else if(isTurret && grapicsClone == null)
-        {
-            Debug.Log("test");
-            grapicsClone = Instantiate(grapicsObject);
-            Destroy(grapicsClone.transform.GetChild(1).gameObject);
-            grapicsClone.transform.parent = grapicsObject.transform;
-            grapicsClone.transform.GetChild(2).gameObject.layer = LayerMask.NameToLayer("PlayerClone");
-            //grapicsObject.transform.local
-
-            originalMaterials = GetMaterials(grapicsObject);
-            cloneMaterials = GetMaterials(grapicsClone);
-            if(grapicsObject.tag == "Turret")
-            {
-                GetAnimator(grapicsObject, grapicsClone);
-            }
-        }
-        else
+        if (grapicsClone)
             grapicsClone.SetActive(true);
     }
 
+    //텔레포트 구역에서 퇴장 시 클론 disable
     public void ExitPortal()
     {
         if(grapicsClone)
             grapicsClone.SetActive(false);
     }
 
+    //teleportObject와 벽간의 충돌 무시
     public void EnterPortalIgnoreCollision(List<Collider> wallCollider)
     {
         if (wallCollider != null)
@@ -186,6 +120,7 @@ public class CTeleportObject : CComponent
         }
     }
 
+    //teleportObject와 벽간의 충돌 설정
     public void ExitPortalIgnoreCollision(List<Collider> wallCollider)
     {
         if (wallCollider != null)
@@ -197,48 +132,43 @@ public class CTeleportObject : CComponent
         }
     }
 
-    Material[] GetMaterials(GameObject g)
+    //머터리얼 리스트 가져오기
+    protected Material[] GetMaterials(GameObject target)
     {
-        SkinnedMeshRenderer smRenderer = null;
-        MeshRenderer[] mRenderer = null;
         if (isPlayer)
         {
-            smRenderer = g.transform.GetChild(1).GetComponent<SkinnedMeshRenderer>();
+            SkinnedMeshRenderer sMRenderer = null;
 
-            return smRenderer.materials;
+            sMRenderer = target.transform.GetChild(1).GetComponent<SkinnedMeshRenderer>();
+
+            return sMRenderer.materials;
         }
         else
         {
-            mRenderer = g.GetComponentsInChildren<MeshRenderer>();
+            MeshRenderer[] mRenderer = null;
+
+            mRenderer = target.GetComponentsInChildren<MeshRenderer>();
 
             var matList = new List<Material>();
 
-            foreach (var renderer in mRenderer)
+            for(int renNum = 0; renNum < mRenderer.Length; ++renNum)
             {
-                foreach (var mat in renderer.materials)
+                for(int matNum = 0; matNum < mRenderer[renNum].materials.Length; ++matNum)
                 {
-                    matList.Add(mat);
+                    matList.Add(mRenderer[renNum].materials[matNum]);
                 }
             }
+
             return matList.ToArray();
         }
     }
-
-    private void GetAnimator(GameObject og, GameObject cg)
+    
+    //클론의 애니메이터에 원본의 애니메이터를 복사한다
+    protected void GetAnimator(GameObject og, GameObject cg)
     {
         originalAnimator = og.GetComponent<Animator>();
         cloneAnimator = cg.GetComponent<Animator>();
 
         cloneAnimator.runtimeAnimatorController = originalAnimator.runtimeAnimatorController;
-    }
-
-    private void ChangeLayerChild(GameObject obj, int layer)
-    {
-        obj.layer = layer;
-
-        foreach(Transform child in obj.transform)
-        {
-            ChangeLayerChild(child.gameObject, layer);
-        }
     }
 }

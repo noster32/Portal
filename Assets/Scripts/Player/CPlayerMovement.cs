@@ -37,12 +37,26 @@ public class CPlayerMovement : CTeleportObject
     public override void Awake()
     {
         base.Awake();
-        playerCollider = GetComponent<CapsuleCollider>();
 
         cameraTransform = Camera.main.transform;
+        playerCollider = GetComponent<CapsuleCollider>();
         mouseLook = GetComponent<CPlayerMouseLook>();
-
         playerState = GetComponent<CPlayerState>();
+
+
+        grapicsClone = Instantiate(grapicsObject);
+        grapicsClone.transform.parent = grapicsObject.transform;
+
+        grapicsClone.transform.GetChild(0).
+            Find("root/spine_base/spine_mid/chest/clavicle_R/bicep_R/elbow_R/wrist_R/weapon_bone/weapon_bone_end/w_portalgun_p3/default").gameObject.layer
+            = LayerMask.NameToLayer("PlayerClone");
+
+        grapicsClone.transform.GetChild(1).gameObject.layer = LayerMask.NameToLayer("PlayerClone");
+        grapicsClone.transform.localScale = new Vector3(1f, 1f, 1f);
+
+        GetAnimator(grapicsObject, grapicsClone);
+
+        grapicsClone.SetActive(false);
     }
 
     public override void Start()
@@ -401,7 +415,7 @@ public class CPlayerMovement : CTeleportObject
     {
         base.Teleport();
 
-        if(lineToPortalCoroutine != null)
+        if (lineToPortalCoroutine != null)
         {
             StopLineToPortal();
         }

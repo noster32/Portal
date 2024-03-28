@@ -11,7 +11,7 @@ public class CPortal : CComponent
     [SerializeField] private LayerMask teleportObjectMask;                                          //텔레포트 가능한 오브젝트 레이어 마스크
     [SerializeField] private CPortalIgnoreCollision portalIgnoreCollision;                          //컴포넌트
 
-    [HideInInspector] public List<CTeleportObject> teleportObjects = new List<CTeleportObject>();   //텔레포트 가능한 범위 안에 있는 오브젝트 리스트
+    private List<CTeleportObject> teleportableObjects = new List<CTeleportObject>();   //텔레포트 가능한 범위 안에 있는 오브젝트 리스트
 
     private Material material;
     private Renderer portalRenderer;
@@ -44,10 +44,10 @@ public class CPortal : CComponent
             return;
 
         //텔레포트 가능한 범위 안에 있는 오브젝트 체크
-        for (int i = 0; i < teleportObjects.Count; ++i)
+        for (int i = 0; i < teleportableObjects.Count; ++i)
         {
             Vector3 offsetFromPortal;
-            offsetFromPortal = (teleportObjects[i].transform.position + teleportObjects[i].objectCenter) - transform.position;
+            offsetFromPortal = (teleportableObjects[i].transform.position + teleportableObjects[i].objectCenter) - transform.position;
 
             //위치 확인을 위한 내적
             int dotValue = System.Math.Sign(Vector3.Dot(offsetFromPortal, transform.forward));
@@ -56,10 +56,10 @@ public class CPortal : CComponent
             //텔레포트 이후 현재 포탈의 리스트에서 제거
             if (dotValue <= 0f)
             {
-                teleportObjects[i].Teleport();
-                teleportObjects[i].EnterPortalIgnoreCollision(otherPortal.portalIgnoreCollision.GetWallList());
-                teleportObjects[i].ExitPortal();
-                teleportObjects.RemoveAt(i);
+                teleportableObjects[i].Teleport();
+                teleportableObjects[i].EnterPortalIgnoreCollision(otherPortal.portalIgnoreCollision.GetWallList());
+                teleportableObjects[i].ExitPortal();
+                teleportableObjects.RemoveAt(i);
                 i--;
             }
         }
@@ -79,8 +79,8 @@ public class CPortal : CComponent
 
         if (tpObject != null)
         {
-            teleportObjects.Add(tpObject);
-            tpObject.EnterPortal(this, otherPortal);
+            teleportableObjects.Add(tpObject);
+            tpObject.EnterPortal(this);
         }
     }
 
@@ -96,9 +96,9 @@ public class CPortal : CComponent
         else
             tpObject = other.GetComponent<CTeleportObject>();
 
-        if (teleportObjects.Contains(tpObject))
+        if (teleportableObjects.Contains(tpObject))
         {
-            teleportObjects.Remove(tpObject);
+            teleportableObjects.Remove(tpObject);
             tpObject.ExitPortal();
         }
     }
@@ -119,16 +119,16 @@ public class CPortal : CComponent
 
                     if (obj != null)
                     {
-                        teleportObjects.Add(obj);
-                        obj.EnterPortal(this, otherPortal);
+                        teleportableObjects.Add(obj);
+                        obj.EnterPortal(this);
                     }
                 }
                 else
                 {
                     if (col.transform.TryGetComponent(out CTeleportObject obj))
                     {
-                        teleportObjects.Add(obj);
-                        obj.EnterPortal(this, otherPortal);
+                        teleportableObjects.Add(obj);
+                        obj.EnterPortal(this);
                     }
                 }
 
@@ -210,8 +210,8 @@ public class CPortal : CComponent
         if (place)
         {
             isPlaced = true;
-            portalIgnoreCollision.InsidePortalAreaObjectIgnoreCollision();
-            otherPortal.portalIgnoreCollision.InsidePortalAreaObjectIgnoreCollision();
+            portalIgnoreCollision.ObjectsIgnoreCollision();
+            otherPortal.portalIgnoreCollision.ObjectsIgnoreCollision();
         }
         else
             gameObject.SetActive(false);
@@ -260,6 +260,13 @@ public class CPortal : CComponent
         Vector3 result = otherPortal.transform.TransformDirection(relativeDir);
 
         return result;
+    }
+
+    public Quaternion GetOtherPortalRelativeRotation(Quaternion origin)
+    {
+        Quaternion relativeRot = Quaternion.Inverse(transform.rotation) * origin;
+        relativeRot = Quaternion.Euler(0f, 180f, 0f) * relativeRot;
+        return otherPortal.transform.rotation * relativeRot;
     }
 
     //포지션과 포탈의 내적 return

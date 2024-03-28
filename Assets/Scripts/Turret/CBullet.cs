@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class CBullet : CTeleportObject
+public class CBullet : CComponent
 {
     #region DefaultSetting
     [HideInInspector] public float speed = 100.0f;
@@ -36,6 +36,11 @@ public class CBullet : CTeleportObject
 
         trailRenderer = GetComponent<TrailRenderer>();
     }
+    
+    private void OnEnable()
+    {
+        trailRenderer.enabled = true;
+    }
 
     public override void Start()
     {
@@ -52,6 +57,11 @@ public class CBullet : CTeleportObject
         base.FixedUpdate();
         
         UpdateBullet();
+    }
+
+    private void OnDisable()
+    {
+        trailRenderer.enabled = false;
     }
 
     public void DeleteBullet(Action<CBullet> deleteAction)
@@ -73,6 +83,8 @@ public class CBullet : CTeleportObject
         return initialPosition + (initialVelocity * time) + (0.5f * gravity * time * time);
     }
 
+    //총알 위치 업데이트
+    //GetPosition사이에 시간을 경과하게 하여 현재 포지션과 미래의 포지션 사이를 레이캐스팅하게 해준다
     private void UpdateBullet()
     {
         Vector3 p0 = GetPosition();
@@ -98,6 +110,9 @@ public class CBullet : CTeleportObject
         }
     }
 
+    //포탈의 현재 위치와 다음 위치에서 레이캐스팅을 통해 충돌을 감지
+    //플레이어에 충돌할 경우 데미지를 주고 플레이어 이외에 충돌할 경우에는
+    //OverlapSphere를 통해서 포탈여부를 체크하고 아닐 경우 이펙트 출력 포탈일 경우에는 반대편 포탈로 텔레포트한다
     public void RaycastSegment(Vector3 start, Vector3 end)
     {
         RaycastHit hit;
@@ -114,11 +129,10 @@ public class CBullet : CTeleportObject
                 if (!playerState)
                     playerState = hit.transform.GetComponent<CPlayerState>();
 
-                playerState.DealDamageToPlayer(10, initialVelocity, 10f);
+                playerState.DealDamageToPlayer(0, initialVelocity, 0);
                 //피 데칼을 뿌리고 싶은 경우에는 hit.point부터 initialVecocity방향으로 레이를 쏴서 거기에 맞는 오브젝트에
                 //데칼을 칠하면 되지않을까
                 time = maxLifeTime;
-
             }
             else
             {
@@ -131,33 +145,14 @@ public class CBullet : CTeleportObject
                 }
 
                 Collider[] portalColliders = Physics.OverlapSphere(hit.point, 0.5f, LayerMask.GetMask("PortalCollider"));
+
                 if(portalColliders.Length > 0)
                 {
-                    Debug.Log(portalColliders[0].tag);
-                    if (portalColliders[0].tag == portalPair.portals[0].tag)
-                    {
-                        this.portal1 = portalPair.portals[0];
-                        this.portal2 = portalPair.portals[1];
-                    }
-                    else
-                    {
-                        this.portal1 = portalPair.portals[1];
-                        this.portal2 = portalPair.portals[0];
-                    }
-
-                    Func<Vector3, Vector3, float, Vector3> velocityCal = (start, end, speed) => (end - start).normalized * speed;
-
-                    Vector3 telePortHitPos = portal1.GetOtherPortalRelativePoint(hit.point);
-                    Vector3 teleportEndPos = portal1.GetOtherPortalRelativePoint(endPosition);
-
-                    Vector3 velocity = velocityCal(telePortHitPos, teleportEndPos, 50f);
-                    initialPosition = telePortHitPos;
-                    initialVelocity = velocity;
+                    CPortal enterPortal = portalPair.CheckPortalTag(portalColliders[0].tag);
+                    BulletTeleport(enterPortal, hit.point);
 
                     //트레일 렌더러는 false를 하더라도 트레일이 계속 보임
-                    //텔레포트는 제대로 되지만 건너편 포탈의 일정 범위 이내에는 플레이어가 총알을 맞지않음
-                    trailRenderer.enabled = false;
-                    Teleport();
+                    //trailRenderer.enabled = false;
                 }
                 else
                 {
@@ -173,15 +168,10 @@ public class CBullet : CTeleportObject
         }
     }
 
+    //총알이 오브젝트에 충돌했을 떄의 이펙트
+    //이후에 벽면이 아닌 오브젝트에 충돌 했을 경우 오브젝트를 parent로 설정해 bulletHole과 오브젝트와 같이 움직여야 된다
     private void PlayHitEffect(RaycastHit hitInfo)
     {
-        Action<ParticleSystem> SetHitEffect = (particle) =>
-        {
-            particle.transform.position = hitInfo.point;
-            particle.transform.forward = hitInfo.normal;
-            particle.Emit(1);
-        };
-
         switch(hitInfo.collider.tag)
         {
             case "Concret":
@@ -206,21 +196,18 @@ public class CBullet : CTeleportObject
         }
     }
 
-    public override void Teleport()
+    //총알 텔레포트
+    //총알이 발사되고 경과한 시간을 총 라이프타임에서 제외하고 time을 0으로 해서 시작 포인트를 hitPoint로 재설정한다
+    private void BulletTeleport(CPortal portal, Vector3 hitPoint)
     {
-        base.Teleport();
+        Vector3 telePortHitPos = portal.GetOtherPortalRelativePoint(hitPoint);
+        Vector3 velocity = portal.GetOtherPortalRelativeDirection(initialVelocity);
 
-        trailRenderer.enabled = true;
-    }
+        initialPosition = telePortHitPos;
+        initialVelocity = velocity;
 
-    private void OnDisable()
-    {
-        trailRenderer.enabled = false;
-    }
-
-    private void OnEnable()
-    {
-        trailRenderer.enabled = true;
+        maxLifeTime -= time;
+        time = 0f;
     }
 
 

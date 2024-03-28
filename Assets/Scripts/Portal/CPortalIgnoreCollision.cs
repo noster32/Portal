@@ -10,7 +10,7 @@ public class CPortalIgnoreCollision : CComponent
     private BoxCollider boxCollider;
 
     private List<Collider> placedWall = new List<Collider>();                               //포탈이 설치되어 있는 벽 콜라이더
-    private List<CTeleportObject> insidePortalAreaObject = new List<CTeleportObject>();     //포탈 에리어 안에 있는 오브젝트
+    private List<CTeleportObject> collideIgnoreObjects = new List<CTeleportObject>();      //충돌 무시 구역 안에 있는 오브젝트
 
     public override void Awake()
     {
@@ -21,13 +21,11 @@ public class CPortalIgnoreCollision : CComponent
             portalPair = transform.parent.parent.GetComponent<CPortalPair>();
     }
 
-    //콜라이더 안에 들어올 경우 리스트에 추가, 설치되어있는 벽의 콜라이더와 플레이어의 콜리전 false
+    //구역 안에 들어올 경우 리스트에 추가, 설치되어있는 벽의 콜라이더와 플레이어의 콜리전 false
     private void OnTriggerEnter(Collider other)
     {
         if(!portalPair.PlacedBothPortal())
-        {
             return;
-        }
 
         CTeleportObject tpObject;
         if (other.tag == "Turret")
@@ -37,21 +35,19 @@ public class CPortalIgnoreCollision : CComponent
         
         if (tpObject != null)
         {
-            if (insidePortalAreaObject.Contains(tpObject))
+            if (collideIgnoreObjects.Contains(tpObject))
                 return;
 
-            insidePortalAreaObject.Add(tpObject);
+            collideIgnoreObjects.Add(tpObject);
             tpObject.EnterPortalIgnoreCollision(placedWall);
         }
     }
 
-    //콜라이더에서 벗어날 경우 리스트에서 제거하고 콜리전 true
+    //구역에서 벗어날 경우 리스트에서 제거하고 콜리전 true
     private void OnTriggerExit(Collider other)
     {
         if (!portalPair.PlacedBothPortal())
-        {
             return;
-        }
 
         CTeleportObject tpObject;
 
@@ -62,82 +58,79 @@ public class CPortalIgnoreCollision : CComponent
 
         if (tpObject != null)
         {
-            if(insidePortalAreaObject.Contains(tpObject))
-                insidePortalAreaObject.Remove(tpObject);
-
-            tpObject.ExitPortalIgnoreCollision(placedWall);
+            RemoveCollideIgnoreObject(tpObject);
         }
     }
 
-    //
+    //충돌 무시 구역 안에 있는 오브젝트를 체크해서 리스트에 추가
     public void PlaceInsidePortalAreaCheck(Transform targetTransform)
     {
         Collider[] collider = Physics.OverlapBox(targetTransform.TransformPoint(boxCollider.center), boxCollider.size / 2, targetTransform.rotation, teleportObjectMask);
 
         if (collider.Length > 0)
         {
-            foreach(Collider col in collider)
+            for(int i = 0; i < collider.Length; ++i)
             {
-                if(col.tag == "Turret")
+                if (collider[i].tag == "Turret")
                 {
-                    CTeleportObject obj = col.transform.GetComponentInParent<CTeleportObject>();
+                    CTeleportObject obj = collider[i].transform.GetComponentInParent<CTeleportObject>();
 
-                    if(obj != null)
+                    if (obj != null)
                     {
-                        insidePortalAreaObject.Add(obj);
+                        collideIgnoreObjects.Add(obj);
                     }
                 }
                 else
                 {
-                    if (col.transform.TryGetComponent(out CTeleportObject obj))
+                    if (collider[i].transform.TryGetComponent(out CTeleportObject obj))
                     {
-                        Debug.Log("test");
-                        insidePortalAreaObject.Add(obj);
+                        collideIgnoreObjects.Add(obj);
                     }
                 }
-
             }
         }
     }
 
-
-    public void InsidePortalAreaObjectIgnoreCollision()
+    //리스트에 있는 오브젝트들을 벽과에 충돌을 무시
+    public void ObjectsIgnoreCollision()
     {
         if(portalPair.PlacedBothPortal())
         {
-            foreach(CTeleportObject obj in insidePortalAreaObject)
+            for(int i = 0; i < collideIgnoreObjects.Count; ++i)
             {
-                obj.EnterPortalIgnoreCollision(placedWall);
+                collideIgnoreObjects[i].EnterPortalIgnoreCollision(placedWall);
             }
         }
     }
 
+    //리스트의 오브젝트를 제거
+    public void RemoveCollideIgnoreObject(CTeleportObject obj)
+    {
+        if (!collideIgnoreObjects.Contains(obj))
+            return;
+
+        collideIgnoreObjects.Remove(obj);
+        obj.ExitPortalIgnoreCollision(placedWall);
+    }
+
+    //설치된 벽의 리스트 초기화
     public void ClearPlacedWallList()
     {
-        if(insidePortalAreaObject.Count > 0)
+        if(collideIgnoreObjects.Count > 0)
         {
-            foreach (var tpObject in insidePortalAreaObject)
+            for(int i = 0; i < collideIgnoreObjects.Count; ++i)
             {
-                tpObject.ExitPortalIgnoreCollision(placedWall);
+                collideIgnoreObjects[i].ExitPortalIgnoreCollision(placedWall);
             }
         }
 
         placedWall.Clear();
     }
 
+    //설치된 벽의 콜라이더를 리스트에 추가
     public void StartGetPlacedWallCollider(Transform target)
     {
-        StartCoroutine(GetPlacedWallColliderCoroutine(target));
-    }
-
-    public List<Collider> GetWallList()
-    {
-        return placedWall;
-    }
-
-    private IEnumerator GetPlacedWallColliderCoroutine(Transform targetTransform)
-    {
-        Collider[] test = Physics.OverlapBox(targetTransform.position, new Vector3(0.75f, 1.3f, 0.05f), targetTransform.rotation, LayerMask.GetMask("PortalPlaceable"));
+        Collider[] test = Physics.OverlapBox(target.position, new Vector3(0.75f, 1.3f, 0.05f), target.rotation, LayerMask.GetMask("PortalPlaceable"));
 
         List<Collider> placedWallList = new List<Collider>();
 
@@ -145,7 +138,7 @@ public class CPortalIgnoreCollision : CComponent
         {
             for (int i = 0; i < test.Length; i++)
             {
-                if (test[i].transform.forward == targetTransform.forward)
+                if (test[i].transform.forward == target.forward)
                 {
                     placedWallList.Add(test[i]);
                 }
@@ -153,8 +146,9 @@ public class CPortalIgnoreCollision : CComponent
         }
 
         placedWall = placedWallList;
-
-        yield return null;
     }
+
+    public List<Collider> GetWallList() => placedWall;
+
 }
 
