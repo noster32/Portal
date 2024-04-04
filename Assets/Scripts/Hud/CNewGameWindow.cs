@@ -34,7 +34,6 @@ public class CNewGameWindow : CComponent
 
         ButtonVisible();
 
-        Debug.Log(maxPage);
     }
 
     public void OnTabSelected(CSceneButton button)

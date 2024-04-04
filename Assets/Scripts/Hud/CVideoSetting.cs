@@ -68,13 +68,11 @@ public class CVideoSetting : CComponent
     public void SetResolution(int resoltionIndex)
     {
         changeResolution = resolutions[resoltionIndex];
-        Debug.Log(changeResolution.width + " x " + changeResolution.height);
     }
 
     public void SetScreenMode(int modeIndex)
     {
         changeScreenMode = modeIndex;
-        Debug.Log(changeScreenMode);
     }
 
     private ScreenState displayModeToDropDown(FullScreenMode screenMode)
@@ -105,7 +103,6 @@ public class CVideoSetting : CComponent
             Screen.SetResolution(changeResolution.width, changeResolution.height, false);
         if (changeScreenMode != (int)displayModeToDropDown(Screen.fullScreenMode))
         {
-            Debug.Log((ScreenState)changeScreenMode);
             Screen.fullScreenMode = displayModeToDropDown((ScreenState)changeScreenMode);
         }
     }

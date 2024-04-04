@@ -24,16 +24,12 @@ public class CAudioManager : CSingleton<CAudioManager>
     {
         base.Awake();
 
-        if(m_oInstance != null)
-        {
-            Debug.Log("There can only be one Audio Manager");
-            m_oInstance = null;
-        }
-        else
+        if(m_oInstance == null)
         {
             m_oInstance = this;
             DontDestroyOnLoad(this.gameObject);
         }
+
 
         eventInstances = new List<EventInstance>();
         eventEmitters = new List<StudioEventEmitter>();

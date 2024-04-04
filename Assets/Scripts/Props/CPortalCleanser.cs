@@ -28,14 +28,11 @@ public class CPortalCleanser : CComponent
                 for (int i = 0; i < cleanPortal.Length; i++)
                 {
                     if (cleanPortal[i] == null)
-                    {
-                        Debug.LogError("cleanPortal not allocated");
                         break;
-                    }
 
                     if (cleanPortal[i].IsPlaced())
                     {
-                        cleanPortal[i].CleanPortal();
+                        cleanPortal[i].ClosePortal();
                         count++;
                     }
                 }

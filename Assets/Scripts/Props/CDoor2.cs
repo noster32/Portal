@@ -47,7 +47,6 @@ public class CDoor2 : CComponent
     IEnumerator moveDoor(float gap, float openDuration, float closeDuration, int waitTime)
     {
         float elapsedTime = 0f;
-        Debug.Log(openDuration);
         while (elapsedTime < openDuration)
         {
             float t = elapsedTime / openDuration;
@@ -61,7 +60,6 @@ public class CDoor2 : CComponent
         yield return new WaitForSeconds(waitSec);
 
         elapsedTime = 0f;
-        Debug.Log(closeDuration);
 
         while (elapsedTime < closeDuration)
         {

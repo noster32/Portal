@@ -12,7 +12,6 @@ public class CIndicateLightsController : CComponent
         base.Start();
 
         indicateLights = transform.GetComponentsInChildren<CIndicateLights>();
-        Debug.Log(indicateLights.Length);
     }
     public void OnIndicateLights()
     {

@@ -44,7 +44,6 @@ public class CAudioSetting : CComponent
                 volumeSlider.value = CAudioManager.Instance.sfxVolume;
                 break;
             default:
-                Debug.LogWarning("Volume Type not supported: " + volumeType);
                 break;
         }
     }
@@ -71,7 +70,6 @@ public class CAudioSetting : CComponent
                 CAudioManager.Instance.sfxVolume = volumeSlider.value;
                 break;
             default:
-                Debug.LogWarning("Volume Type not supported: " + volumeType);
                 break;
         }
     }
@@ -93,7 +91,6 @@ public class CAudioSetting : CComponent
                 CAudioManager.Instance.sfxVolume = volumeSlider.value;
                 break;
             default:
-                Debug.LogWarning("Volume Type not supported: " + volumeType);
                 break;
         }
     }
@@ -115,7 +112,6 @@ public class CAudioSetting : CComponent
                 volumeSlider.value = CAudioManager.Instance.sfxVolume;
                 break;
             default:
-                Debug.LogWarning("Volume Type not supported: " + volumeType);
                 break;
         }
     }

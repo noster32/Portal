@@ -115,7 +115,6 @@ public class CLightRail2 : CComponent
             }
         }
 
-        Debug.Log("destination arrive");
         platformEmitter.Stop();
         emitterEmitter.Stop();
         yield return null;

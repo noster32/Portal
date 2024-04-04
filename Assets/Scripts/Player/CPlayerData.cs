@@ -30,10 +30,6 @@ public class CPlayerData : CComponent
         {
             instance = this;
         }
-        else
-        {
-            Debug.LogError("Already have PlayerData");
-        }
     }
 
     public static CPlayerData GetInstance() => instance;

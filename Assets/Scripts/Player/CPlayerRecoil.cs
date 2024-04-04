@@ -28,7 +28,6 @@ public class CPlayerRecoil : CComponent
     public void FireRecoil()
     {
         recoilRotation += new Vector3(recoilX, Random.Range(-recoilY, recoilY), 0f);
-        Debug.Log(recoilRotation);
     }
 
 

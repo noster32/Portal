@@ -150,7 +150,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 13872124}
   m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 16.77, y: -4.0305643, z: 15.46}
+  m_LocalPosition: {x: 15.730003, y: -4.0305643, z: 19.47}
   m_LocalScale: {x: 3.0390003, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -692,8 +692,6 @@ MonoBehaviour:
   m_oRigidBody: {fileID: 0}
   grapicsObject: {fileID: 329518119}
   grapicsClone: {fileID: 0}
-  originalMaterials: []
-  cloneMaterials: []
   originalAnimator: {fileID: 0}
   cloneAnimator: {fileID: 0}
   mouseLook: {fileID: 0}
@@ -3087,7 +3085,7 @@ GameObject:
   - component: {fileID: 795670002}
   - component: {fileID: 795670001}
   - component: {fileID: 795670000}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Cube (11)
   m_TagString: Glass
   m_Icon: {fileID: 0}
@@ -6448,6 +6446,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5023564398197137519, guid: 3735e8f0f91bc0e4bb18d5202f2de1d3, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.955
+      objectReference: {fileID: 0}
+    - target: {fileID: 5023564398197137519, guid: 3735e8f0f91bc0e4bb18d5202f2de1d3, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.579
+      objectReference: {fileID: 0}
     - target: {fileID: 6157251261747578485, guid: 3735e8f0f91bc0e4bb18d5202f2de1d3, type: 3}
       propertyPath: playerMove
       value: 
@@ -6876,7 +6882,7 @@ GameObject:
   - component: {fileID: 2146867461}
   - component: {fileID: 2146867460}
   - component: {fileID: 2146867459}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Cube (10)
   m_TagString: Glass
   m_Icon: {fileID: 0}
@@ -7595,7 +7601,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 919132147981696892}
   m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0.00000047683716, y: -0.00000011920929, z: 0}
   m_LocalScale: {x: 11, y: 11, z: 11}
   m_ConstrainProportionsScale: 1
   m_Children: []

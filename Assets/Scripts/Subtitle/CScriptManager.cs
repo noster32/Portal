@@ -21,15 +21,12 @@ public class CScriptManager : CSingleton<CScriptManager>
     {
         base.Awake();
 
-        if (m_oInstance != null)
-        {
-            Debug.Log("There can only be one ScriptManager");
-        }
-        else
+        if (m_oInstance == null)
         {
             m_oInstance = this;
             DontDestroyOnLoad(this.gameObject);
         }
+
         TextAsset textAsset = Resources.Load<TextAsset>("portal_subtitles");
 
         var voText = JsonUtility.FromJson<CVoiceOverText>(textAsset.text);

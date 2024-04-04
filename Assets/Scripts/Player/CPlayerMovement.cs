@@ -48,7 +48,8 @@ public class CPlayerMovement : CTeleportObject
         grapicsClone.transform.parent = grapicsObject.transform;
 
         grapicsClone.transform.GetChild(0).
-            Find("root/spine_base/spine_mid/chest/clavicle_R/bicep_R/elbow_R/wrist_R/weapon_bone/weapon_bone_end/w_portalgun_p3/default").gameObject.layer
+            Find("root/spine_base/spine_mid/chest/clavicle_R/bicep_R/elbow_R/wrist_R/" +
+            "weapon_bone/weapon_bone_end/w_portalgun_p3/default").gameObject.layer
             = LayerMask.NameToLayer("PlayerClone");
 
         grapicsClone.transform.GetChild(1).gameObject.layer = LayerMask.NameToLayer("PlayerClone");

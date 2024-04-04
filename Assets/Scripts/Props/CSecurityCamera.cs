@@ -39,15 +39,8 @@ public class CSecurityCamera : CComponent
     {
         base.Update();
 
-        if(Input.GetKeyDown(KeyCode.O))
-        {
-        }
-
         if(playerTransform == null)
-        {
-            Debug.LogError("Security Camera doesn't set Player");
             return;
-        }
 
         Vector3 directionToTarget = ((playerTransform.position + new Vector3(0f, 1.6f, 0f)) - basisTransform.position).normalized;
         int dotValue = System.Math.Sign(Vector3.Dot(basisTransform.forward, directionToTarget));

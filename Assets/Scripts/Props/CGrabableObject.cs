@@ -61,7 +61,6 @@ public class CGrabableObject : CTeleportObject
 
     public Vector3 GetDefaultGrabRotation()
     {
-        Debug.Log(defaultRotation);
         return Quaternion.Euler(defaultRotation) * -Vector3.forward;
     }
 

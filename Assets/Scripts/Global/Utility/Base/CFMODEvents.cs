@@ -78,12 +78,7 @@ public class CFMODEvents : CSingleton<CFMODEvents>
     {
         base.Awake();
 
-        if (m_oInstance != null)
-        {
-            Debug.Log("There can only be one FMOD Events");
-            m_oInstance = null;
-        }
-        else
+        if (m_oInstance == null)
         {
             m_oInstance = this;
             DontDestroyOnLoad(this.gameObject);

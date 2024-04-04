@@ -67,10 +67,8 @@ public class CBulletSpawn : CPoolingManager<CBullet>
         rayR.direction = bulletRotationRight;
 
         destinationLeft = rayL.origin + rayL.direction * maxRayLength;
-        //Debug.DrawLine(rayL.origin, destinationLeft, Color.yellow, 2f);
 
         destinationRight = rayR.origin + rayR.direction * maxRayLength;
-        //Debug.DrawLine(rayR.origin, destinationRight, Color.yellow, 2f);
         
         Func<Vector3, Vector3, float, Vector3> velocityCal = (start, end, speed) => (end - start).normalized * speed;
 

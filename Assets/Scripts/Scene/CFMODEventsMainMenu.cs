@@ -16,11 +16,7 @@ public class CFMODEventsMainMenu : CSingleton<CFMODEventsMainMenu>
     {
         base.Awake();
 
-        if (m_oInstance != null)
-        {
-            Debug.Log("There can only be one FMOD Events");
-        }
-        else
+        if (m_oInstance == null)
             m_oInstance = this;
     }
 }

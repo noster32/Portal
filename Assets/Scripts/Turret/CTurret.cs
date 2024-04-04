@@ -39,6 +39,7 @@ public class CTurret : CGrabableObject
         get { return state; }
     }
 
+    //컴포넌트 + 그래픽 클론 할당
     public override void Awake()
     {
         base.Awake();
@@ -46,6 +47,7 @@ public class CTurret : CGrabableObject
         turretSound = GetComponent<CTurretSound>();
         turretDetect = GetComponent<CEnemyFieldOfView>();
         turretAnimator = GetComponentInChildren<Animator>();
+        objectCollider = GetComponentInChildren<Collider>();
 
         grapicsClone = Instantiate(grapicsObject);
         Destroy(grapicsClone.transform.GetChild(1).gameObject);
@@ -57,6 +59,7 @@ public class CTurret : CGrabableObject
         GetAnimator(grapicsObject, grapicsClone);
 
         grapicsClone.SetActive(false);
+
     }
 
     public override void Start()
@@ -93,7 +96,6 @@ public class CTurret : CGrabableObject
 
         if (isRotatedEnough && state != TurretState.FALLDOWN)
         {
-            Debug.Log("state Fall Down");
             if (animationCoroutine != null)
                 StopCoroutine(animationCoroutine);
 
@@ -119,7 +121,6 @@ public class CTurret : CGrabableObject
                 case TurretState.IDLE:
                     state = TurretState.DEPLOY;
                     animationCoroutine = StartCoroutine(TurretOnAndOffCoroutine());
-                    Debug.Log("state Deploy");
                     break;
 
                 case TurretState.SEARCHINGTARGET:
@@ -128,7 +129,6 @@ public class CTurret : CGrabableObject
 
                     state = TurretState.ATTACK;
                     turretSound.PlayTurretActiveVoiceSound();
-                    Debug.Log("state Attack");
                     break;
             }
         }

@@ -43,7 +43,6 @@ public class CSceneLoader : CSingleton<CSceneLoader>
        float a_Delay = 0.0f, LoadSceneMode a_eLoadSceneMode = LoadSceneMode.Single)
     {
         string oScenePath = SceneUtility.GetScenePathByBuildIndex(a_nIndex);
-        Debug.Log(oScenePath);
         this.LoadSceneAsync(oScenePath, data, a_oCallback, a_Delay, a_eLoadSceneMode);
     }
 

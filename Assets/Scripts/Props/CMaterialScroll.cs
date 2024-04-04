@@ -38,11 +38,6 @@ public class CMaterialScroll : CComponent
                 float offsetY = Time.time * scrollSpeed;
                 material.mainTextureOffset = new Vector2(0f, offsetY);
             }
-            else
-            {
-                Debug.LogWarning("At least one offset value must be set" + this.gameObject.name);
-            }
         }
-
     }
 }

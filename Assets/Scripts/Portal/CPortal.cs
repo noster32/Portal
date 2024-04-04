@@ -36,6 +36,7 @@ public class CPortal : CComponent
         SetColor(portalColor);
     }
 
+    //teleportObjects가 포탈과의 내적이 -가 되었을 떄 텔레포트하고 리스트에서 제거한다
     public override void Update()
     {
         base.Update();
@@ -43,17 +44,12 @@ public class CPortal : CComponent
         if (!isPlaced || !otherPortal.isPlaced)
             return;
 
-        //텔레포트 가능한 범위 안에 있는 오브젝트 체크
         for (int i = 0; i < teleportableObjects.Count; ++i)
         {
             Vector3 offsetFromPortal;
             offsetFromPortal = (teleportableObjects[i].transform.position + teleportableObjects[i].objectCenter) - transform.position;
 
-            //위치 확인을 위한 내적
             int dotValue = System.Math.Sign(Vector3.Dot(offsetFromPortal, transform.forward));
-
-            //포탈의 반대편에 있을 경우 텔레포트
-            //텔레포트 이후 현재 포탈의 리스트에서 제거
             if (dotValue <= 0f)
             {
                 teleportableObjects[i].Teleport();
@@ -131,13 +127,12 @@ public class CPortal : CComponent
                         obj.EnterPortal(this);
                     }
                 }
-
             }
         }
     }
 
     //포탈 설치
-    public void PlacePortal(Vector3 pos, Quaternion rot)
+    public void OpenPortal(Vector3 pos, Quaternion rot)
     {
         //포탈이 설치 되어있는 경우 설치되어 있던 벽면의 리스트 제거
         if (isPlaced)
@@ -172,11 +167,9 @@ public class CPortal : CComponent
             CAudioManager.Instance.PlayOneShot(CFMODEvents.Instance.portalOpen1, this.transform.position);
         else if (tag == "PortalO")
             CAudioManager.Instance.PlayOneShot(CFMODEvents.Instance.portalOpen3, this.transform.position);
-        else
-            Debug.LogWarning("portal tag is invalid");
     }
 
-    public void CleanPortal()
+    public void ClosePortal()
     {
         if (lerpCoroutine != null)
         {
@@ -234,7 +227,7 @@ public class CPortal : CComponent
         outlineRenderer.material.SetColor("_OutlineColor", color);
     }
 
-
+    //포탈이 카메라에 보이는지 안보이는지 체크
     public bool isVisibleFromMainCamera(Camera camera)
     {
         Plane[] planes = GeometryUtility.CalculateFrustumPlanes(camera);
@@ -243,6 +236,7 @@ public class CPortal : CComponent
     }
 
 
+    //건너편 포탈에서의 현재 위치
     public Vector3 GetOtherPortalRelativePoint(Vector3 origin)
     {
         Vector3 relativePos = transform.InverseTransformPoint(origin);
@@ -252,7 +246,7 @@ public class CPortal : CComponent
         return result;
     }
 
-    //
+    //건너편 포탈에서의 현재 로테이션
     public Vector3 GetOtherPortalRelativeDirection(Vector3 origin)
     {
         Vector3 relativeDir = transform.InverseTransformDirection(origin);
@@ -262,6 +256,7 @@ public class CPortal : CComponent
         return result;
     }
 
+    //건너편 포탈에서의 현재 방향
     public Quaternion GetOtherPortalRelativeRotation(Quaternion origin)
     {
         Quaternion relativeRot = Quaternion.Inverse(transform.rotation) * origin;

@@ -29,23 +29,7 @@ public class CTurretParticle : CComponent
     }
 
     public void PlayMuzzleEffect()
-    {
-        if (muzzleEffectObject == null)
-        {
-            Debug.Log("Muzzle Effect Object is null");
-            return;
-        }
-        else if (effectPositionLeft == null)
-        {
-            Debug.Log("Effect Position Left is null");
-            return;
-        }
-        else if (effectPositionRight == null)
-        {
-            Debug.Log("Effect Position Right is null");
-            return;
-        }
-        
+    {   
         Vector3 modifyLeftPosition = effectPositionLeft.position + new Vector3(0f, 0f, 0.1f);
         Vector3 modifyRightPosition = effectPositionRight.position + new Vector3(0f, 0f, 0.1f);
 

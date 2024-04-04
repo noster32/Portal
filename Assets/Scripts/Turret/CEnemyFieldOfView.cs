@@ -53,8 +53,6 @@ public class CEnemyFieldOfView : CComponent
                 Vector3 directionToTarget = ((transform.position - new Vector3(0f, 0.75f, 0f)) - relativePlayerPos).normalized;
                 Vector3 targetDirection = transform.InverseTransformDirection(relativePlayerPos - transform.position);
 
-                //Debug.DrawLine(transform.position, relativePlayerPos, Color.blue, 2f);
-
                 angleToTarget = Vector3.Angle(-transform.forward, directionToTarget);
                 if (targetDirection.x < 0)
                 {
@@ -164,7 +162,6 @@ public class CEnemyFieldOfView : CComponent
                     RaycastHit hit;
                     if (Physics.Raycast(relativeTurretPosition + new Vector3(0f, 1f, 0f), directionToTarget, out hit, distanceToTarget, portalMask))
                     {
-                        Debug.DrawLine(relativeTurretPosition + new Vector3(0f, 1f, 0f), target.position);
                         if(hit.collider.tag == nearPortal.tag)
                         {
                             seeThroughPortal = false;

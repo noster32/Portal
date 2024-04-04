@@ -12,12 +12,12 @@ public class CAutoPortal : CComponent
 
         if(portal.IsPlaced())
         {
-            portal.CleanPortal();
+            portal.ClosePortal();
         }
 
         if(Physics.Raycast(transform.position, -transform.forward, out hit, 5f, LayerMask.GetMask("PortalPlaceable")))
         {
-            portal.PlacePortal(hit.point - new Vector3(0f, 0.25f, 0f), hit.transform.rotation);
+            portal.OpenPortal(hit.point - new Vector3(0f, 0.25f, 0f), hit.transform.rotation);
         }
     }
 
@@ -25,7 +25,7 @@ public class CAutoPortal : CComponent
     {
         if(portal.IsPlaced())
         {
-            portal.CleanPortal();
+            portal.ClosePortal();
         }
     }
 }

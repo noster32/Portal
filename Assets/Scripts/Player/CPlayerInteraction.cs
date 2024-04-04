@@ -111,11 +111,6 @@ public class CPlayerInteraction : CComponent
                     CAudioManager.Instance.PlayOneShot(CFMODEvents.Instance.interactionFail, this.transform.position);
                 }
             }
-            else
-            {
-                Debug.LogError("PlayerData IsGrab or grabObject Error "
-                                + playerState.isGrab + " : " + playerState.grabObject);
-            }
         }
     }
 

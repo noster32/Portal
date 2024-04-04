@@ -9,11 +9,6 @@ public class CPortalPair : CComponent
     public override void Awake()
     {
         portals = GetComponentsInChildren<CPortal>();
-
-        if(portals.Length != 2)
-        {
-            Debug.LogError("Portals are not completely contain");
-        }
     }
 
     public bool PlacedBothPortal() => portals[0].IsPlaced() && portals[1].IsPlaced();
@@ -22,8 +17,8 @@ public class CPortalPair : CComponent
 
     public void CleanBothPortal()
     {
-        portals[0].CleanPortal();
-        portals[1].CleanPortal();
+        portals[0].ClosePortal();
+        portals[1].ClosePortal();
     }
 
     public CPortal CheckPortalTag(string tag)

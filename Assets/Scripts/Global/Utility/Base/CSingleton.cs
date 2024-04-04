@@ -19,11 +19,9 @@ public abstract class CSingleton<T> : CComponent where T : CComponent
             var oGameObject = new GameObject(typeof(T).ToString());
             m_oInstance = Function.AddComponent<T>(oGameObject);
 
-            //¾ÀÀÌ ÀüÈ¯µÉ ¶§ ³²±â°í ½ÍÀº ¾ÖµéÀ» ³²±ä´Ù
+            //ì”¬ì´ ì „í™˜ë  ë•Œ ë‚¨ê¸°ê³  ì‹¶ì€ ì• ë“¤ì„ ë‚¨ê¸´ë‹¤
             DontDestroyOnLoad(oGameObject);
         }
-        else
-            Debug.LogError("already have singleton");
 
         return CSingleton<T>.Instance;
     }

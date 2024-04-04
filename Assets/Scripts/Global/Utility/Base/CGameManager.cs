@@ -11,15 +11,12 @@ public class CGameManager : CSingleton<CGameManager>
     {
         base.Awake();
 
-        if (m_oInstance != null)
-        {
-            Debug.Log("There can only be one GameManager");
-        }
-        else
+        if (m_oInstance == null)
         {
             m_oInstance = this;
             DontDestroyOnLoad(this.gameObject);
         }
+
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;

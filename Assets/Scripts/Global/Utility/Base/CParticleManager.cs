@@ -42,11 +42,8 @@ public class CParticleManager : CSingleton<CParticleManager>
     {
         base.Awake();
 
-        if (m_oInstance != null)
-        {
-            Debug.Log("There can only be one ParticleSpawn");
-        }
-        else
+        if (m_oInstance == null)
             m_oInstance = this;
+
     }
 }

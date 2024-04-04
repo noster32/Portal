@@ -70,7 +70,6 @@ public class CMovingPlatformWall : CComponent
         Vector3 startPos = moveCylinder.localPosition;
         Vector3 endPos = startPos + new Vector3(0f, moveDistance, 0f);
 
-        Debug.Log(this.transform.position);
         CAudioManager.Instance.PlayOneShot(CFMODEvents.Instance.apcStart, this.transform.position);
 
         while (elapsedTime < moveDuration)

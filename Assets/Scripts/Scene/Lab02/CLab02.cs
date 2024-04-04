@@ -78,7 +78,6 @@ public class CLab02 : CComponent
         CAudioManager.Instance.PlayOneShot(CFMODEventsLab02.Instance.part1Entry2, this.transform.position);
         CSceneManager.Instance.subtitle.SetText(CScriptManager.Instance.GetText("lab02", "lab02_part1_entry_2"),
                                         CAudioManager.Instance.GetAudioLength(CFMODEventsLab02.Instance.part1Entry2));
-        print(CScriptManager.Instance.GetText("lab02", "lab02_part1_entry_2"));
         yield return new WaitForSeconds(CAudioManager.Instance.GetAudioLength(CFMODEventsLab02.Instance.part1Entry2));
 
         entryDoorEvent.Invoke();

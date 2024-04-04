@@ -87,10 +87,7 @@ public class CLab19 : CComponent
     private IEnumerator Part1IntoTheFireCoroutine()
     {
         if (CAudioManager.Instance.GetIsPlaying(portalProceduralJiggleBoneInstance))
-        {
-            Debug.Log("test");
             portalProceduralJiggleBoneInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
-        }
 
         CAudioManager.Instance.PlayOneShot(CFMODEventsLab19.Instance.part1IntoTheFire1, this.transform.position);
         CSceneManager.Instance.subtitle.SetText(CScriptManager.Instance.GetText("lab19", "lab19_part1_intothefire_1"),

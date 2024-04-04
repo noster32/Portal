@@ -21,7 +21,5 @@ public class CCrosshair : CComponent
 
             crosshairImage.sprite = sprite;
         }
-        else
-            Debug.LogError("Image component not found");
     }
 }

@@ -38,8 +38,6 @@ public class CRadioSound : CComponent
         base.Update();
 
         CSoundLoader.Instance.PlaySound3D(transform.position, volumeMultipiler);
-
-        Debug.Log("test1" + transform.up);
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -47,7 +45,6 @@ public class CRadioSound : CComponent
         if (collision.transform.tag == "Player")
             return;
 
-        Debug.Log(CalculateCollisionVolume());
         audioSource.PlayOneShot(collisionSoundClips[0], CalculateCollisionVolume());
     }
 

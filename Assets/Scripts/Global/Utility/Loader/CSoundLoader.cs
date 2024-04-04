@@ -32,10 +32,7 @@ public class CSoundLoader : CSingleton<CSoundLoader>
         if (cameraListener)
         {
             m_ListenerTransform = cameraListener.transform;
-            Debug.Log(m_ListenerTransform);
         }
-        else
-            Debug.LogError("AudioListener not found.");
     }
 
     public void SetVolme(float value)
@@ -70,10 +67,8 @@ public class CSoundLoader : CSingleton<CSoundLoader>
     }
     public void PlaySound3D(Vector3 mainPos, float volumeMultipiler)
     {
-        //Debug.Log(m_ListenerTransform);
         if (!m_ListenerTransform)
         {
-            //Debug.Log("return test");
             return;
         }
 

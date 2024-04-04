@@ -114,7 +114,6 @@ public class CLightRail : CComponent
 
         platformTransform.position = endPos;
         emitter.Stop();
-        Debug.Log(isPlayerWait);
         if (!isPlayerWait)
         {
             yield return new WaitForSeconds(waitSec);

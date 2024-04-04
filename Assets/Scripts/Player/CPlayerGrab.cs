@@ -77,8 +77,6 @@ public class CPlayerGrab : CComponent
             {
                 GrabObjectInit();
             }
-            else
-                Debug.Log("Turret grab fail");
         }
         else
         {
@@ -95,8 +93,6 @@ public class CPlayerGrab : CComponent
                 {
                     GrabObjectInit();
                 }
-                else
-                    Debug.Log("Object Grab Fail");
             }
         }
         
@@ -108,7 +104,6 @@ public class CPlayerGrab : CComponent
         //Interaction의 ray가 포탈에 맞은 경우 다른 쪽 포탈로 위치랑 ray의 방향 변환
         Vector3 otherPortalPoint = portal.GetOtherPortalRelativePoint(hitPoint);
         Vector3 otherPortalDirection = portal.GetOtherPortalRelativeDirection(mainCameraTransform.forward).normalized;
-        Debug.DrawLine(mainCameraTransform.position, hitPoint, Color.red, 10f);
         
         var otherPortalRay = new Ray { origin = otherPortalPoint, direction = otherPortalDirection };
 
@@ -120,7 +115,6 @@ public class CPlayerGrab : CComponent
             GameObject hitObject = hit.collider.gameObject;
 
             playerState.grabObject = hitObject.GetComponent<CGrabableObject>();
-            Debug.DrawLine(otherPortalPoint, hit.point, Color.red, 10f);
             if (playerState.grabObject)
             {
                 GrabObjectInit();
@@ -154,7 +148,6 @@ public class CPlayerGrab : CComponent
             grabPos = mainCameraTransform.TransformPoint(0f, 0f, grabDistance);
         }
 
-        Debug.DrawLine(mainCameraTransform.position, grabPos, Color.red);
         playerState.grabObject.grabPosition = grabPos;
     }
 }

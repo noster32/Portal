@@ -15,11 +15,8 @@ public class CFMODEventsLab16 : CSingleton<CFMODEventsLab16>
     {
         base.Awake();
 
-        if (m_oInstance != null)
-        {
-            Debug.Log("There can only be one Lab16 FMOD Events");
-        }
-        else
+        if (m_oInstance == null)
             m_oInstance = this;
+
     }
 }

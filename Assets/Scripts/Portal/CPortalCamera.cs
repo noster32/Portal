@@ -2,25 +2,20 @@ using UnityEngine;
 
 public class CPortalCamera : CComponent
 {
-    #region private
     [SerializeField] private CPortalPair portalPair;
     [SerializeField] private Camera portalCamera;
 
     [SerializeField] private Color colorBlue;
     [SerializeField] private Color colorOrange;
 
-    private Texture2D defaultTexture1;
+    private Texture2D defaultTexture1;                      //포탈이 활성화 되지 않았을 때 텍스쳐
     private Texture2D defaultTexture2;
-    private RenderTexture tempTexture1;
-    private RenderTexture tempTexture2;
+    private RenderTexture portalCameraTexture1;             //포탈이 활성화 되어서 카메라를 보여주는 텍스처
+    private RenderTexture portalCameraTexture2;
 
-    //포탈 카메라 반복 횟수
-    private const int iterations = 7;
+    private const int iterations = 7;                        //포탈 카메라 반복 횟수
 
     private Camera mainCamera;
-    private Quaternion reverse = Quaternion.Euler(0f, 180f, 0f);
-
-    #endregion
 
     public override void Awake()
     {
@@ -28,8 +23,8 @@ public class CPortalCamera : CComponent
 
         mainCamera = Camera.main;
 
-        tempTexture1 = new RenderTexture(Screen.width, Screen.height, 24, RenderTextureFormat.ARGB32);
-        tempTexture2 = new RenderTexture(Screen.width, Screen.height, 24, RenderTextureFormat.ARGB32);
+        portalCameraTexture1 = new RenderTexture(Screen.width, Screen.height, 24, RenderTextureFormat.ARGB32);
+        portalCameraTexture2 = new RenderTexture(Screen.width, Screen.height, 24, RenderTextureFormat.ARGB32);
 
         defaultTexture1 = new Texture2D(1, 1);
         defaultTexture1.SetPixel(0, 0, colorBlue);
@@ -61,13 +56,13 @@ public class CPortalCamera : CComponent
         }
         else
         {
-            portalPair.portals[0].SetTexture(tempTexture1);
-            portalPair.portals[1].SetTexture(tempTexture2);
+            portalPair.portals[0].SetTexture(portalCameraTexture1);
+            portalPair.portals[1].SetTexture(portalCameraTexture2);
         }
 
         if (portalPair.portals[0].isVisibleFromMainCamera(mainCamera))
         {
-            portalCamera.targetTexture = tempTexture1;
+            portalCamera.targetTexture = portalCameraTexture1;
             for(int i = iterations - 1; i >= 0; --i)
             {
                 RenderCamera(portalPair.portals[0], portalPair.portals[1], i);
@@ -76,7 +71,7 @@ public class CPortalCamera : CComponent
 
         if (portalPair.portals[1].isVisibleFromMainCamera(mainCamera))
         {
-            portalCamera.targetTexture = tempTexture2;
+            portalCamera.targetTexture = portalCameraTexture2;
             for (int i = iterations - 1; i >= 0; --i)
             {
                 RenderCamera(portalPair.portals[1], portalPair.portals[0], i);
@@ -85,71 +80,25 @@ public class CPortalCamera : CComponent
 
     }
 
-    private void RenderCamera(CPortal lookPortal, CPortal otherPortal, Camera pCamera, int iteration)
-    {
-        Transform lPortalTransform = lookPortal.transform;
-        Transform oPortalTransform = otherPortal.transform;
 
-        //포탈 카메라 트랜스폼 가져오기
-        Transform cameraTransform = pCamera.transform;
-        cameraTransform.position = transform.position;
-        cameraTransform.rotation = transform.rotation;
-
-        for(int i = 0; i <= iteration; ++i)
-        {
-            //포탈에 대한 카메라의 로컬 좌표 구하기
-            Vector3 relativeCamPos = lPortalTransform.InverseTransformPoint(transform.position);
-
-            //포탈의 뒤로 이동해야 하기 떄문에 로컬 좌표를 180도 회전
-            relativeCamPos = reverse * relativeCamPos;
-
-            //로컬 좌표를 반대쪽 포탈에 적용시켜서 포탈 카메라 위치 설정
-            cameraTransform.position = oPortalTransform.TransformPoint(relativeCamPos);
-
-            Quaternion relativeRot = Quaternion.Inverse(lPortalTransform.rotation) * transform.rotation;
-            relativeRot = reverse * relativeRot;
-            cameraTransform.rotation = oPortalTransform.rotation * relativeRot;
-        }
-
-        //포탈이 붙어있는 벽면을 클리핑해서 벽 너머로도 카메라가 보일 수 있게 한다
-        Plane p = new Plane(oPortalTransform.forward, oPortalTransform.position);
-        Vector4 clipPlane = new Vector4(p.normal.x, p.normal.y, p.normal.z, p.distance);
-        Vector4 clipPlaneCameraSpace = Matrix4x4.Transpose(Matrix4x4.Inverse(pCamera.worldToCameraMatrix)) * clipPlane;
-
-        var newMatrix = mainCamera.CalculateObliqueMatrix(clipPlaneCameraSpace);
-        pCamera.projectionMatrix = newMatrix;
-        
-        pCamera.Render();
-    }
-
+    //렌더링 카메라
+    //플레이어의 카메라 현재 위치와 동일하게 다른 포탈쪽으로 포탈 카메라를 이동시킴
+    //포탈 카메라는 포탈을 기준으로 벽을 클리핑하여 포탈 뒤에있는 오브젝트나 벽들은 보이지 않게 함
+    //iteration인자에서 받은 숫자만큼 반복해서 위치를 설정해
+    //반복의 제일 나중의 카메라부터 렌더링을 시켜 포탈이 연속적으로 보이게 한다
     private void RenderCamera(CPortal lookPortal, CPortal otherPortal, int iteration)
     {
-        Transform lPortalTransform = lookPortal.transform;
-        Transform oPortalTransform = otherPortal.transform;
-
-        //포탈 카메라 트랜스폼 가져오기
         Transform cameraTransform = portalCamera.transform;
         cameraTransform.position = transform.position;
         cameraTransform.rotation = transform.rotation;
 
         for (int i = 0; i <= iteration; ++i)
         {
-            //포탈에 대한 카메라의 로컬 좌표 구하기
-            Vector3 relativeCamPos = lPortalTransform.InverseTransformPoint(cameraTransform.position);
-
-            //포탈의 뒤로 이동해야 하기 떄문에 로컬 좌표를 180도 회전
-            relativeCamPos = reverse * relativeCamPos;
-
-            //로컬 좌표를 반대쪽 포탈에 적용시켜서 포탈 카메라 위치 설정
-            cameraTransform.position = oPortalTransform.TransformPoint(relativeCamPos);
-
-            Quaternion relativeRot = Quaternion.Inverse(lPortalTransform.rotation) * cameraTransform.rotation;
-            relativeRot = reverse * relativeRot;
-            cameraTransform.rotation = oPortalTransform.rotation * relativeRot;
+            cameraTransform.position = lookPortal.GetOtherPortalRelativePoint(cameraTransform.position);
+            cameraTransform.rotation = lookPortal.GetOtherPortalRelativeRotation(cameraTransform.rotation);
         }
 
-        //포탈이 붙어있는 벽면을 클리핑해서 벽 너머로도 카메라가 보일 수 있게 한다
-        Plane p = new Plane(oPortalTransform.forward, oPortalTransform.position);
+        Plane p = new Plane(otherPortal.transform.forward, otherPortal.transform.position);
         Vector4 clipPlane = new Vector4(p.normal.x, p.normal.y, p.normal.z, p.distance);
         Vector4 clipPlaneCameraSpace = Matrix4x4.Transpose(Matrix4x4.Inverse(portalCamera.worldToCameraMatrix)) * clipPlane;
 

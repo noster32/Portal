@@ -41,7 +41,6 @@ public class CLab11 : CComponent
 
     public void PlayPart2Success()
     {
-        Debug.Log(isPart2ButtonPress);
         if (!isPart2Success && isPart2ButtonPress)
         {
             isPart2Success = true;

@@ -19,21 +19,20 @@ public class CTeleportObject : CComponent
     #endregion
 
     public Vector3 objectCenter = Vector3.zero;
-    private Collider objectCollider;
+    protected Collider objectCollider;
     protected Transform cameraTransform;
     private bool isPlayer;
     private bool isTurret;
-    private bool isBullet;
 
+    //터렛과 플레이어의 경우에는 그래픽 클론이 각각의 상속받은 스크립트에서 할당
     public override void Awake()
     {
         base.Awake();
         
         isPlayer = transform.tag == "Player";
         isTurret = transform.tag == "Turret";
-        isBullet = transform.tag == "Bullet";
 
-        if (!isPlayer && !isTurret && !isBullet)
+        if (!isPlayer && !isTurret)
         {
             grapicsClone = new GameObject();
             grapicsClone.SetActive(false);
@@ -46,17 +45,12 @@ public class CTeleportObject : CComponent
             grapicsClone.transform.localScale = new Vector3(1f, 1f, 1f);
         }
         
-        if(isTurret)
-            objectCollider = GetComponentInChildren<Collider>();
-        else
+        if(!isTurret)
             objectCollider = GetComponent<Collider>();
 
-        if (!m_oRigidBody && !isBullet)
+        if (!m_oRigidBody)
             m_oRigidBody = grapicsObject.GetComponent<Rigidbody>();
     }
-
-    //rigidbody의 velocity는 오브젝트가 월드 공간을 기준으로 몇유닛을 이동하고 있는지 나타냄
-    // ex) 플레이어가 월드의 z방향으로 이동할 때엔 velo의 z값이 높게 나옴
 
     public override void LateUpdate()
     {
@@ -72,6 +66,7 @@ public class CTeleportObject : CComponent
         }
     }
 
+    //건너편 포탈로 텔레포트
     public virtual void Teleport()
     {
         Vector3 temp = enterPortal.GetOtherPortalRelativePoint(transform.position + objectCenter);

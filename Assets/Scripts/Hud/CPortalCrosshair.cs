@@ -62,8 +62,6 @@ public class CPortalCrosshair : CComponent
 
             SetPortalGunCrossharColor();
         }
-        else
-            Debug.LogError("portal crosshair Image component not found");
     }
 
     public override void Update()

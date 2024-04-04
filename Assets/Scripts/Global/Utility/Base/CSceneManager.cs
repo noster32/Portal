@@ -26,12 +26,9 @@ public class CSceneManager : CSingleton<CSceneManager>
     {
         base.Awake();
 
-        if (m_oInstance != null)
-        {
-            Debug.Log("There can only be one SceneManager");
-        }
-        else
+        if (m_oInstance == null)
             m_oInstance = this;
+
         if (audioManager == null)
             audioManager = FindObjectOfType<CAudioManager>();
         if (fMODEvents == null)
@@ -56,21 +53,14 @@ public class CSceneManager : CSingleton<CSceneManager>
 
         if (CAudioManager.Instance == null)
             audioManager.gameObject.SetActive(true);
-        else
-            Debug.Log("audioManager already have");
+
         if (CFMODEvents.Instance == null)
             fMODEvents.gameObject.SetActive(true);
-        else
-            Debug.Log("fmodEvents already have");
 
         if (CSceneLoader.Instance == null)
             sceneLoader.gameObject.SetActive(true);
-        else
-            Debug.Log("sceneLoader already have");
 
         if (CScriptManager.Instance == null)
             scriptManager.gameObject.SetActive(true);
-        else
-            Debug.Log("ScriptManager already have");
     }
 }
