@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-[CustomEditor(typeof(CEnemyFieldOfView))]
+[CustomEditor(typeof(CEnemyDeploy))]
 public class CEnemyFieldOfViewEditor : Editor
 {
     private void OnSceneGUI()
     {
-        CEnemyFieldOfView fov = (CEnemyFieldOfView)target;
+        CEnemyDeploy fov = (CEnemyDeploy)target;
         Handles.color = Color.white;
         Handles.DrawWireArc(fov.transform.position, Vector3.up, Vector3.forward, 360, fov.radius);
 

@@ -39,5 +39,4 @@ public abstract class CPoolingManager<T> : CComponent where T : CComponent
 
     public T Get() => poolProperty.Get();
     public void PoolRelease(T obj) => poolProperty.Release(obj);
-
 }

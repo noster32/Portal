@@ -8,7 +8,7 @@ public class CBedCover : CComponent
     [SerializeField] Animator bedAnimator;
 
     [Header("Particle")]
-    [SerializeField] private CSparkParticle particle;
+    [SerializeField] private ParticleSystem sparkParticle;
     [SerializeField] private Transform sparkTransform;
 
     private Coroutine animCoroutine;
@@ -34,7 +34,7 @@ public class CBedCover : CComponent
 
     public void PlayBedSpark()
     {
-        particle.PlayParticle(1, sparkTransform);
+        CParticleManager.Instance.PlayParticle(sparkParticle, sparkTransform.position, sparkTransform.rotation);
         CAudioManager.Instance.PlayOneShot(CFMODEventsEnergy.Instance.spark6, this.transform.position);
     }
 

@@ -15,8 +15,6 @@ public class CScriptManager : CSingleton<CScriptManager>
     private Dictionary<string, string> lab16 = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
     private Dictionary<string, string> lab19 = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
 
-    public string resourceFile = "Assets/Subtitle/portal_subtitles.txt";
-    
     public override void Awake()
     {
         base.Awake();

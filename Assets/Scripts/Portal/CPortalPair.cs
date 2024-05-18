@@ -23,7 +23,7 @@ public class CPortalPair : CComponent
 
     public CPortal CheckPortalTag(string tag)
     {
-        if (tag == portals[0].tag)
+        if (portals[0].CompareTag(tag))
             return portals[0];
         else
             return portals[1];
@@ -31,7 +31,7 @@ public class CPortalPair : CComponent
 
     public CPortal CheckPortalTag(string tag, out CPortal otherPortal)
     {
-        if(tag == portals[0].tag)
+        if(portals[0].CompareTag(tag))
         {
             otherPortal = portals[1];
             return portals[0];

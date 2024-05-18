@@ -154,15 +154,4 @@ public class CPortalCrosshair : CComponent
             m_OPlacedCrosshairImage.color = portalGunCrosshairOrangeColor;
         }
     }
-
-    private Color ChangeColorByRGB(int r, int g, int b)
-    {
-        float normalizeR = r / 255f;
-        float normalizeG = g / 255f;
-        float normalizeB = b / 255f;
-
-        Color c = new Color(normalizeR, normalizeG, normalizeB);
-
-        return c;
-    }
 }

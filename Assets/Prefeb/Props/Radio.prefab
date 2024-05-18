@@ -117,16 +117,15 @@ MonoBehaviour:
   m_oRigidBody: {fileID: 0}
   grapicsObject: {fileID: 6523703370610145949}
   grapicsClone: {fileID: 0}
-  originalMaterials: []
-  cloneMaterials: []
   originalAnimator: {fileID: 0}
   cloneAnimator: {fileID: 0}
   mouseLook: {fileID: 0}
   objectCenter: {x: 0, y: 0.4, z: 0}
   isCollide: 0
-  originalRotation: {x: 0, y: 0, z: 0}
-  playerTransform: {fileID: 0}
+  originalDirection: {x: 0, y: 0, z: 0}
   grabPosition: {x: 0, y: 0, z: 0}
+  grabDirection: {x: 0, y: 0, z: 0}
+  grabRotation: {x: 0, y: 0, z: 0, w: 0}
   isGrabbed: 0
   isGrabbedTeleport: 0
 --- !u!54 &2714828918297608793
@@ -166,8 +165,8 @@ MonoBehaviour:
       Data4: -1236608711
     Path: event:/ambient/music/looping_radio_mix
   Event: 
-  PlayEvent: 0
-  StopEvent: 0
+  PlayEvent: 1
+  StopEvent: 2
   AllowFadeout: 1
   TriggerOnce: 0
   Preload: 0

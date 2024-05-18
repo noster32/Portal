@@ -1,29 +1,36 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-
 public class CPortalPlacement : CComponent  
 {
     [SerializeField] private CPortalBullet portalBullet;
     [SerializeField] private Transform muzzlePosition;
-    [SerializeField] private LayerMask portalGunCheckLayer;
     Vector3 aimPoint;
     private CPortalBullet currentPortalBullet;
-    [SerializeField] private CPortalPair portalPair;
-    private Transform cameraTransform;
 
-    private Vector3 topLeftPoint     = new Vector3(-0.75f,  1.3f, 0f);
-    private Vector3 topRightPoint    = new Vector3( 0.75f,  1.3f, 0f);
-    private Vector3 bottomLeftPoint  = new Vector3(-0.75f, -1.3f, 0f);
-    private Vector3 bottomRightPoint = new Vector3( 0.75f, -1.3f, 0f);
+
+    [SerializeField] private CPortalPair portalPair;
+    [SerializeField] private LayerMask portalGunCheckLayer;             //포탈 건을 발사 했을 때 체크 할 레이어
+
+    private float portalWidth = 1.5f;
+    private float portalHeight = 2.6f;
+    private float zFightingOffset = 0.005f;
+
+    private Vector3 topLeftPoint;
+    private Vector3 topRightPoint;
+    private Vector3 bottomLeftPoint;
+    private Vector3 bottomRightPoint;
 
     private Vector3 centerPointForward = new Vector3(0f, 0f, 0.05f);
     private Vector3 centerPointBackward = new Vector3(0f, 0f, -0.03f);
-    Quaternion portalRotation;
 
     Dictionary<string, Vector3> portalEdgePoints = new Dictionary<string, Vector3>();
     Dictionary<string, Vector3> offsetPoints = new Dictionary<string, Vector3>();
     string[] edgeNameArray = new string[] { "TL", "TR", "BR", "BL" };
+
+    private Vector3 hitPoint;
+    
+    private Transform cameraTransform;
 
     public override void Awake()
     {
@@ -31,14 +38,16 @@ public class CPortalPlacement : CComponent
 
         cameraTransform = Camera.main.transform;
 
-        portalEdgePoints["TL"] = Vector3.zero;
-        portalEdgePoints["TR"] = Vector3.zero;
-        portalEdgePoints["BL"] = Vector3.zero;
-        portalEdgePoints["BR"] = Vector3.zero;
-        offsetPoints["TL"] = Vector3.zero;
-        offsetPoints["TR"] = Vector3.zero;
-        offsetPoints["BL"] = Vector3.zero;
-        offsetPoints["BR"] = Vector3.zero;
+        topLeftPoint     =   new Vector3(-portalWidth / 2,  portalHeight / 2, 0f);
+        topRightPoint    =   new Vector3( portalWidth / 2,  portalHeight / 2, 0f);
+        bottomLeftPoint  =   new Vector3(-portalWidth / 2, -portalHeight / 2, 0f);
+        bottomRightPoint =   new Vector3( portalWidth / 2, -portalHeight / 2, 0f);
+
+        for(int i = 0; i < edgeNameArray.Length; ++i)
+        {
+            portalEdgePoints.Add(edgeNameArray[i], Vector3.zero);
+            offsetPoints.Add(edgeNameArray[i], Vector3.zero);
+        }
     }
 
     public override void Start()
@@ -47,6 +56,15 @@ public class CPortalPlacement : CComponent
 
         if(portalPair == null)
             portalPair = CSceneManager.Instance.portalPair;
+    }
+
+    private void OnDrawGizmos()
+    {
+        if(hitPoint != null)
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawSphere(hitPoint, 0.2f);
+        }
     }
 
     //포탈건 발사
@@ -60,20 +78,20 @@ public class CPortalPlacement : CComponent
         {
             if (hit.transform.gameObject.layer == LayerMask.NameToLayer("PortalPlaceable"))
             {
-                Debug.Log("test");
+                hitPoint = hit.point;
                 PortalPlace(hit.point, hit.normal, portalNum);
             }
             else if (hit.transform.gameObject.layer == LayerMask.NameToLayer("PortalCollider"))
             {
-                if (portalPair.portals[portalNum].otherPortal.tag == hit.collider.tag)
+                if (portalPair.portals[portalNum].otherPortal.CompareTag(hit.collider.tag))
                 {
                     Transform hitPortalTransform = portalPair.portals[portalNum].otherPortal.transform;
 
                     Vector3 relativePos = hitPortalTransform.InverseTransformPoint(hit.point);
                     if (relativePos.x > 0f)
-                        relativePos = new Vector3(1.5f, relativePos.y, 0f);
+                        relativePos = new Vector3(portalWidth, relativePos.y, -zFightingOffset);
                     else
-                        relativePos = new Vector3(-1.5f, relativePos.y, 0f);
+                        relativePos = new Vector3(-portalWidth, relativePos.y, -zFightingOffset);
 
                     Vector3 resultPos = hitPortalTransform.TransformPoint(relativePos);
 
@@ -84,7 +102,7 @@ public class CPortalPlacement : CComponent
                     Transform hitPortalTransform = portalPair.portals[portalNum].transform;
 
                     Vector3 relativePos = hitPortalTransform.InverseTransformPoint(hit.point);
-                    relativePos = new Vector3(relativePos.x, relativePos.y, 0f);
+                    relativePos = new Vector3(relativePos.x, relativePos.y, -zFightingOffset);
                     Vector3 resultPos = hitPortalTransform.TransformPoint(relativePos);
 
                     PortalPlace(resultPos, hit.normal, portalNum);
@@ -100,8 +118,7 @@ public class CPortalPlacement : CComponent
     private void PortalPlace(Vector3 pos, Vector3 normal, int num)
     {
         float yRotation;
-        portalRotation = Quaternion.LookRotation(normal, Vector3.up);
-        //portalRotation = Quaternion.FromToRotation(Vector3.forward, normal);
+        Quaternion portalRotation = Quaternion.LookRotation(normal, Vector3.up);
 
         if (normal == Vector3.up || normal == Vector3.down)
         {
@@ -115,10 +132,13 @@ public class CPortalPlacement : CComponent
         {
             if (FixedOverhangs(portalPos, portalRotation, normal, out portalPos))
             {
+                portalPos += portalPair.portals[num].transform.forward * zFightingOffset;
                 portalPair.portals[num].OpenPortal(portalPos, portalRotation);
             }
         }
     }
+
+    //건너편 모서리의 인덱스 가져오기
     private int GetOppositeCorner(string cornerName)
     {
         int index = Array.IndexOf(edgeNameArray, cornerName);
@@ -127,6 +147,7 @@ public class CPortalPlacement : CComponent
         return index;
     }
 
+    //라인캐스트
     private string OverhangLinecast(Vector3 origin, Quaternion rotation, string startPoint, Vector3 endPos)
     {
         RaycastHit hit;
@@ -144,6 +165,7 @@ public class CPortalPlacement : CComponent
             return "TL";
     }
 
+    //모서리의 가로 세로 비교
     private Vector3 CompareEdges(List<string> edges, List<string> offsets)
     {
         Vector3 result = Vector3.zero;
@@ -176,6 +198,9 @@ public class CPortalPlacement : CComponent
     }
 
     //포탈 뒤쪽에서 벽 밖으로 나가는지 체크
+    //각 모서리에서 OverlapSphere를 사용해서 벽이 있는지 없는지 확인하고
+    //있는경우 collisionPoint.Add 없는경우 nonCollisionPoint.Add
+    //충돌된 포인트를 바탕으로 라인캐스트를 실행해서 오프셋을 설정한다
     private bool FixedOverhangs(Vector3 originPos, Quaternion rotation, Vector3 hitNormal, out Vector3 result)
     {
         portalEdgePoints["TL"] = topLeftPoint + centerPointBackward;
@@ -195,48 +220,48 @@ public class CPortalPlacement : CComponent
 
         for(int i = 0; i < 4; ++i)
         {
-            Vector3 linecastStartPos = originPos + rotation * portalEdgePoints[edgeNameArray[i]];
+            Vector3 linecastStartPos = originPos + rotation * portalEdgePoints[edgeNameArray[i]];                      
             Collider[] colliders = Physics.OverlapSphere(linecastStartPos, 0.1f, LayerMask.GetMask("PortalPlaceable"));
-
-            if(colliders.Length == 0)
-            {
-                nonCollisionPoint.Add(edgeNameArray[i]);
-                continue;
-            }
-
-            int count = 0;
-            for(int cNum = 0 ; cNum  < colliders.Length; ++cNum)
-            {
-                if (colliders[cNum].transform.forward == hitNormal)
-                {
-                    collisionPoint.Add(edgeNameArray[i]);
-                    ++count;
-                }
-            }
-
-            if (count == 0)
-                nonCollisionPoint.Add(edgeNameArray[i]);
-        }
-
-        if(collisionPoint.Count > 0)
-        {
-            Vector3 lineCastEndPos = originPos + rotation * centerPointBackward;
-
-            switch (collisionPoint.Count)
-            {
-                case 4:
-                    break;
-
-                case 3:
-                    string temp3 = OverhangLinecast(originPos, rotation, nonCollisionPoint[0], lineCastEndPos);
-                    offsetObjectOverhang = rotation * new Vector3(offsetPoints[temp3].x, offsetPoints[temp3].y, 0f);
-                    break;
-
-                case 2:
-                    List<string> offsets = new List<string>();
-
-                    for (int castNum = 0; castNum < 2; ++castNum)
-                    {
+                                                                                                                       
+            if(colliders.Length == 0)                                                                                  
+            {                                                                                                          
+                nonCollisionPoint.Add(edgeNameArray[i]);                                                               
+                continue;                                                                                              
+            }                                                                                                          
+                                                                                                                       
+            int count = 0;                                                                                             
+            for(int cNum = 0 ; cNum  < colliders.Length; ++cNum)                                                       
+            {                                                                                                          
+                if (colliders[cNum].transform.forward == hitNormal)                                                    
+                {                                                                                                      
+                    collisionPoint.Add(edgeNameArray[i]);                                                              
+                    ++count;                                                                                           
+                }                                                                                                      
+            }                                                                                                          
+                                                                                                                       
+            if (count == 0)                                                                                            
+                nonCollisionPoint.Add(edgeNameArray[i]);                                                               
+        }                                                                                                              
+                                                                                                                       
+        if(collisionPoint.Count > 0)                                                                                   
+        {                                                                                                              
+            Vector3 lineCastEndPos = originPos + rotation * centerPointBackward;                                       
+                                                                                                                       
+            switch (collisionPoint.Count)                                                                              
+            {                                                                                                          
+                case 4:                                                                                                
+                    break;                                                                                             
+                                                                                                                       
+                case 3:                                                                                                
+                    string temp3 = OverhangLinecast(originPos, rotation, nonCollisionPoint[0], lineCastEndPos);        
+                    offsetObjectOverhang = rotation * new Vector3(offsetPoints[temp3].x, offsetPoints[temp3].y, 0f);   
+                    break;                                                                                             
+                                                                                                                       
+                case 2:                                                                                                
+                    List<string> offsets = new List<string>();                                                         
+                                                                                                                       
+                    for (int castNum = 0; castNum < 2; ++castNum)                                                      
+                    {                                                                                                  
                         offsets.Add(OverhangLinecast(originPos, rotation, nonCollisionPoint[castNum], lineCastEndPos));
                     }
 
@@ -262,60 +287,60 @@ public class CPortalPlacement : CComponent
     }
 
     //포탈 앞쪽에서 물체와 겹치는지 체크
-    private bool FixedOverlap(Vector3 originPos, Quaternion rotation, out Vector3 result, int portalNum)
-    {
-        portalEdgePoints["TL"] = topLeftPoint + centerPointForward;
-        portalEdgePoints["TR"] = topRightPoint + centerPointForward;
-        portalEdgePoints["BL"] = bottomLeftPoint + centerPointForward;
-        portalEdgePoints["BR"] = bottomRightPoint + centerPointForward;
-        offsetPoints["TL"] = Vector3.zero;
-        offsetPoints["TR"] = Vector3.zero;
-        offsetPoints["BL"] = Vector3.zero;
-        offsetPoints["BR"] = Vector3.zero;
-
-        result = Vector3.zero;
-        Vector3 offsetObjectOverlap = Vector3.zero;
-        List<string> collisionPoint = new List<string>();
-        List<string> nonCollisionPoint = new List<string>();
-
-        //포탈의 중심에서 부터 라인캐스트를 실행
-        //오브젝트나 벽에 맞은 경우 각각의 리스트에 맞은 위치를 포탈의 로컬 위치로 저장
-        RaycastHit hitObject;
-        for (int i = 0; i < 4; ++i)
-        {
-            Vector3 linecastStartPos = originPos + rotation * centerPointForward;
-            Vector3 linecastEndPos = originPos + rotation * portalEdgePoints[edgeNameArray[i]];
-            int interactLayer = LayerMask.GetMask("Default", "PortalPlaceable", "NonPortalPlaceable", "Portal");
-
-            if (Physics.Linecast(linecastStartPos, linecastEndPos, out hitObject, interactLayer))
-            {
-                if (hitObject.transform.gameObject.layer == LayerMask.NameToLayer("Portal"))
-                    if (portalPair.portals[portalNum].tag == hitObject.collider.tag)
-                    {
-                        nonCollisionPoint.Add(edgeNameArray[i]);
-                        continue;
-                    }
-
-                Vector3 worldOffset = hitObject.point - linecastEndPos;
-                worldOffset = Quaternion.Inverse(rotation) * worldOffset;
-
-                offsetPoints[edgeNameArray[i]] = worldOffset;
-                collisionPoint.Add(edgeNameArray[i]);
-            }
-            else
-                nonCollisionPoint.Add(edgeNameArray[i]);
-        }
-
-        if (collisionPoint.Count > 0)
-        {
-            switch(collisionPoint.Count)
-            {
-                case 4:
-                    return false;
-
-                case 3:
-                    //논콜리전에 저장해 놓은 name반대편에 있는걸 오프셋으로 사용
-                    int index = GetOppositeCorner(nonCollisionPoint[0]);
+    //포탈의 중심에서 부터 각 모서리로 라인캐스트를 실행                                                                        
+    //오브젝트에 맞은 경우 collisionPoint에 추가하고 offsetPoint에 오프셋을 저장                                        
+    //충돌한 수에 따라서 오프셋을 설정                                                                                          
+    private bool FixedOverlap(Vector3 originPos, Quaternion rotation, out Vector3 result, int portalNum)                        
+    {                                                                                                                           
+        portalEdgePoints["TL"] = topLeftPoint + centerPointForward;                                                             
+        portalEdgePoints["TR"] = topRightPoint + centerPointForward;                                                            
+        portalEdgePoints["BL"] = bottomLeftPoint + centerPointForward;                                                          
+        portalEdgePoints["BR"] = bottomRightPoint + centerPointForward;                                                         
+        offsetPoints["TL"] = Vector3.zero;                                                                                      
+        offsetPoints["TR"] = Vector3.zero;                                                                                      
+        offsetPoints["BL"] = Vector3.zero;                                                                                      
+        offsetPoints["BR"] = Vector3.zero;                                                                                      
+                                                                                                                                
+        result = Vector3.zero;                                                                                                  
+        Vector3 offsetObjectOverlap = Vector3.zero;                                                                             
+        List<string> collisionPoint = new List<string>();                                                                       
+        List<string> nonCollisionPoint = new List<string>();                                                                    
+                                                                                                                                
+        RaycastHit hitObject;                                                                                                   
+        for (int i = 0; i < 4; ++i)                                                                                             
+        {                                                                                                                       
+            Vector3 linecastStartPos = originPos + rotation * centerPointForward;                                               
+            Vector3 linecastEndPos = originPos + rotation * portalEdgePoints[edgeNameArray[i]];                                 
+            int interactLayer = LayerMask.GetMask("Default", "PortalPlaceable", "NonPortalPlaceable", "Portal");                
+                                                                                                                                
+            if (Physics.Linecast(linecastStartPos, linecastEndPos, out hitObject, interactLayer))                               
+            {                                                                                                                   
+                if (hitObject.transform.gameObject.layer == LayerMask.NameToLayer("Portal"))                                    
+                    if (portalPair.portals[portalNum].CompareTag(hitObject.collider.tag))                                            
+                    {                                                                                                           
+                        nonCollisionPoint.Add(edgeNameArray[i]);                                                                
+                        continue;                                                                                               
+                    }                                                                                                           
+                                                                                                                                
+                Vector3 worldOffset = hitObject.point - linecastEndPos;                                                         
+                worldOffset = Quaternion.Inverse(rotation) * worldOffset;                                                       
+                                                                                                                                
+                offsetPoints[edgeNameArray[i]] = worldOffset;                                                                   
+                collisionPoint.Add(edgeNameArray[i]);                                                                           
+            }                                                                                                                   
+            else                                                                                                                
+                nonCollisionPoint.Add(edgeNameArray[i]);                                                                        
+        }                                                                                                                       
+                                                                                                                                
+        if (collisionPoint.Count > 0)                                                                                           
+        {                                                                                                                       
+            switch(collisionPoint.Count)                                                                                        
+            {                                                                                                                   
+                case 4:                                                                                                         
+                    return false;                                                                                               
+                                                                                                                                
+                case 3:                                                                                                         
+                    int index = GetOppositeCorner(nonCollisionPoint[0]);                                                        
                     Vector3 temp3 = new Vector3(offsetPoints[edgeNameArray[index]].x, offsetPoints[edgeNameArray[index]].y, 0f);
                     offsetObjectOverlap = rotation * temp3;
                     break;
@@ -325,7 +350,6 @@ public class CPortalPlacement : CComponent
                     break;
 
                 case 1:
-                    //offsetPoints 오프셋 사용
                     Vector3 temp1 = new Vector3(offsetPoints[collisionPoint[0]].x, offsetPoints[collisionPoint[0]].y, 0f);
                     offsetObjectOverlap = rotation * temp1;
                     break;
@@ -335,7 +359,6 @@ public class CPortalPlacement : CComponent
             }
         }       
 
-        //벽과 오브젝트의 오프셋을 합쳐서 결과 대입
         result = originPos + offsetObjectOverlap;
         return true;
     }

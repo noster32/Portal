@@ -156,7 +156,7 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
-      - time: 0
+      - time: 0.0031347962
         functionName: BallLaunch
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: 2aec1a9810dfb73449a69f1573c4cb2a, type: 3}

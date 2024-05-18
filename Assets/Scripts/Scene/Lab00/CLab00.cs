@@ -15,7 +15,7 @@ public class CLab00 : CComponent
     [SerializeField] PlayableDirector playableDirector;
 
     [Header("Camera")]
-    [SerializeField] private CPlayerCameraEffect cameraEffect;
+    [SerializeField] private CPlayerCameraShake cameraEffect;
 
     [Header("Event")]
     [SerializeField] UnityEvent bedOpenEvent;
@@ -43,6 +43,9 @@ public class CLab00 : CComponent
     public override void Start()
     {
         base.Start();
+
+        if (cameraEffect == null)
+            Camera.main.transform.GetComponent<CPlayerCameraShake>();
 
         StartCoroutine(SceneIntroCoroutine());
     }

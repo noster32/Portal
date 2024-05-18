@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class CSecurityCamera : CComponent
 {
-
     [Header("Setting")]
     [SerializeField] float volume = 0.01f;
     [SerializeField] float rotationSpeedX = 0.5f;
@@ -65,11 +64,10 @@ public class CSecurityCamera : CComponent
                 }
             }
 
-
             CameraRotationChange(m_cameraRotationXZ, m_cameraRotationZY);
 
             bool rotationChangedXZ = m_lastCameraRotationXZ != cameraLeftRightTransform.localRotation;
-            bool rotationChangedZY = m_lastCameraRotationZY != cameraUpDownTransform.localRotation;
+            bool rotationChangedZY = m_lastCameraRotationZY != cameraUpDownTransform.localRotation;                               
 
             if (rotationChangedXZ || rotationChangedZY)
             {
@@ -81,13 +79,11 @@ public class CSecurityCamera : CComponent
             }
             else
             {
-                if(emitter.IsPlaying())
+                if (emitter.IsPlaying())
                     emitter.Stop();
             }
-
             m_lastCameraRotationXZ = cameraLeftRightTransform.localRotation;
             m_lastCameraRotationZY = cameraUpDownTransform.localRotation;
-
         }
         else
         {

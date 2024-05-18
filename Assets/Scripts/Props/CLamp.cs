@@ -4,12 +4,12 @@ using UnityEngine;
 public class CLamp : CComponent
 {
     [Header("Particle")]
-    [SerializeField] private CSparkParticle particle;
+    [SerializeField] private ParticleSystem sparkParticle;
     [SerializeField] private Transform sparkTransform;
 
     public void PlayLampSpark()
     {
-        particle.PlayParticle(2, sparkTransform);
+        CParticleManager.Instance.PlayParticle(sparkParticle, sparkTransform.position, sparkTransform.rotation);
         CAudioManager.Instance.PlayOneShot(CFMODEventsEnergy.Instance.spark6, this.transform.position);
     }
 }

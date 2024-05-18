@@ -29,8 +29,8 @@ public class CTeleportObject : CComponent
     {
         base.Awake();
         
-        isPlayer = transform.tag == "Player";
-        isTurret = transform.tag == "Turret";
+        isPlayer = transform.CompareTag("Player");
+        isTurret = transform.CompareTag("Turret");
 
         if (!isPlayer && !isTurret)
         {
@@ -106,24 +106,18 @@ public class CTeleportObject : CComponent
     //teleportObject와 벽간의 충돌 무시
     public void EnterPortalIgnoreCollision(List<Collider> wallCollider)
     {
-        if (wallCollider != null)
+        foreach (Collider c in wallCollider)
         {
-            foreach (Collider c in wallCollider)
-            {
-                Physics.IgnoreCollision(objectCollider, c, true);
-            }
+            Physics.IgnoreCollision(objectCollider, c, true);
         }
     }
 
     //teleportObject와 벽간의 충돌 설정
     public void ExitPortalIgnoreCollision(List<Collider> wallCollider)
     {
-        if (wallCollider != null)
+        foreach (Collider c in wallCollider)
         {
-            foreach (Collider c in wallCollider)
-            {
-                Physics.IgnoreCollision(objectCollider, c, false);
-            }
+            Physics.IgnoreCollision(objectCollider, c, false);
         }
     }
 
@@ -159,10 +153,10 @@ public class CTeleportObject : CComponent
     }
     
     //클론의 애니메이터에 원본의 애니메이터를 복사한다
-    protected void GetAnimator(GameObject og, GameObject cg)
+    protected void GetAnimator(GameObject original, GameObject clone)
     {
-        originalAnimator = og.GetComponent<Animator>();
-        cloneAnimator = cg.GetComponent<Animator>();
+        originalAnimator = original.GetComponent<Animator>();
+        cloneAnimator = clone.GetComponent<Animator>();
 
         cloneAnimator.runtimeAnimatorController = originalAnimator.runtimeAnimatorController;
     }

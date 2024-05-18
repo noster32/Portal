@@ -18,7 +18,6 @@ Shader "DoorStencil/DoorFrameMask"
             Ref 1
             Comp Always
             Pass Replace
-            
         }
 
         CGPROGRAM

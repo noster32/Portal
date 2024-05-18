@@ -20,6 +20,7 @@ TagManager:
   - Pedestal
   - MetalGrate
   - PausePanel
+  - Concrete
   layers:
   - Default
   - TransparentFX

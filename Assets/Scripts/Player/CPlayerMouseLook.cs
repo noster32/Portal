@@ -1,6 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class CPlayerMouseLook : CComponent
@@ -41,6 +39,7 @@ public class CPlayerMouseLook : CComponent
         camera.localRotation = Quaternion.Euler(m_cameraRot.eulerAngles.x, m_cameraRot.eulerAngles.y, 0f);
     }
 
+    //플레이어 화면 회전
     public void MouseRotation(Transform camera, Transform character)
     {
         if (CGameManager.Instance.GetIsPaused())
@@ -96,6 +95,9 @@ public class CPlayerMouseLook : CComponent
         return m_playerCharacterRot;
     }
 
+    //카메라 최대 회전 각도 설정
+    //쿼터니언의 x값을 각도로 바꾸기 위해 angleX를 구하고
+    //Clamp한 뒤에 다시 쿼터니언으로 변환해서 적용시킨다
     private Quaternion ClampRotationXAxis(Quaternion q)
     {
         q.x /= q.w;
@@ -111,6 +113,8 @@ public class CPlayerMouseLook : CComponent
 
         return q;
     }
+
+    //카메라 원상 복귀
     private IEnumerator CameraRotationOriginal(float duration)
     {
         float elapsedTime = 0f;

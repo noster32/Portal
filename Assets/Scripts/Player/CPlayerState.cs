@@ -3,24 +3,21 @@ using UnityEngine;
 
 public class CPlayerState : CComponent
 {
-    public bool isGrab = false;
-    public CGrabableObject grabObject = null;
+    [SerializeField] private bool isDrawBluePortalGun = false;          //포탈건B 보유
+    [SerializeField] private bool isDrawOrangePortalGun = false;        //포탈건O 보유
+    [SerializeField] private int playerHp = 100;                
+    [SerializeField] private float damageDelay = 0.3f;                  //데미지 딜레이
+    private bool isGrab = false;                                        //그랩 여부
+    private bool isDie = false;             
+    private bool isDamageDelay = false;                                 //딜레이 진행중일 경우 true
+    private int endingHp = 2;                                           //엔딩씬 hp
+    private bool isEnding = false;                                      //엔딩용
 
-    [SerializeField] private bool isDrawBluePortalGun = false;
-    [SerializeField] private bool isDrawOrangePortalGun = false;
+    public CGrabbableObject grabObject = null;                           //플레이어가 잡고있는 오브젝트
 
-    [SerializeField] private int playerHp = 100;
-    [SerializeField] private float damageDelay = 0.3f;
     [SerializeField] private CCameraFade cameraFade;
-
-    private bool isDamageDelay = false;
-    private bool isDie = false;
-
-    private int endingHp = 2;
-    private bool isEnding = false;
     private CPlayerMouseLook playerAimPunch;
     private CPlayerDie playerDie;
-
     private Coroutine autoHealCoroutine;
     public enum PlayerState
     {
@@ -37,7 +34,7 @@ public class CPlayerState : CComponent
     public override void Awake()
     {
         base.Awake();
-
+        
         playerAimPunch = GetComponent<CPlayerMouseLook>();
         playerDie = GetComponent<CPlayerDie>();
     }
@@ -45,13 +42,14 @@ public class CPlayerState : CComponent
     public override void Update()
     {
         base.Update();
-        //AutoHeal();
         
         if (!isDie && playerHp < 0)
         {
             isDie = true;
             playerDie.PlayerSpawnDeadCamera();
         }
+
+        Debug.Log(pState);
     }
 
     #region PortalGun
@@ -73,6 +71,10 @@ public class CPlayerState : CComponent
 
     public void SetPlayerState(PlayerState state) => pState = state;
     #endregion
+
+    public bool GetIsGrab() => isGrab;
+
+    public void SetIsGrab(bool isGrab) => this.isGrab = isGrab;
 
     public bool GetIsPlayerDie() => isDie;
 
@@ -117,7 +119,7 @@ public class CPlayerState : CComponent
         }
     }
 
-    public void DealDamageToPlayer(int damage, Vector3 direction ,float knockback)
+    public void DealDamageToPlayer(int damage, Vector3 direction, float knockback)
     {
         if(!isDamageDelay)
         {
@@ -130,7 +132,6 @@ public class CPlayerState : CComponent
             playerHp -= damage;
             cameraFade.FadeIn(3f, 0.6f);
             CAudioManager.Instance.PlayOneShot(CFMODEvents.Instance.bodyMediumImpactHard, this.transform.position);
-            //hit Sound
 
             StartCoroutine(ResetDamageDelay());
         }

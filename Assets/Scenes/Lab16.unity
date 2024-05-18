@@ -29914,6 +29914,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 372311627}
     m_Modifications:
+    - target: {fileID: 3440511719967798275, guid: f569a0c15c23e8b4aaf04a7406d9e770, type: 3}
+      propertyPath: elevatorEvent.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: PlayArriveDoorOpen
+      objectReference: {fileID: 0}
     - target: {fileID: 3440511720550034496, guid: f569a0c15c23e8b4aaf04a7406d9e770, type: 3}
       propertyPath: m_Name
       value: StartElevatorRoom

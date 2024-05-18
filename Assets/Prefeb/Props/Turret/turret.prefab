@@ -137,16 +137,15 @@ MonoBehaviour:
   m_oRigidBody: {fileID: 0}
   grapicsObject: {fileID: 9179291702091360103}
   grapicsClone: {fileID: 0}
-  originalMaterials: []
-  cloneMaterials: []
   originalAnimator: {fileID: 0}
   cloneAnimator: {fileID: 0}
   mouseLook: {fileID: 0}
   objectCenter: {x: 0, y: 0, z: 0}
   isCollide: 0
-  originalRotation: {x: 0, y: 0, z: 0}
-  playerTransform: {fileID: 0}
+  originalDirection: {x: 0, y: 0, z: 0}
   grabPosition: {x: 0, y: 0, z: 0}
+  grabDirection: {x: 0, y: 0, z: 0}
+  grabRotation: {x: 0, y: 0, z: 0, w: 0}
   isGrabbed: 0
   isGrabbedTeleport: 0
   aimLeftRight: 0.5
@@ -183,7 +182,8 @@ MonoBehaviour:
     m_Bits: 192
   canSeePlayer: 0
   seeThroughPortal: 0
-  angleToTarget: 0
+  angleToTargetBackward: 0
+  angleToTargetLeft: 0
   portalPair: {fileID: 0}
 --- !u!114 &1983911818204896861
 MonoBehaviour:
@@ -266,10 +266,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_oTransform: {fileID: 0}
   m_oRigidBody: {fileID: 0}
-  bulletHoleMetalPrefab: {fileID: 2719573452160749153, guid: d82bf48b53e4faa4b8fc1ef4a3f0db39, type: 3}
-  bulletHoleConcretPrefab: {fileID: 5911666485575692871, guid: bdf63ca694263d749b8a60002060a8ef, type: 3}
-  bulletHoleGlassPrefab: {fileID: 2049241464296339980, guid: 101ce021973df074bba9a9589a627efe, type: 3}
   bulletHoleParent: {fileID: 0}
+  bulletHolePrefabs:
+  - {fileID: 5911666485575692871, guid: bdf63ca694263d749b8a60002060a8ef, type: 3}
+  - {fileID: 2049241464296339980, guid: 101ce021973df074bba9a9589a627efe, type: 3}
+  - {fileID: 2719573452160749153, guid: d82bf48b53e4faa4b8fc1ef4a3f0db39, type: 3}
 --- !u!1 &1983911818239775086
 GameObject:
   m_ObjectHideFlags: 0

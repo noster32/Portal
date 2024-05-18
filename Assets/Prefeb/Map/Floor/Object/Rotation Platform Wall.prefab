@@ -439,7 +439,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2677077075518660962}
-  - component: {fileID: 2677077075518660963}
   m_Layer: 0
   m_Name: Rotation Platform Wall
   m_TagString: Untagged
@@ -463,27 +462,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
---- !u!114 &2677077075518660963
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2677077075518660965}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8d39d411564827f409ba5d0e956ee4c5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_oTransform: {fileID: 0}
-  m_oRigidBody: {fileID: 0}
-  moveDistance: 0.45
-  rotationAngle: -30
-  moveTime: 1.67
-  rotationTime: 1.117
-  moveCylinder: {fileID: 2677077076776911355}
-  rotationCylinder: {fileID: 2677077075091974716}
-  portalPlacementWall: {fileID: 2677077077189549447}
 --- !u!1 &2677077076113172382
 GameObject:
   m_ObjectHideFlags: 0

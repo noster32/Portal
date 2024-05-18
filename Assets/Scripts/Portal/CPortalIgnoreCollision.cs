@@ -28,7 +28,7 @@ public class CPortalIgnoreCollision : CComponent
             return;
 
         CTeleportObject tpObject;
-        if (other.tag == "Turret")
+        if (other.CompareTag("Turret"))
             tpObject = other.GetComponentInParent<CTeleportObject>();
         else
             tpObject = other.GetComponent<CTeleportObject>();
@@ -51,7 +51,7 @@ public class CPortalIgnoreCollision : CComponent
 
         CTeleportObject tpObject;
 
-        if (other.tag == "Turret")
+        if (other.CompareTag("Turret"))
             tpObject = other.GetComponentInParent<CTeleportObject>();
         else
             tpObject = other.GetComponent<CTeleportObject>();
@@ -71,7 +71,7 @@ public class CPortalIgnoreCollision : CComponent
         {
             for(int i = 0; i < collider.Length; ++i)
             {
-                if (collider[i].tag == "Turret")
+                if (collider[i].CompareTag("Turret"))
                 {
                     CTeleportObject obj = collider[i].transform.GetComponentInParent<CTeleportObject>();
 

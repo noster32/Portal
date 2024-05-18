@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class CPlayerInteraction : CComponent
@@ -34,7 +35,6 @@ public class CPlayerInteraction : CComponent
             portalGunObject.SetActive(true);
             portalGunFirstPerson.SetActive(true);
         }
-
     }
 
     public override void Update()
@@ -57,7 +57,7 @@ public class CPlayerInteraction : CComponent
 
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
-            if (playerState.isGrab && playerState.grabObject)
+            if (playerState.GetIsGrab() && playerState.grabObject)
             {
                 playerGrab.ReleaseGrab();
                 if (playerState.GetDrawPortalGun())
@@ -73,7 +73,7 @@ public class CPlayerInteraction : CComponent
 
         if (Input.GetKeyDown(KeyCode.Mouse1))
         {
-            if (playerState.isGrab && playerState.grabObject)
+            if (playerState.GetIsGrab() && playerState.grabObject)
             {
                 playerGrab.ReleaseGrab();
                 if (playerState.GetDrawPortalGun())
@@ -93,18 +93,17 @@ public class CPlayerInteraction : CComponent
 
             RaycastHit hit;
 
-            if(playerState.isGrab && playerState.grabObject)
+            if(playerState.GetIsGrab() && playerState.grabObject)
             {
                 playerGrab.ReleaseGrab();
                 if (playerState.GetDrawPortalGun())
                     portalGunAnim.PortalGunRelease();
             }
-            else if(!playerState.isGrab && !playerState.grabObject)
+            else if(!playerState.GetIsGrab() && !playerState.grabObject)
             {
                 if (Physics.Raycast(ray, out hit, 10f, includedLayer))
                 {
                     InteractionObject(hit);
-                    CAudioManager.Instance.PlayOneShot(CFMODEvents.Instance.interaction, this.transform.position);
                 }
                 else
                 {
@@ -116,15 +115,40 @@ public class CPlayerInteraction : CComponent
 
     public void InteractionObject(RaycastHit h)
     {
-        if(h.collider.gameObject.TryGetComponent(out CInteractObject interactScript))
+        GameObject hitObject = h.collider.gameObject;
+
+        if(hitObject.TryGetComponent(out CInteractObject interactScript))
         {
-            interactScript.CallInteract(this);
+            interactScript.CallInteract();
+            CAudioManager.Instance.PlayOneShot(CFMODEvents.Instance.interaction, this.transform.position);
         }
-        else
+        else if(hitObject.TryGetComponent(out CGrabbableObject grabbableObject))
         {
             if (playerState.GetDrawPortalGun())
                 portalGunAnim.PortalGunGrab();
-            playerGrab.GrabObject(h);
+
+            playerGrab.GrabObject(grabbableObject);
+            CAudioManager.Instance.PlayOneShot(CFMODEvents.Instance.interaction, this.transform.position);
         }
+        else if (hitObject.CompareTag("Turret"))
+        {
+            CGrabbableObject turret = hitObject.GetComponentInParent<CGrabbableObject>();
+
+            if (playerState.GetDrawPortalGun())
+                portalGunAnim.PortalGunGrab();
+
+            if (turret)
+                playerGrab.GrabObject(turret);
+            CAudioManager.Instance.PlayOneShot(CFMODEvents.Instance.interaction, this.transform.position);
+        }
+        else if(hitObject.layer == LayerMask.NameToLayer("PortalCollider"))
+        {
+            CPortal hitPortal = CSceneManager.Instance.portalPair.CheckPortalTag(hitObject.tag);
+
+            if (hitPortal)
+                playerGrab.TryGrabObjectThroughPortal(h.point, hitPortal, h.distance, InteractionObject);
+        }
+        else
+            CAudioManager.Instance.PlayOneShot(CFMODEvents.Instance.interactionFail, this.transform.position);
     }
 }

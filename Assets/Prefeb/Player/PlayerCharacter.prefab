@@ -93,8 +93,8 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 0.3
-  far clip plane: 1000
+  near clip plane: 0.1
+  far clip plane: 300
   field of view: 75
   orthographic: 0
   orthographic size: 5
@@ -307,8 +307,6 @@ MonoBehaviour:
   m_oRigidBody: {fileID: 0}
   grapicsObject: {fileID: 947201895730042702}
   grapicsClone: {fileID: 0}
-  originalMaterials: []
-  cloneMaterials: []
   originalAnimator: {fileID: 0}
   cloneAnimator: {fileID: 0}
   mouseLook: {fileID: 0}
@@ -368,10 +366,10 @@ MonoBehaviour:
   m_oRigidBody: {fileID: 0}
   portalBullet: {fileID: -8714702662077799910, guid: 9ea9b55fb62598e4687bb3b49f0c8099, type: 3}
   muzzlePosition: {fileID: 136316122353437097}
+  portalPair: {fileID: 0}
   portalGunCheckLayer:
     serializedVersion: 2
     m_Bits: 33472
-  portalPair: {fileID: 0}
 --- !u!114 &136316123644457590
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -387,6 +385,7 @@ MonoBehaviour:
   m_oTransform: {fileID: 0}
   m_oRigidBody: {fileID: 0}
   rayDistance: 10
+  grabDistance: 2
   grabPositionLayer:
     serializedVersion: 2
     m_Bits: 0
@@ -421,12 +420,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_oTransform: {fileID: 0}
   m_oRigidBody: {fileID: 0}
-  isGrab: 0
-  grabObject: {fileID: 0}
   isDrawBluePortalGun: 0
   isDrawOrangePortalGun: 0
   playerHp: 100
   damageDelay: 0.5
+  grabObject: {fileID: 0}
   cameraFade: {fileID: 0}
 --- !u!114 &2078341407805195439
 MonoBehaviour:
@@ -444,7 +442,6 @@ MonoBehaviour:
   m_oRigidBody: {fileID: 0}
   deathCamera: {fileID: 3266512764734611181, guid: 46ac1dd82d05fbf409a490f4a32ce9db, type: 3}
   endingCamera: {fileID: 0}
-  dropPortalGun: {fileID: 0}
   deathFade: {fileID: 0}
 --- !u!1 &136316124101189134
 GameObject:

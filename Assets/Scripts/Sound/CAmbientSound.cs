@@ -19,7 +19,7 @@ public class CAmbientSound : CComponent
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.tag == "Player")
+        if(other.CompareTag("Player"))
         {
             ambientEventInstance.start();
         }
@@ -27,7 +27,7 @@ public class CAmbientSound : CComponent
 
     private void OnTriggerExit(Collider other)
     {
-        if(other.tag == "Player")
+        if(other.CompareTag("Player"))
         {
             ambientEventInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
         }

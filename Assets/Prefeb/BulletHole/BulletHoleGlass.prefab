@@ -29,7 +29,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0.509, z: -0.385}
   m_LocalScale: {x: 0.006, y: 0.006, z: 0.006}
-  m_ConstrainProportionsScale: 1
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -98,7 +98,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_oTransform: {fileID: 0}
   m_oRigidBody: {fileID: 0}
-  m_oRigidBody2D: {fileID: 0}
+  surfaceMaterial: 1
   bulletTextures:
   - {fileID: 2800000, guid: aac85bb5233731249a8eaa42d091afee, type: 3}
   - {fileID: 2800000, guid: c237925b12332744b9422373cab4dee1, type: 3}

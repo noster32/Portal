@@ -68,7 +68,7 @@ public class CPortal : CComponent
             return;
 
         CTeleportObject tpObject;
-        if (other.tag == "Turret")
+        if (other.CompareTag("Turret"))
             tpObject = other.GetComponentInParent<CTeleportObject>();
         else
             tpObject = other.GetComponent<CTeleportObject>();
@@ -87,7 +87,7 @@ public class CPortal : CComponent
             return;
 
         CTeleportObject tpObject;
-        if (other.tag == "Turret")
+        if (other.CompareTag("Turret"))
             tpObject = other.GetComponentInParent<CTeleportObject>();
         else
             tpObject = other.GetComponent<CTeleportObject>();
@@ -109,7 +109,7 @@ public class CPortal : CComponent
         {
             foreach (Collider col in collider)
             {
-                if (col.tag == "Turret")
+                if (col.CompareTag("Turret"))
                 {
                     CTeleportObject obj = col.transform.GetComponentInParent<CTeleportObject>();
 
@@ -132,9 +132,10 @@ public class CPortal : CComponent
     }
 
     //포탈 설치
+    //포탈이 설치 되어있는 경우 설치되어 있던 벽면의 리스트 제거
+    //포탈이 열리는 중이였을 경우 중단하고 새로 시작
     public void OpenPortal(Vector3 pos, Quaternion rot)
     {
-        //포탈이 설치 되어있는 경우 설치되어 있던 벽면의 리스트 제거
         if (isPlaced)
         {
             CAudioManager.Instance.PlayOneShot(CFMODEvents.Instance.portalClose, this.transform.position);
@@ -142,7 +143,6 @@ public class CPortal : CComponent
             portalIgnoreCollision.ClearPlacedWallList();
         }
 
-        //포탈이 열리는 중이였을 경우 중단
         if (lerpCoroutine != null)
         {
             StopCoroutine(lerpCoroutine);
@@ -151,7 +151,6 @@ public class CPortal : CComponent
 
         transform.position = pos;
         transform.rotation = rot;
-        transform.position += transform.forward * 0.005f;
         transform.localScale = Vector3.zero;
         gameObject.SetActive(true);
 
@@ -163,12 +162,13 @@ public class CPortal : CComponent
         lerpCoroutine = StartCoroutine(LerpPortal(0.3f, Vector3.zero, Vector3.one, true));
 
         //포탈 설치 사운드
-        if (tag == "PortalB")
+        if (CompareTag("PortalB"))
             CAudioManager.Instance.PlayOneShot(CFMODEvents.Instance.portalOpen1, this.transform.position);
-        else if (tag == "PortalO")
+        else if (CompareTag("PortalO"))
             CAudioManager.Instance.PlayOneShot(CFMODEvents.Instance.portalOpen3, this.transform.position);
     }
 
+    //포탈 닫기
     public void ClosePortal()
     {
         if (lerpCoroutine != null)
@@ -183,10 +183,9 @@ public class CPortal : CComponent
         lerpCoroutine = StartCoroutine(LerpPortal(0.1f, transform.localScale, Vector3.zero, false));
     }
 
-
+    //placed : 포탈을 설치하려는 경우 true 그렇지 않은 경우 false
     private IEnumerator LerpPortal(float duration, Vector3 start, Vector3 end, bool place)
     {
-        //placed : 포탈을 설치하려는 경우 true 그렇지 않은 경우 false
         float timeElapsed = 0f;
 
         while (timeElapsed < duration)

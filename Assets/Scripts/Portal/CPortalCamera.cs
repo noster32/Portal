@@ -63,7 +63,8 @@ public class CPortalCamera : CComponent
         if (portalPair.portals[0].isVisibleFromMainCamera(mainCamera))
         {
             portalCamera.targetTexture = portalCameraTexture1;
-            for(int i = iterations - 1; i >= 0; --i)
+
+            for (int i = iterations - 1; i >= 0; --i)
             {
                 RenderCamera(portalPair.portals[0], portalPair.portals[1], i);
             }
@@ -72,6 +73,7 @@ public class CPortalCamera : CComponent
         if (portalPair.portals[1].isVisibleFromMainCamera(mainCamera))
         {
             portalCamera.targetTexture = portalCameraTexture2;
+        
             for (int i = iterations - 1; i >= 0; --i)
             {
                 RenderCamera(portalPair.portals[1], portalPair.portals[0], i);
@@ -97,7 +99,7 @@ public class CPortalCamera : CComponent
             cameraTransform.position = lookPortal.GetOtherPortalRelativePoint(cameraTransform.position);
             cameraTransform.rotation = lookPortal.GetOtherPortalRelativeRotation(cameraTransform.rotation);
         }
-
+        
         Plane p = new Plane(otherPortal.transform.forward, otherPortal.transform.position);
         Vector4 clipPlane = new Vector4(p.normal.x, p.normal.y, p.normal.z, p.distance);
         Vector4 clipPlaneCameraSpace = Matrix4x4.Transpose(Matrix4x4.Inverse(portalCamera.worldToCameraMatrix)) * clipPlane;

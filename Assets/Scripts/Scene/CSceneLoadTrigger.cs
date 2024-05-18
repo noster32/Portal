@@ -13,7 +13,7 @@ public class CSceneLoadTrigger : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (!m_isActive && other.tag == "Player")
+        if (!m_isActive && other.CompareTag("Player"))
         {
             m_isActive = true;
 
