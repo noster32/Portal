@@ -111,7 +111,7 @@ public class CBullet : CComponent
                 if (!playerState)
                     playerState = hit.transform.GetComponent<CPlayerState>();
 
-                playerState.DealDamageToPlayer(0, initialVelocity, 0);
+                playerState.DealDamageToPlayer(10, initialVelocity, 10f);
                 time = maxLifeTime;
             }
             else

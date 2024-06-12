@@ -10,8 +10,6 @@ public class CDoor1 : CComponent
 
     [SerializeField] private Transform doorR;
     [SerializeField] private Transform doorL;
-    [SerializeField] private Collider wallForward;
-    [SerializeField] private Collider wallBackward;
 
     [SerializeField] private bool isDoorOpen = false;
     [SerializeField] private bool active1 = false;
@@ -102,17 +100,5 @@ public class CDoor1 : CComponent
 
         moveCoroutine = null;
         yield return null;
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        Physics.IgnoreCollision(other, wallForward, true);
-        Physics.IgnoreCollision(other, wallBackward, true);
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        Physics.IgnoreCollision(other, wallForward, false);
-        Physics.IgnoreCollision(other, wallBackward, false);
     }
 }

@@ -10,18 +10,20 @@ public class CCubeButton : CComponent
 
     private Coroutine moveCoroutine;
     private Transform buttonTop;
-    private bool isActive = false;
+    private BoxCollider boxCollider;
+    [SerializeField] private bool isActive = false;
 
     public override void Awake()
     {
         base.Awake();
 
         buttonTop = transform.GetChild(0);
+        boxCollider = GetComponent<BoxCollider>();
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (isActive || !other.CompareTag("Cube") || !other.CompareTag("Player"))
+        if (isActive || (!other.CompareTag("Cube") && !other.CompareTag("Player")))
             return;
 
         if (moveCoroutine != null)
@@ -30,6 +32,7 @@ public class CCubeButton : CComponent
             moveCoroutine = null;
         }
 
+        isActive = true;
         Vector3 movePosition = new Vector3(0f, -0.25f, 0f);
         moveCoroutine = StartCoroutine(moveButton(0.3f, buttonTop.localPosition, movePosition));
         CAudioManager.Instance.PlayOneShot(CFMODEvents.Instance.button3, this.transform.position);

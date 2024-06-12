@@ -48,8 +48,6 @@ public class CPlayerState : CComponent
             isDie = true;
             playerDie.PlayerSpawnDeadCamera();
         }
-
-        Debug.Log(pState);
     }
 
     #region PortalGun

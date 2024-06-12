@@ -46824,7 +46824,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_oTransform: {fileID: 0}
   m_oRigidBody: {fileID: 0}
-  resourceFile: Assets/Subtitle/portal_subtitles.txt
 --- !u!4 &1402697612
 Transform:
   m_ObjectHideFlags: 0
@@ -75846,8 +75845,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1.28, y: 0.22, z: 1.28}
-  m_Center: {x: 0, y: 0.48, z: 0}
+  m_Size: {x: 1.28, y: 0.31, z: 1.28}
+  m_Center: {x: 0, y: 0.55, z: 0}
 --- !u!114 &2719813055721302442
 MonoBehaviour:
   m_ObjectHideFlags: 0

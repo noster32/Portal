@@ -79,7 +79,8 @@ public class CPortalPlacement : CComponent
             if (hit.transform.gameObject.layer == LayerMask.NameToLayer("PortalPlaceable"))
             {
                 hitPoint = hit.point;
-                PortalPlace(hit.point, hit.normal, portalNum);
+                hitPoint += hit.normal * zFightingOffset;
+                PortalPlace(hitPoint, hit.normal, portalNum);
             }
             else if (hit.transform.gameObject.layer == LayerMask.NameToLayer("PortalCollider"))
             {
@@ -89,10 +90,11 @@ public class CPortalPlacement : CComponent
 
                     Vector3 relativePos = hitPortalTransform.InverseTransformPoint(hit.point);
                     if (relativePos.x > 0f)
-                        relativePos = new Vector3(portalWidth, relativePos.y, -zFightingOffset);
+                        relativePos = new Vector3(portalWidth, relativePos.y, 0f);
                     else
-                        relativePos = new Vector3(-portalWidth, relativePos.y, -zFightingOffset);
+                        relativePos = new Vector3(-portalWidth, relativePos.y, 0f);
 
+                    relativePos += hit.normal * zFightingOffset;
                     Vector3 resultPos = hitPortalTransform.TransformPoint(relativePos);
 
                     PortalPlace(resultPos, hit.normal, portalNum);
@@ -102,7 +104,9 @@ public class CPortalPlacement : CComponent
                     Transform hitPortalTransform = portalPair.portals[portalNum].transform;
 
                     Vector3 relativePos = hitPortalTransform.InverseTransformPoint(hit.point);
-                    relativePos = new Vector3(relativePos.x, relativePos.y, -zFightingOffset);
+                    relativePos = new Vector3(relativePos.x, relativePos.y, 0f);
+
+                    relativePos += hit.normal * zFightingOffset;
                     Vector3 resultPos = hitPortalTransform.TransformPoint(relativePos);
 
                     PortalPlace(resultPos, hit.normal, portalNum);
@@ -242,43 +246,34 @@ public class CPortalPlacement : CComponent
             if (count == 0)                                                                                            
                 nonCollisionPoint.Add(edgeNameArray[i]);                                                               
         }                                                                                                              
-                                                                                                                       
+        
         if(collisionPoint.Count > 0)                                                                                   
         {                                                                                                              
             Vector3 lineCastEndPos = originPos + rotation * centerPointBackward;                                       
-                                                                                                                       
-            switch (collisionPoint.Count)                                                                              
-            {                                                                                                          
-                case 4:                                                                                                
-                    break;                                                                                             
-                                                                                                                       
-                case 3:                                                                                                
-                    string temp3 = OverhangLinecast(originPos, rotation, nonCollisionPoint[0], lineCastEndPos);        
-                    offsetObjectOverhang = rotation * new Vector3(offsetPoints[temp3].x, offsetPoints[temp3].y, 0f);   
-                    break;                                                                                             
-                                                                                                                       
-                case 2:                                                                                                
-                    List<string> offsets = new List<string>();                                                         
-                                                                                                                       
-                    for (int castNum = 0; castNum < 2; ++castNum)                                                      
-                    {                                                                                                  
-                        offsets.Add(OverhangLinecast(originPos, rotation, nonCollisionPoint[castNum], lineCastEndPos));
-                    }
+            
+            if (collisionPoint.Count <= 0)
+                return false;
+            if (collisionPoint.Count == 3) 
+            {
+                string temp3 = OverhangLinecast(originPos, rotation, nonCollisionPoint[0], lineCastEndPos);
+                offsetObjectOverhang = rotation * new Vector3(offsetPoints[temp3].x, offsetPoints[temp3].y, 0f);
+            }
+            if (collisionPoint.Count == 2)
+            {
+                List<string> offsets = new List<string>();
 
-                    offsetObjectOverhang = rotation * CompareEdges(nonCollisionPoint, offsets);
-                    break;
+                for (int castNum = 0; castNum < 2; ++castNum)
+                {
+                    offsets.Add(OverhangLinecast(originPos, rotation, nonCollisionPoint[castNum], lineCastEndPos));
+                }
 
-                case 1:
-                    int index = GetOppositeCorner(collisionPoint[0]);
-                    string temp1 = OverhangLinecast(originPos, rotation, edgeNameArray[index], lineCastEndPos);
-                    offsetObjectOverhang = rotation * new Vector3(offsetPoints[temp1].x, offsetPoints[temp1].y, 0f);
-                    break;
-
-                case 0:
-                    return false;
-
-                default:
-                    return false;
+                offsetObjectOverhang = rotation * CompareEdges(nonCollisionPoint, offsets);
+            }
+            if (collisionPoint.Count == 1)
+            {
+                int index = GetOppositeCorner(collisionPoint[0]);
+                string temp1 = OverhangLinecast(originPos, rotation, edgeNameArray[index], lineCastEndPos);
+                offsetObjectOverhang = rotation * new Vector3(offsetPoints[temp1].x, offsetPoints[temp1].y, 0f);
             }
         }
 

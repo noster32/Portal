@@ -754,7 +754,7 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1.28, y: 0.22, z: 1.28}
-  m_Center: {x: 0, y: 0.48, z: 0}
+  m_Center: {x: 0, y: 0.51, z: 0}
 --- !u!1 &2492751963809698360
 GameObject:
   m_ObjectHideFlags: 0
@@ -1222,6 +1222,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_oTransform: {fileID: 0}
   m_oRigidBody: {fileID: 0}
+  scrollX: 0
+  scrollY: 1
   scrollSpeed: 0.01
   scrollRenderer: {fileID: 2492751965005455336}
 --- !u!120 &2492751965005455336
