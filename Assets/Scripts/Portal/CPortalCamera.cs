@@ -48,43 +48,36 @@ public class CPortalCamera : CComponent
 
     private void OnPreRender()
     {
-        //Shader stencilShader = Shader.Find("Custom/PortalMask1");
-        //portalCamera.RenderWithShader(stencilShader, "");
-
-        //if (!portalPair.PlacedBothPortal())
-        //{
-        //    portalPair.portals[0].SetTexture(defaultTexture1);
-        //    portalPair.portals[1].SetTexture(defaultTexture2);
-        //    return;
-        //}
-        //else
-        //{
-        //    portalPair.portals[0].SetTexture(portalCameraTexture1);
-        //    portalPair.portals[1].SetTexture(portalCameraTexture2);
-        //}
+        if (!portalPair.PlacedBothPortal())
+        {
+            portalPair.portals[0].SetTexture(defaultTexture1);
+            portalPair.portals[1].SetTexture(defaultTexture2);
+            return;
+        }
+        else
+        {
+            portalPair.portals[0].SetTexture(portalCameraTexture1);
+            portalPair.portals[1].SetTexture(portalCameraTexture2);
+        }
 
         if (portalPair.portals[0].isVisibleFromMainCamera(mainCamera))
         {
-            //portalCamera.targetTexture = portalCameraTexture1;
+            portalCamera.targetTexture = portalCameraTexture1;
 
-            RenderCamera(portalPair.portals[0], portalPair.portals[1], 0);
-
-            //for (int i = iterations - 1; i >= 0; --i)
-            //{
-            //    RenderCamera(portalPair.portals[0], portalPair.portals[1], i);
-            //}
+            for (int i = iterations - 1; i >= 0; --i)
+            {
+                RenderCamera(portalPair.portals[0], portalPair.portals[1], i);
+            }
         }
 
         if (portalPair.portals[1].isVisibleFromMainCamera(mainCamera))
         {
-            //portalCamera.targetTexture = portalCameraTexture2;
+            portalCamera.targetTexture = portalCameraTexture2;
 
-            RenderCamera(portalPair.portals[1], portalPair.portals[0], 0);
-
-            //for (int i = iterations - 1; i >= 0; --i)
-            //{
-            //    RenderCamera(portalPair.portals[1], portalPair.portals[0], i);
-            //}
+            for (int i = iterations - 1; i >= 0; --i)
+            {
+                RenderCamera(portalPair.portals[1], portalPair.portals[0], i);
+            }
         }
     }
 
@@ -113,7 +106,6 @@ public class CPortalCamera : CComponent
         var newMatrix = mainCamera.CalculateObliqueMatrix(clipPlaneCameraSpace);
         portalCamera.projectionMatrix = newMatrix;
 
-        GL.Clear(true, true, Color.clear);
-        portalCamera.RenderWithShader(Shader.Find("Custom/PortalMask1"), "");
+        portalCamera.Render();
     }
 }
