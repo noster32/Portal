@@ -16,7 +16,8 @@ Shader "Custom/RecursivePortalMask"
             Stencil
             {
                 Ref 1
-                Pass replace
+                Comp Always
+                Pass Replace
             }
 
             CGPROGRAM

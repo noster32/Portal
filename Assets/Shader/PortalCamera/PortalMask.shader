@@ -3,57 +3,61 @@ Shader "Custom/PortalMask"
     Properties
     {
         _Color ("Base Color", Color) = (1,1,1,1)
-        _MaskID("Mask ID", Int) = 1
+        _MaskID("Mask ID", Float) = 1
+        _RenderTime("Render Time", Float) = 1999
     }
     SubShader
     {
         Tags
         {
             "RenderType" = "Opaque"
-            "Queue" = "Geometry"
         }
 
         Pass
         {
             Stencil
             {
-                Ref [_MaskID]
-                Comp Always
-                Pass replace
+                Ref 1           // 스텐실 값 1
+                Comp Equal      // 스텐실 값이 1인 경우에만 패스
+                Pass Keep       // 패스 시 스텐실 값 유지
+                Fail Keep       // 실패 시 스텐실 값 유지
+                ZFail Keep      // ZFail 시 스텐실 값 유지
             }   
-        CGPROGRAM
-            #pragma vertex vert
-            #pragma fragment frag
 
-            #include "UnityCG.cginc"
+            CGPROGRAM
+                #pragma vertex vert
+                #pragma fragment frag
 
-            struct appdata
-            {
-                float4 vertex : POSITION;
-                float2 uv : TEXCOORD0;
-            };
-            
-            struct v2f
-            {
-                float2 uv : TEXCOORD0;
-                float4 vertex : SV_POSITION;
-            };
+                #include "UnityCG.cginc"
 
-            v2f vert(appdata v)
-            {
-                v2f o;
-                o.vertex = UnityObjectToClipPos(v.vertex);
-                o.uv = v.uv;
-                return o;
-            }
-            
-            uniform float4 _Color;
+                struct appdata
+                {
+                    float4 vertex : POSITION;
+                };
 
-            fixed4 frag(v2f i) : SV_Target
-            {
-                return _Color;
-            }
-        ENDCG
+                struct v2f
+                {
+                    float4 vertex : SV_POSITION;
+                    float4 screenPos : TEXCOORD0;
+                };
+
+                v2f vert(appdata v)
+                {
+                    v2f o;
+                    o.vertex = UnityObjectToClipPos(v.vertex);
+                    o.screenPos = ComputeScreenPos(o.vertex);
+                    return o;
+                }
+
+                uniform sampler2D _MainTex;
+
+                fixed4 frag(v2f i) : SV_Target
+                {
+                    float2 uv = i.screenPos.xy / i.screenPos.w;
+                    fixed4 col = tex2D(_MainTex, uv);
+                    return col;
+                }
+            ENDCG
         }
     }
 }
